@@ -1,9 +1,69 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Welcome to Roundchat</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roundchat - Connect Differently</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+        body { background-color: #f4f7f6; color: #333; line-height: 1.6; }
+        
+        /* Navigation Bar */
+        nav { background: #1a1a2e; color: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        nav h1 { font-size: 1.5rem; letter-spacing: 1px; color: #e94560; }
+        nav ul { list-style: none; display: flex; gap: 20px; }
+        nav a { color: #fff; text-decoration: none; font-weight: 500; transition: color 0.3s; }
+        nav a:hover { color: #e94560; }
+
+        /* Hero Section */
+        .hero { max-width: 1000px; margin: 80px auto; padding: 0 20px; text-align: center; }
+        .hero h2 { font-size: 3rem; color: #1a1a2e; margin-bottom: 20px; font-weight: 700; }
+        .hero p { font-size: 1.2rem; color: #666; max-width: 600px; margin: 0 auto 30px; }
+        
+        /* Interactive CTA Button */
+        .cta-btn { background-color: #e94560; color: white; padding: 12px 30px; border: none; font-size: 1.1rem; font-weight: 600; border-radius: 25px; cursor: pointer; text-decoration: none; display: inline-block; transition: transform 0.2s, background 0.3s; box-shadow: 0 4px 15px rgba(233, 69, 96, 0.4); }
+        .cta-btn:hover { background-color: #0f3460; transform: translateY(-2px); }
+
+        /* Feature Cards Section */
+        .features { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; max-width: 1000px; margin: 40px auto; padding: 0 20px; }
+        .card { background: white; padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); text-align: left; border-top: 4px solid #e94560; }
+        .card h3 { margin-bottom: 15px; color: #1a1a2e; }
+    </style>
 </head>
 <body>
-    <h1>Roundchat is officially live!</h1>
+
+    <!-- Top Navigation Menu -->
+    <nav>
+        <h1>ROUNDCHAT</h1>
+        <ul>
+            <li><a href="#">Home</a></li>
+            <li><a href="#">Features</a></li>
+            <li><a href="#">About</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Introduction -->
+    <div class="hero">
+        <h2>Welcome to the New Era of Chat</h2>
+        <p>Roundchat brings people together with smooth communication tools, clean interfaces, and unparalleled lightning-fast speeds.</p>
+        <button class="cta-btn" onclick="alert('Thank you for joining Roundchat!')">Get Started Free</button>
+    </div>
+
+    <!-- Value Cards -->
+    <div class="features">
+        <div class="card">
+            <h3>⚡ Fast Communication</h3>
+            <p>Real-time delivery networks ensure your discussions stay up to speed without lag.</p>
+        </div>
+        <div class="card">
+            <h3>🔒 Secure Infrastructure</h3>
+            <p>Built-in security shields and full protection to keep conversations personal.</p>
+        </div>
+        <div class="card">
+            <h3>🎨 Fully Customized</h3>
+            <p>Designed exactly to match your brand style preferences effortlessly.</p>
+        </div>
+    </div>
+
 </body>
 </html>

@@ -3,313 +3,258 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roundchat | Production Defender</title>
+    <title>ROUNDCHAT | High Performance Network</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { 
-            background-color: #050505; 
-            color: #00ff88; 
-            font-family: 'Fira Code', monospace; 
-            overflow: hidden; 
-            user-select: none;
-        }
+        body { background-color: #050505; color: #fff; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
 
-        /* UI Overlays */
-        #ui-layer { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 10; }
-        .hud { position: absolute; top: 20px; font-size: 20px; text-shadow: 0 0 10px rgba(0,255,136,0.5); }
-        #score-board { left: 30px; }
-        #high-score-board { right: 30px; color: #ff0055; text-shadow: 0 0 10px rgba(255,0,85,0.5); }
-        
-        /* Health Bar */
-        #health-container {
-            position: absolute; bottom: 0; left: 0; width: 100%; height: 10px; background: #1a1a1a;
-        }
-        #health-bar {
-            width: 100%; height: 100%; background: #00ff88; transition: width 0.2s, background 0.3s;
-            box-shadow: 0 0 20px #00ff88;
-        }
-
-        /* Screens */
-        .screen {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        /* --- LANDING PAGE STYLES --- */
+        #landing-page {
+            position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh;
+            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            background: rgba(5, 5, 5, 0.95); backdrop-filter: blur(5px); z-index: 20;
-            transition: opacity 0.3s;
+            text-align: center; z-index: 10; transition: opacity 0.5s;
         }
-        .hidden { opacity: 0; pointer-events: none; }
+        .hero-content { z-index: 2; padding: 20px; }
+        h1 { font-family: 'Orbitron', sans-serif; font-size: 4rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; background: linear-gradient(90deg, #00f260, #0575E6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        p.subtitle { color: #888; font-size: 1.2rem; margin-bottom: 40px; letter-spacing: 1px; }
         
-        h1 { font-size: 4rem; color: #fff; text-shadow: 4px 4px 0px #00ff88; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 5px; text-align: center; }
-        h2 { font-size: 1.5rem; color: #888; margin-bottom: 40px; font-weight: 400; }
-        .btn {
-            padding: 15px 40px; font-size: 1.5rem; color: #050505; background: #00ff88;
-            border: none; cursor: pointer; font-family: 'Fira Code', monospace; font-weight: bold;
-            clip-path: polygon(10% 0, 100% 0, 100% 80%, 90% 100%, 0 100%, 0 20%);
-            transition: transform 0.1s, background 0.2s;
-            text-decoration: none; display: inline-block;
+        .play-btn {
+            background: transparent; border: 2px solid #00f260; color: #00f260;
+            padding: 15px 50px; font-size: 1.5rem; font-family: 'Orbitron', sans-serif; font-weight: bold;
+            cursor: pointer; position: relative; overflow: hidden; transition: 0.3s;
+            box-shadow: 0 0 15px rgba(0, 242, 96, 0.2); clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
         }
-        .btn:hover { background: #fff; transform: scale(1.05); }
-        .social-link { margin-top: 20px; color: #fff; text-decoration: none; border-bottom: 1px solid #00ff88; padding-bottom: 2px; }
+        .play-btn:hover { background: #00f260; color: #000; box-shadow: 0 0 30px rgba(0, 242, 96, 0.6); transform: scale(1.05); }
+        .play-btn::after { content: " >> START ENGINE"; }
+
+        /* Social Link */
+        .social-bar { margin-top: 50px; display: flex; gap: 20px; font-size: 0.9rem; color: #666; }
+        .social-bar a { color: #fff; text-decoration: none; border-bottom: 1px solid #0575E6; transition: 0.3s; }
+        .social-bar a:hover { color: #0575E6; }
+
+        /* --- GAME UI LAYERS --- */
+        #game-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: #111; }
+        canvas { display: block; width: 100%; height: 100%; }
+
+        #hud { position: absolute; top: 20px; left: 20px; font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fff; text-shadow: 2px 2px 0 #000; pointer-events: none; }
         
-        /* Game Canvas */
-        canvas { display: block; }
+        #game-over {
+            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
+            background: rgba(0,0,0,0.9); padding: 40px; border: 2px solid #ff0055; text-align: center;
+            box-shadow: 0 0 50px rgba(255, 0, 85, 0.4); border-radius: 10px; min-width: 300px;
+        }
+        #game-over h2 { font-family: 'Orbitron', sans-serif; color: #ff0055; font-size: 3rem; margin-bottom: 10px; }
+        #game-over p { color: #fff; margin-bottom: 20px; font-size: 1.2rem; }
+        .restart-btn { background: #ff0055; color: #fff; border: none; padding: 10px 30px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; cursor: pointer; margin-bottom: 15px; }
+        .restart-btn:hover { background: #fff; color: #ff0055; }
+        
+        .insta-link { display: block; color: #00f260; text-decoration: none; margin-top: 10px; font-size: 0.9rem; letter-spacing: 1px; }
+        .insta-link:hover { text-decoration: underline; }
+
+        /* Mobile Controls */
+        .controls { position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none; }
+        .control-key { display: none; width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; pointer-events: auto; background: rgba(255,255,255,0.1); }
+        @media (max-width: 768px) { .control-key { display: block; } h1 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
 
-    <!-- Game Canvas -->
-    <canvas id="gameCanvas"></canvas>
-
-    <!-- Heads Up Display -->
-    <div id="ui-layer">
-        <div id="score-board" class="hud">SCORE: <span id="score">0</span></div>
-        <div id="high-score-board" class="hud">HIGH SCORE: <span id="high-score">0</span></div>
-        <div id="health-container"><div id="health-bar"></div></div>
+    <!-- LANDING PAGE -->
+    <div id="landing-page">
+        <div class="hero-content">
+            <h1>ROUNDCHAT</h1>
+            <p class="subtitle">DEVOPS ENGINEERING | CLOUD ARCHITECTURE | AUTOMATION</p>
+            <button class="play-btn" onclick="initGame()"></button>
+            
+            <div class="social-bar">
+                <span>Follow the journey:</span>
+                <a href="https://instagram.com/roundchat" target="_blank">@roundchat</a>
+                <a href="#">GitHub</a>
+                <a href="#">LinkedIn</a>
+            </div>
+        </div>
     </div>
 
-    <!-- Start Screen -->
-    <div id="start-screen" class="screen">
-        <h1>Roundchat</h1>
-        <h2>Production Defender v1.0</h2>
-        <button class="btn" onclick="startGame()">INITIALIZE SERVER</button>
-        <p style="margin-top: 30px; color: #666;">Type the falling words to protect the mainframe.</p>
-    </div>
+    <!-- GAME CONTAINER -->
+    <div id="game-container">
+        <div id="hud">SCORE: <span id="scoreVal">0</span></div>
+        <canvas id="gameCanvas"></canvas>
+        
+        <!-- Controls for Mobile -->
+        <div class="controls">
+            <div class="control-key" ontouchstart="moveLeft()" ontouchend="stopMove()"></div>
+            <div class="control-key" ontouchstart="moveRight()" ontouchend="stopMove()"></div>
+        </div>
 
-    <!-- Game Over Screen -->
-    <div id="game-over-screen" class="screen hidden">
-        <h1 style="color: #ff0055; text-shadow: 4px 4px 0px #550022;">SYSTEM FAILURE</h1>
-        <h2 id="final-score">Score: 0</h2>
-        <button class="btn" onclick="resetGame()">REBOOT SYSTEM</button>
-        <div style="margin-top: 40px; text-align: center;">
-            <p style="color: #888; margin-bottom: 10px;">Server Maintenance Required.</p>
-            <a href="https://instagram.com/roundchat" target="_blank" class="btn" style="background: #E1306C; color: white; font-size: 1rem; padding: 10px 25px;">Contact Admin @roundchat</a>
+        <!-- GAME OVER MODAL -->
+        <div id="game-over">
+            <h2>CRASHED</h2>
+            <p>FINAL SCORE: <span id="finalScore">0</span></p>
+            <button class="restart-btn" onclick="restartGame()">RETRY RACE</button>
+            <a href="https://instagram.com/roundchat" target="_blank" class="insta-link">Follow @roundchat on Instagram &rarr;</a>
         </div>
     </div>
 
 <script>
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
+    const landing = document.getElementById('landing-page');
+    const gameContainer = document.getElementById('game-container');
+    const gameOverScreen = document.getElementById('game-over');
     
     // Game State
+    let gameRunning = false;
     let score = 0;
-    let health = 100;
-    let isPlaying = false;
-    let spawnRate = 2000;
-    let lastSpawn = 0;
-    let difficultyMultiplier = 1;
-    let animationId;
+    let speed = 5;
+    let car = { x: 0, y: 0, w: 50, h: 80, color: '#00f260' };
+    let obstacles = [];
+    let roadLines = [];
+    let keys = { ArrowLeft: false, ArrowRight: false };
+    let animationFrame;
 
-    // DevOps Themed Word List
-    const words = [
-        "docker", "kubernetes", "sudo", "git", "python", "aws", "linux", "jenkins", "deploy", 
-        "firewall", "nginx", "apache", "root", "ssh", "bash", "compile", "bug", "error", 
-        "latency", "cache", "proxy", "token", "build", "merge", "commit", "push", "pull", 
-        "status", "init", "remote", "branch", "origin", "master", "main", "dev", "prod", 
-        "scale", "pod", "node", "cluster", "service", "ingress", "volume", "secret", "config"
-    ];
-
-    // Entities
-    let activeWords = [];
-    let particles = [];
-    
-    // Resize Canvas
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
+        car.x = canvas.width / 2 - 25;
+        car.y = canvas.height - 120;
     }
     window.addEventListener('resize', resize);
-    resize();
 
-    // High Score Logic
-    const highScoreEl = document.getElementById('high-score');
-    let highScore = localStorage.getItem('roundchat_highscore') || 0;
-    highScoreEl.innerText = highScore;
-
-    class Word {
-        constructor() {
-            this.text = words[Math.floor(Math.random() * words.length)];
-            this.x = Math.random() * (canvas.width - 200) + 100;
-            this.y = -30;
-            this.speed = (Math.random() * 1.5 + 0.5) * difficultyMultiplier;
-            this.color = '#00ff88';
-            this.matchedIndex = 0; // How many chars typed
-        }
-
-        draw() {
-            ctx.font = 'bold 24px "Fira Code", monospace';
-            
-            // Draw matched part (Green)
-            const matched = this.text.substring(0, this.matchedIndex);
-            const remaining = this.text.substring(this.matchedIndex);
-            
-            const totalWidth = ctx.measureText(this.text).width;
-            
-            ctx.fillStyle = '#ff0055'; // Highlight Color
-            ctx.fillText(matched, this.x, this.y);
-            
-            const matchedWidth = ctx.measureText(matched).width;
-            ctx.fillStyle = '#00ff88'; // Normal Color
-            ctx.fillText(remaining, this.x + matchedWidth, this.y);
-        }
-
-        update() {
-            this.y += this.speed;
-        }
-    }
-
-    class Particle {
-        constructor(x, y, color) {
-            this.x = x;
-            this.y = y;
-            this.color = color;
-            this.size = Math.random() * 3 + 1;
-            this.speedX = Math.random() * 6 - 3;
-            this.speedY = Math.random() * 6 - 3;
-            this.life = 1; // Opacity
-        }
-        draw() {
-            ctx.fillStyle = this.color;
-            ctx.globalAlpha = this.life;
-            ctx.beginPath();
-            ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
-            ctx.fill();
-            ctx.globalAlpha = 1;
-        }
-        update() {
-            this.x += this.speedX;
-            this.y += this.speedY;
-            this.life -= 0.02;
-        }
-    }
-
-    // Input Handling
-    window.addEventListener('keydown', (e) => {
-        if (!isPlaying) return;
-        
-        const key = e.key.toLowerCase();
-        
-        // Find matching word
-        let target = activeWords.find(w => w.text[w.matchedIndex] === key);
-        
-        if (target) {
-            target.matchedIndex++;
-            
-            // Create typing particle effect
-            const width = ctx.measureText(target.text.substring(0, target.matchedIndex)).width;
-            particles.push(new Particle(target.x + width, target.y - 10, '#fff'));
-
-            if (target.matchedIndex === target.text.length) {
-                // Word Destroyed
-                createExplosion(target.x, target.y);
-                activeWords = activeWords.filter(w => w !== target);
-                score += 10;
-                updateScore();
-                
-                // Increase difficulty
-                if (score % 50 === 0) {
-                    difficultyMultiplier += 0.1;
-                    spawnRate = Math.max(500, spawnRate - 100);
-                }
-            }
-        }
-    });
-
-    function createExplosion(x, y) {
-        for (let i = 0; i < 15; i++) {
-            particles.push(new Particle(x, y, '#ff0055'));
-        }
-    }
-
-    function updateScore() {
-        document.getElementById('score').innerText = score;
-    }
-
-    function updateHealth() {
-        const bar = document.getElementById('health-bar');
-        bar.style.width = health + '%';
-        if (health < 30) bar.style.backgroundColor = '#ff0055';
-        else bar.style.backgroundColor = '#00ff88';
-        
-        if (health <= 0) gameOver();
-    }
-
-    function spawnWord() {
-        if (Date.now() - lastSpawn > spawnRate) {
-            activeWords.push(new Word());
-            lastSpawn = Date.now();
-        }
-    }
-
-    function gameLoop() {
-        if (!isPlaying) return;
-
-        // Clear Screen
-        ctx.fillStyle = 'rgba(5, 5, 5, 0.3)'; // Trail effect
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // Update Words
-        activeWords.forEach((word, index) => {
-            word.update();
-            word.draw();
-
-            // Hit Floor
-            if (word.y > canvas.height) {
-                health -= 10;
-                updateHealth();
-                activeWords.splice(index, 1);
-                
-                // Screen Shake effect (Visual only)
-                canvas.style.transform = `translate(${Math.random()*10-5}px, ${Math.random()*10-5}px)`;
-                setTimeout(() => canvas.style.transform = 'none', 50);
-            }
-        });
-
-        // Update Particles
-        particles.forEach((p, index) => {
-            p.update();
-            p.draw();
-            if (p.life <= 0) particles.splice(index, 1);
-        });
-
-        spawnWord();
-        animationId = requestAnimationFrame(gameLoop);
+    function initGame() {
+        resize();
+        landing.style.opacity = '0';
+        setTimeout(() => {
+            landing.style.display = 'none';
+            gameContainer.style.display = 'block';
+            startGame();
+        }, 500);
     }
 
     function startGame() {
-        document.getElementById('start-screen').classList.add('hidden');
-        document.getElementById('game-over-screen').classList.add('hidden');
-        
+        gameRunning = true;
         score = 0;
-        health = 100;
-        difficultyMultiplier = 1;
-        spawnRate = 2000;
-        activeWords = [];
-        particles = [];
-        isPlaying = true;
+        speed = 6;
+        obstacles = [];
+        roadLines = [];
+        gameOverScreen.style.display = 'none';
         
-        updateScore();
-        updateHealth();
-        gameLoop();
+        // Initial Road Lines
+        for(let i=0; i<10; i++) {
+            roadLines.push({ y: i * 100 });
+        }
+        
+        loop();
     }
 
-    function gameOver() {
-        isPlaying = false;
-        cancelAnimationFrame(animationId);
-        
-        if (score > highScore) {
-            highScore = score;
-            localStorage.setItem('roundchat_highscore', highScore);
-            document.getElementById('high-score').innerText = highScore;
+    function update() {
+        score++;
+        document.getElementById('scoreVal').innerText = Math.floor(score/10);
+
+        // Increase Speed
+        if(score % 500 === 0) speed += 1;
+
+        // Move Car
+        if (keys.ArrowLeft && car.x > 20) car.x -= 7;
+        if (keys.ArrowRight && car.x < canvas.width - car.w - 20) car.x += 7;
+
+        // Move Road Lines
+        roadLines.forEach(line => {
+            line.y += speed;
+            if(line.y > canvas.height) line.y = -100;
+        });
+
+        // Spawn Obstacles
+        if (Math.random() < 0.02) {
+            let lane = Math.random() * (canvas.width - 100) + 50;
+            obstacles.push({ x: lane, y: -100, w: 50, h: 80, color: '#ff0055' });
         }
 
-        document.getElementById('final-score').innerText = `Final Score: ${score}`;
-        document.getElementById('game-over-screen').classList.remove('hidden');
+        // Move & Check Obstacles
+        obstacles.forEach((obs, index) => {
+            obs.y += speed;
+            
+            // Collision Detection
+            if (
+                car.x < obs.x + obs.w &&
+                car.x + car.w > obs.x &&
+                car.y < obs.y + obs.h &&
+                car.h + car.y > obs.y
+            ) {
+                endGame();
+            }
+
+            // Remove off-screen
+            if(obs.y > canvas.height) obstacles.splice(index, 1);
+        });
     }
 
-    function resetGame() {
+    function draw() {
+        // Clear background
+        ctx.fillStyle = '#111';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        // Draw Road Effect
+        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        roadLines.forEach(line => {
+            ctx.fillRect(canvas.width/2 - 5, line.y, 10, 60);
+        });
+
+        // Draw Player Car (Neon Style)
+        ctx.shadowBlur = 20;
+        ctx.shadowColor = car.color;
+        ctx.fillStyle = car.color;
+        ctx.beginPath();
+        ctx.roundRect(car.x, car.y, car.w, car.h, 10);
+        ctx.fill();
+        
+        // Car details
+        ctx.fillStyle = '#000';
+        ctx.fillRect(car.x + 5, car.y + 10, 40, 20); // Windshield
+
+        // Draw Obstacles (Enemy Cars)
+        obstacles.forEach(obs => {
+            ctx.shadowColor = obs.color;
+            ctx.fillStyle = obs.color;
+            ctx.beginPath();
+            ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 10);
+            ctx.fill();
+            ctx.fillStyle = '#000';
+            ctx.fillRect(obs.x + 5, obs.y + 50, 40, 10); // Rear lights
+        });
+
+        ctx.shadowBlur = 0; // Reset
+    }
+
+    function loop() {
+        if (!gameRunning) return;
+        update();
+        draw();
+        animationFrame = requestAnimationFrame(loop);
+    }
+
+    function endGame() {
+        gameRunning = false;
+        cancelAnimationFrame(animationFrame);
+        document.getElementById('finalScore').innerText = Math.floor(score/10);
+        gameOverScreen.style.display = 'block';
+    }
+
+    function restartGame() {
         startGame();
     }
+
+    // Controls
+    window.addEventListener('keydown', e => keys[e.key] = true);
+    window.addEventListener('keyup', e => keys[e.key] = false);
+
+    // Mobile Logic
+    function moveLeft() { keys.ArrowLeft = true; }
+    function moveRight() { keys.ArrowRight = true; }
+    function stopMove() { keys.ArrowLeft = false; keys.ArrowRight = false; }
+
 </script>
 </body>
 </html>

@@ -3,296 +3,354 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roundchat | Create Differently</title>
+    <title>Roundchat | The Utility Hub</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500;700;900&display=swap');
 
         :root {
-            --bg-color: #0a0a12;
-            --accent: #7b2cbf;
-            --accent-glow: #9d4edd;
-            --text-main: #e0aaff;
-            --glass: rgba(255, 255, 255, 0.05);
-            --border: rgba(255, 255, 255, 0.1);
+            --bg: #0f172a;
+            --card-bg: #1e293b;
+            --primary: #3b82f6;
+            --accent: #8b5cf6;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
         
-        body { 
-            background-color: var(--bg-color); 
-            color: #fff; 
-            font-family: 'Space Grotesk', sans-serif; 
-            overflow-x: hidden;
-            background-image: radial-gradient(circle at 50% 0%, #240046 0%, #0a0a12 60%);
-            min-height: 100vh;
-        }
+        body { background-color: var(--bg); color: var(--text); padding-bottom: 50px; }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVBAR --- */
         nav {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 20px 40px; backdrop-filter: blur(10px);
-            border-bottom: 1px solid var(--border);
-            position: sticky; top: 0; z-index: 100;
+            padding: 20px; background: rgba(15, 23, 42, 0.9);
+            backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 50;
+            border-bottom: 1px solid #334155;
         }
-
-        .logo { font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: 2px; }
-        .logo span { color: var(--accent-glow); }
-
-        .nav-links { display: flex; gap: 20px; align-items: center; }
-        .social-btn { 
-            text-decoration: none; color: var(--text-main); font-size: 0.9rem; 
-            border: 1px solid var(--border); padding: 8px 20px; border-radius: 20px;
-            transition: 0.3s;
+        .logo { font-weight: 900; font-size: 1.5rem; letter-spacing: -1px; }
+        .logo span { color: var(--primary); }
+        .game-btn {
+            background: linear-gradient(135deg, var(--primary), var(--accent));
+            border: none; padding: 10px 20px; border-radius: 30px;
+            color: white; font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+            transition: transform 0.2s; display: flex; align-items: center; gap: 8px;
         }
-        .social-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+        .game-btn:hover { transform: scale(1.05); }
 
-        /* Small Game Icon (The "Side" Game) */
-        .arcade-btn { font-size: 1.2rem; cursor: pointer; transition: 0.3s; opacity: 0.7; }
-        .arcade-btn:hover { transform: rotate(15deg) scale(1.2); opacity: 1; color: var(--accent-glow); }
+        /* --- HERO --- */
+        .hero { text-align: center; padding: 60px 20px; }
+        h1 { font-size: 2.5rem; margin-bottom: 10px; }
+        .subtitle { color: var(--text-muted); max-width: 600px; margin: 0 auto; }
 
-        /* --- HERO SECTION --- */
-        .hero {
-            text-align: center; padding: 80px 20px 40px;
-            max-width: 800px; margin: 0 auto;
-        }
-        
-        h1 { 
-            font-size: 4rem; line-height: 1.1; margin-bottom: 20px; 
-            background: linear-gradient(to right, #fff, #e0aaff);
-            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
-        }
-        
-        .tagline { color: #b8c1ec; font-size: 1.2rem; margin-bottom: 50px; font-weight: 300; }
-
-        /* --- TOOLS GRID --- */
-        .grid {
+        /* --- GRID LAYOUT --- */
+        .container {
+            max-width: 1200px; margin: 0 auto; padding: 20px;
             display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px;
+            gap: 25px;
         }
 
+        /* --- CARDS --- */
         .card {
-            background: var(--glass);
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            padding: 30px;
-            transition: transform 0.3s, box-shadow 0.3s;
-            position: relative; overflow: hidden;
+            background: var(--card-bg); border-radius: 16px; padding: 25px;
+            border: 1px solid #334155; box-shadow: 0 10px 30px rgba(0,0,0,0.2);
         }
+        .card-header { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; border-bottom: 1px solid #334155; padding-bottom: 15px; }
+        .icon { font-size: 1.5rem; }
+        .card h2 { font-size: 1.2rem; }
 
-        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(123, 44, 191, 0.2); border-color: var(--accent); }
-
-        .card h3 { font-size: 1.5rem; margin-bottom: 10px; color: white; }
-        .card p { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6; }
-
-        /* TOOL 1: IDEA GENERATOR */
-        .generator-box {
-            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;
-            min-height: 60px; display: flex; align-items: center; justify-content: center;
-            text-align: center; margin-bottom: 15px; border: 1px dashed var(--border);
+        /* --- FORM ELEMENTS --- */
+        label { display: block; margin-bottom: 5px; color: var(--text-muted); font-size: 0.9rem; }
+        input, select {
+            width: 100%; background: #0f172a; border: 1px solid #475569;
+            color: white; padding: 10px; border-radius: 8px; margin-bottom: 15px;
         }
-        .gen-btn {
-            width: 100%; padding: 12px; background: var(--accent); border: none;
-            color: white; border-radius: 8px; cursor: pointer; font-weight: 700;
+        .action-btn {
+            width: 100%; background: var(--card-bg); border: 2px solid var(--primary);
+            color: var(--primary); padding: 10px; border-radius: 8px; font-weight: 700;
+            cursor: pointer; transition: 0.3s;
         }
-        .gen-btn:hover { background: var(--accent-glow); }
-
-        /* TOOL 2: COLOR PALETTE */
-        .palette { display: flex; height: 50px; border-radius: 8px; overflow: hidden; margin-bottom: 15px; cursor: pointer; }
-        .color-strip { flex: 1; transition: 0.2s; }
-        .color-strip:hover { flex: 1.5; }
-
-        /* --- FOOTER --- */
-        footer {
-            text-align: center; padding: 40px; color: #555; font-size: 0.8rem;
-            border-top: 1px solid var(--border);
+        .action-btn:hover { background: var(--primary); color: white; }
+        
+        .result-box {
+            background: #111827; padding: 15px; border-radius: 8px; margin-top: 15px;
+            text-align: center; border-left: 4px solid var(--success); display: none;
         }
-        footer a { color: #777; text-decoration: none; }
-        footer a:hover { color: var(--accent-glow); }
+        .result-val { font-size: 1.5rem; font-weight: 700; color: var(--success); display: block; margin-top: 5px; }
 
-        /* --- HIDDEN GAME MODAL --- */
-        #game-modal {
+        /* --- ANIME LIST --- */
+        .anime-item {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 0; border-bottom: 1px solid #334155;
+        }
+        .anime-rank { font-weight: 900; color: var(--text-muted); margin-right: 10px; width: 25px; }
+        .anime-title { flex: 1; font-weight: 500; }
+        .anime-tag { font-size: 0.7rem; background: #334155; padding: 2px 8px; border-radius: 10px; }
+
+        /* --- MOVIE GENERATOR --- */
+        #movie-display {
+            min-height: 100px; display: flex; flex-direction: column; justify-content: center; align-items: center;
+            text-align: center; margin-bottom: 15px;
+        }
+        #movie-title { font-size: 1.3rem; font-weight: 700; color: var(--accent); }
+        #movie-year { color: var(--text-muted); font-size: 0.9rem; }
+
+        /* --- GAME MODAL (FULLSCREEN) --- */
+        #game-layer {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 200; justify-content: center; align-items: center; flex-direction: column;
+            background: #000; z-index: 100; flex-direction: column;
         }
+        canvas { display: block; width: 100%; height: 100%; flex: 1; }
+        .game-ui { position: absolute; top: 20px; left: 20px; color: white; font-family: monospace; font-size: 1.2rem; pointer-events: none; }
         .close-game {
-            position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white; cursor: pointer;
+            position: absolute; top: 20px; right: 20px; background: #ef4444; color: white;
+            border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; z-index: 101; font-weight: bold;
         }
-        canvas { border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); }
+        
+        /* Mobile Controls */
+        .touch-controls { position: absolute; bottom: 0; width: 100%; height: 30%; display: flex; z-index: 102; }
+        .t-zone { flex: 1; border-top: 1px solid rgba(255,255,255,0.1); }
+        .t-zone:active { background: rgba(255,255,255,0.05); }
 
-        @media (max-width: 600px) { h1 { font-size: 2.5rem; } }
+        @media(max-width: 600px) { h1 { font-size: 1.8rem; } .container { padding: 10px; } }
     </style>
 </head>
 <body>
 
-    <!-- NAVIGATION -->
     <nav>
         <div class="logo">ROUND<span>CHAT</span></div>
-        <div class="nav-links">
-            <a href="https://instagram.com/roundchat" target="_blank" class="social-btn">Join the Collective</a>
-            <div class="arcade-btn" onclick="openGame()" title="Break Time?">🕹️</div>
-        </div>
+        <button class="game-btn" onclick="openGame()">
+            <span>🏎️ Play Racing</span>
+        </button>
     </nav>
 
-    <!-- HERO HEADER -->
     <div class="hero">
-        <h1>Empower Your <br> Next Creation.</h1>
-        <p class="tagline">A digital sanctuary for creators, developers, and thinkers. <br> Use our free tools to break your creative block.</p>
+        <h1>DevOps Utility Hub</h1>
+        <p class="subtitle">A collection of financial calculators, entertainment finders, and stress-busting games.</p>
     </div>
 
-    <!-- MAIN TOOLS GRID -->
-    <div class="grid">
+    <div class="container">
         
-        <!-- CARD 1: PROJECT IDEA GENERATOR -->
+        <!-- 1. HOME LOAN CALCULATOR -->
         <div class="card">
-            <h3>⚡ Spark Generator</h3>
-            <p>Stuck on what to build next? Generate a unique project brief instantly.</p>
-            <div class="generator-box" id="idea-output">Click generate to start...</div>
-            <button class="gen-btn" onclick="generateIdea()">New Idea</button>
-        </div>
-
-        <!-- CARD 2: INSTANT PALETTE -->
-        <div class="card">
-            <h3>🎨 Mood Palette</h3>
-            <p>Need color inspiration? Click to generate a harmonious 4-color scheme for your design.</p>
-            <div class="palette" id="palette-box" onclick="generatePalette()">
-                <div class="color-strip" style="background:#7b2cbf"></div>
-                <div class="color-strip" style="background:#9d4edd"></div>
-                <div class="color-strip" style="background:#e0aaff"></div>
-                <div class="color-strip" style="background:#3c096c"></div>
+            <div class="card-header">
+                <span class="icon">🏠</span>
+                <h2>Home Loan EMI</h2>
             </div>
-            <button class="gen-btn" onclick="generatePalette()">Refresh Colors</button>
+            <label>Loan Amount (₹)</label>
+            <input type="number" id="loanAmount" placeholder="e.g. 5000000">
+            
+            <label>Interest Rate (%)</label>
+            <input type="number" id="interestRate" placeholder="e.g. 8.5">
+            
+            <label>Tenure (Years)</label>
+            <input type="number" id="loanTenure" placeholder="e.g. 20">
+            
+            <button class="action-btn" onclick="calcLoan()">Calculate EMI</button>
+            
+            <div class="result-box" id="loanResult">
+                Monthly EMI: <span class="result-val" id="emiVal">₹0</span>
+            </div>
         </div>
 
-        <!-- CARD 3: COMMUNITY -->
-        <div class="card" style="border-color: var(--accent);">
-            <h3>🚀 The Collective</h3>
-            <p>We are building a community of anonymous creators helping each other grow.</p>
-            <p style="color: #fff; margin-bottom: 10px;">Coming Soon:</p>
-            <ul style="list-style: none; color: #888; font-size: 0.9rem; line-height: 1.8;">
-                <li>▹ Free Code Snippets</li>
-                <li>▹ Design Asset Packs</li>
-                <li>▹ Weekly Challenges</li>
-            </ul>
-            <br>
-            <a href="https://instagram.com/roundchat" target="_blank" class="gen-btn" style="text-decoration: none; display: block; text-align: center;">Follow Updates</a>
+        <!-- 2. INCOME TAX CALCULATOR -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">💸</span>
+                <h2>Income Tax (New Regime)</h2>
+            </div>
+            <label>Annual Income (₹)</label>
+            <input type="number" id="annualIncome" placeholder="e.g. 1200000">
+            
+            <button class="action-btn" onclick="calcTax()">Estimate Tax</button>
+            
+            <div class="result-box" id="taxResult">
+                Est. Annual Tax: <span class="result-val" id="taxVal">₹0</span>
+            </div>
+        </div>
+
+        <!-- 3. TOP ANIME LIST -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">⛩️</span>
+                <h2>Top Anime Picks</h2>
+            </div>
+            <div id="anime-list">
+                <!-- Javascript will populate this -->
+            </div>
+        </div>
+
+        <!-- 4. MOVIE GENERATOR -->
+        <div class="card">
+            <div class="card-header">
+                <span class="icon">🎬</span>
+                <h2>Movie Randomizer</h2>
+            </div>
+            <div id="movie-display">
+                <div id="movie-title">Ready?</div>
+                <div id="movie-year">Click below to find a movie</div>
+            </div>
+            <button class="action-btn" onclick="getMovie()">Suggest Movie</button>
         </div>
 
     </div>
 
-    <footer>
-        <p>ROUNDCHAT © 2024. Designed to Inspire.</p>
-        <p><a href="https://instagram.com/roundchat">Instagram</a> • <a href="#">Resources</a></p>
-    </footer>
-
-    <!-- HIDDEN GAME LAYER (Snake Game) -->
-    <div id="game-modal">
-        <div class="close-game" onclick="closeGame()">&times;</div>
-        <h2 style="color:white; margin-bottom: 20px;">ROUNDCHAT ARCADE</h2>
-        <canvas id="gameCanvas" width="300" height="300" style="background:black"></canvas>
-        <p style="color:#888; margin-top:10px;">Use Arrow Keys to Play</p>
+    <!-- HIDDEN GAME LAYER -->
+    <div id="game-layer">
+        <button class="close-game" onclick="closeGame()">EXIT GAME</button>
+        <div class="game-ui">SCORE: <span id="score">0</span></div>
+        <canvas id="gameCanvas"></canvas>
+        <div class="touch-controls">
+            <div class="t-zone" ontouchstart="keyLeft=true" ontouchend="keyLeft=false"></div>
+            <div class="t-zone" ontouchstart="keyRight=true" ontouchend="keyRight=false"></div>
+        </div>
     </div>
 
 <script>
-    // --- 1. IDEA GENERATOR LOGIC ---
-    const ideas = [
-        "A cyberpunk To-Do list that deletes tasks if not done in 1 hour.",
-        "A meditation app that uses AI generated ambient sounds.",
-        "A portfolio site that looks like a Windows 95 desktop.",
-        "A weather app that insults you when it's raining.",
-        "A chrome extension that replaces ads with cat pictures.",
-        "A budget tracker that visualizes spending as a sinking ship.",
-        "A social network where you can only post once a year.",
-        "An AI tool that turns your messy code into clean poetry."
-    ];
-    function generateIdea() {
-        const output = document.getElementById('idea-output');
-        const random = ideas[Math.floor(Math.random() * ideas.length)];
-        output.style.opacity = 0;
-        setTimeout(() => {
-            output.innerText = random;
-            output.style.opacity = 1;
-        }, 200);
-    }
-
-    // --- 2. COLOR PALETTE LOGIC ---
-    function generatePalette() {
-        const box = document.getElementById('palette-box');
-        box.innerHTML = '';
-        for(let i=0; i<4; i++) {
-            const hex = '#' + Math.floor(Math.random()*16777215).toString(16);
-            const div = document.createElement('div');
-            div.className = 'color-strip';
-            div.style.background = hex;
-            div.title = hex;
-            box.appendChild(div);
+    /* --- 1. LOAN CALCULATOR LOGIC --- */
+    function calcLoan() {
+        const P = parseFloat(document.getElementById('loanAmount').value);
+        const R = parseFloat(document.getElementById('interestRate').value) / 12 / 100;
+        const N = parseFloat(document.getElementById('loanTenure').value) * 12;
+        
+        if(P && R && N) {
+            const emi = (P * R * Math.pow(1 + R, N)) / (Math.pow(1 + R, N) - 1);
+            document.getElementById('emiVal').innerText = "₹" + Math.round(emi).toLocaleString('en-IN');
+            document.getElementById('loanResult').style.display = 'block';
         }
     }
 
-    // --- 3. GAME LOGIC (Snake) ---
-    const modal = document.getElementById('game-modal');
+    /* --- 2. TAX CALCULATOR (INDIA NEW REGIME 2024-25 SIMPLIFIED) --- */
+    function calcTax() {
+        let income = parseFloat(document.getElementById('annualIncome').value);
+        let tax = 0;
+        
+        // Simplified Slabs
+        if (income > 300000) {
+            if (income <= 700000) {
+                tax += (income - 300000) * 0.05;
+            } else {
+                tax += 400000 * 0.05; // 3-7L
+                if (income <= 1000000) {
+                    tax += (income - 700000) * 0.10;
+                } else {
+                    tax += 300000 * 0.10; // 7-10L
+                    if (income <= 1200000) {
+                        tax += (income - 1000000) * 0.15;
+                    } else {
+                        tax += 200000 * 0.15; // 10-12L
+                        if (income <= 1500000) {
+                            tax += (income - 1200000) * 0.20;
+                        } else {
+                            tax += 300000 * 0.20; // 12-15L
+                            tax += (income - 1500000) * 0.30; // >15L
+                        }
+                    }
+                }
+            }
+        }
+        // Rebate u/s 87A if income <= 7L
+        if (income <= 700000) tax = 0;
+
+        document.getElementById('taxVal').innerText = "₹" + Math.round(tax).toLocaleString('en-IN');
+        document.getElementById('taxResult').style.display = 'block';
+    }
+
+    /* --- 3. ANIME LIST DATA --- */
+    const animeData = [
+        { title: "Fullmetal Alchemist: B", tag: "Action" },
+        { title: "Attack on Titan", tag: "Thriller" },
+        { title: "Steins;Gate", tag: "Sci-Fi" },
+        { title: "One Piece", tag: "Adventure" },
+        { title: "Death Note", tag: "Mystery" }
+    ];
+    const animeContainer = document.getElementById('anime-list');
+    animeData.forEach((a, i) => {
+        animeContainer.innerHTML += `
+        <div class="anime-item">
+            <span class="anime-rank">#${i+1}</span>
+            <span class="anime-title">${a.title}</span>
+            <span class="anime-tag">${a.tag}</span>
+        </div>`;
+    });
+
+    /* --- 4. MOVIE RANDOMIZER --- */
+    const movies = [
+        ["The Shawshank Redemption", "1994"], ["Inception", "2010"], 
+        ["The Dark Knight", "2008"], ["Interstellar", "2014"], 
+        ["Parasite", "2019"], ["Spirited Away", "2001"], 
+        ["The Matrix", "1999"], ["Whiplash", "2014"],
+        ["Oppenheimer", "2023"], ["Everything Everywhere All At Once", "2022"]
+    ];
+    function getMovie() {
+        const r = Math.floor(Math.random() * movies.length);
+        document.getElementById('movie-title').innerText = movies[r][0];
+        document.getElementById('movie-year').innerText = movies[r][1];
+    }
+
+    /* --- 5. RACING GAME ENGINE --- */
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    let gameInterval;
+    let gameLoop, score = 0, speed = 5, keyLeft = false, keyRight = false;
+    let car = {x: 0, y: 0, w: 50, h: 90};
+    let obstacles = [];
+
+    function resize() { 
+        canvas.width = window.innerWidth; 
+        canvas.height = window.innerHeight;
+        car.x = canvas.width/2 - 25; car.y = canvas.height - 150;
+    }
 
     function openGame() {
-        modal.style.display = 'flex';
-        startGame();
+        document.getElementById('game-layer').style.display = 'flex';
+        resize();
+        score = 0; obstacles = []; speed = 7;
+        gameLoop = setInterval(updateGame, 20);
     }
+
     function closeGame() {
-        modal.style.display = 'none';
-        clearInterval(gameInterval);
+        document.getElementById('game-layer').style.display = 'none';
+        clearInterval(gameLoop);
     }
 
-    function startGame() {
-        let snake = [{x: 10, y: 10}];
-        let food = {x: 15, y: 15};
-        let dx = 0; let dy = 0;
-        let gridSize = 15;
-        let tileCount = 20;
+    function updateGame() {
+        ctx.fillStyle = '#1e293b'; ctx.fillRect(0,0,canvas.width, canvas.height); // Road
+        
+        // Draw Player
+        if(keyLeft && car.x > 0) car.x -= 7;
+        if(keyRight && car.x < canvas.width-50) car.x += 7;
+        
+        ctx.fillStyle = '#3b82f6';
+        ctx.shadowBlur = 20; ctx.shadowColor = '#3b82f6';
+        ctx.fillRect(car.x, car.y, car.w, car.h);
+        ctx.shadowBlur = 0;
 
-        document.addEventListener('keydown', keyPush);
-        clearInterval(gameInterval);
-        gameInterval = setInterval(game, 100);
-
-        function game() {
-            let headX = snake[0].x + dx;
-            let headY = snake[0].y + dy;
-
-            if(headX < 0) headX = tileCount-1;
-            if(headX > tileCount-1) headX = 0;
-            if(headY < 0) headY = tileCount-1;
-            if(headY > tileCount-1) headY = 0;
-
-            snake.unshift({x: headX, y: headY});
+        // Obstacles
+        if(Math.random() < 0.05) obstacles.push({x: Math.random()*(canvas.width-50), y: -100});
+        
+        ctx.fillStyle = '#ef4444';
+        obstacles.forEach((obs, i) => {
+            obs.y += speed;
+            ctx.fillRect(obs.x, obs.y, 50, 50);
             
-            if(headX === food.x && headY === food.y) {
-                food.x = Math.floor(Math.random()*tileCount);
-                food.y = Math.floor(Math.random()*tileCount);
-            } else {
-                snake.pop();
+            // Crash Logic
+            if(car.x < obs.x + 50 && car.x + 50 > obs.x && car.y < obs.y + 50 && car.h + car.y > obs.y) {
+                alert("CRASH! Score: " + score);
+                closeGame();
             }
+            if(obs.y > canvas.height) obstacles.splice(i, 1);
+        });
 
-            ctx.fillStyle = 'black';
-            ctx.fillRect(0,0,canvas.width,canvas.height);
-
-            ctx.fillStyle = '#9d4edd';
-            for(let i=0; i<snake.length; i++) {
-                ctx.fillRect(snake[i].x*gridSize, snake[i].y*gridSize, gridSize-2, gridSize-2);
-            }
-
-            ctx.fillStyle = '#e0aaff';
-            ctx.fillRect(food.x*gridSize, food.y*gridSize, gridSize-2, gridSize-2);
-        }
-
-        function keyPush(evt) {
-            switch(evt.keyCode) {
-                case 37: dx=-1;dy=0;break;
-                case 38: dx=0;dy=-1;break;
-                case 39: dx=1;dy=0;break;
-                case 40: dx=0;dy=1;break;
-            }
-        }
+        score++;
+        document.getElementById('score').innerText = Math.floor(score/10);
+        speed += 0.005;
     }
+
+    // Keyboard Controls
+    window.addEventListener('keydown', e => { if(e.key==='ArrowLeft') keyLeft=true; if(e.key==='ArrowRight') keyRight=true; });
+    window.addEventListener('keyup', e => { if(e.key==='ArrowLeft') keyLeft=false; if(e.key==='ArrowRight') keyRight=false; });
+
 </script>
 </body>
 </html>

@@ -3,361 +3,296 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Roundchat | Engineering & Performance</title>
+    <title>Roundchat | Create Differently</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;500;700&display=swap');
+
+        :root {
+            --bg-color: #0a0a12;
+            --accent: #7b2cbf;
+            --accent-glow: #9d4edd;
+            --text-main: #e0aaff;
+            --glass: rgba(255, 255, 255, 0.05);
+            --border: rgba(255, 255, 255, 0.1);
+        }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { font-family: 'Montserrat', sans-serif; overflow: hidden; background: #f0f2f5; }
+        
+        body { 
+            background-color: var(--bg-color); 
+            color: #fff; 
+            font-family: 'Space Grotesk', sans-serif; 
+            overflow-x: hidden;
+            background-image: radial-gradient(circle at 50% 0%, #240046 0%, #0a0a12 60%);
+            min-height: 100vh;
+        }
 
-        /* --- 1. PROFESSIONAL LANDING PAGE --- */
-        #landing-page {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            display: flex; flex-direction: column; justify-content: center; align-items: center;
-            z-index: 10; transition: opacity 0.5s ease;
+        /* --- NAVIGATION --- */
+        nav {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px 40px; backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            position: sticky; top: 0; z-index: 100;
+        }
+
+        .logo { font-size: 1.5rem; font-weight: 700; color: #fff; letter-spacing: 2px; }
+        .logo span { color: var(--accent-glow); }
+
+        .nav-links { display: flex; gap: 20px; align-items: center; }
+        .social-btn { 
+            text-decoration: none; color: var(--text-main); font-size: 0.9rem; 
+            border: 1px solid var(--border); padding: 8px 20px; border-radius: 20px;
+            transition: 0.3s;
+        }
+        .social-btn:hover { background: var(--accent); border-color: var(--accent); color: white; }
+
+        /* Small Game Icon (The "Side" Game) */
+        .arcade-btn { font-size: 1.2rem; cursor: pointer; transition: 0.3s; opacity: 0.7; }
+        .arcade-btn:hover { transform: rotate(15deg) scale(1.2); opacity: 1; color: var(--accent-glow); }
+
+        /* --- HERO SECTION --- */
+        .hero {
+            text-align: center; padding: 80px 20px 40px;
+            max-width: 800px; margin: 0 auto;
+        }
+        
+        h1 { 
+            font-size: 4rem; line-height: 1.1; margin-bottom: 20px; 
+            background: linear-gradient(to right, #fff, #e0aaff);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        }
+        
+        .tagline { color: #b8c1ec; font-size: 1.2rem; margin-bottom: 50px; font-weight: 300; }
+
+        /* --- TOOLS GRID --- */
+        .grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px;
         }
 
         .card {
-            background: rgba(255, 255, 255, 0.9);
-            padding: 60px 80px;
-            border-radius: 20px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
-            text-align: center;
-            max-width: 800px;
-            border: 1px solid rgba(255,255,255,0.8);
+            background: var(--glass);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 30px;
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative; overflow: hidden;
         }
 
-        h1 { font-size: 3.5rem; color: #2d3436; margin-bottom: 10px; letter-spacing: -2px; font-weight: 800; }
-        h1 span { color: #0984e3; }
-        .subtitle { font-size: 1.2rem; color: #636e72; margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(123, 44, 191, 0.2); border-color: var(--accent); }
 
-        .btn-group { display: flex; gap: 20px; justify-content: center; }
+        .card h3 { font-size: 1.5rem; margin-bottom: 10px; color: white; }
+        .card p { color: #aaa; font-size: 0.9rem; margin-bottom: 20px; line-height: 1.6; }
 
-        .btn {
-            padding: 15px 40px; font-size: 1rem; font-weight: 600; border-radius: 50px;
-            cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        /* TOOL 1: IDEA GENERATOR */
+        .generator-box {
+            background: rgba(0,0,0,0.3); padding: 15px; border-radius: 8px;
+            min-height: 60px; display: flex; align-items: center; justify-content: center;
+            text-align: center; margin-bottom: 15px; border: 1px dashed var(--border);
         }
-
-        .btn-primary { background: #0984e3; color: white; }
-        .btn-primary:hover { background: #00cec9; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.3); }
-
-        .social-link { margin-top: 30px; display: block; color: #b2bec3; font-size: 0.9rem; text-decoration: none; }
-        .social-link:hover { color: #0984e3; }
-
-        /* --- 2. GAME CANVAS LAYER --- */
-        #game-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; }
-        canvas { display: block; width: 100%; height: 100%; }
-
-        /* HUD */
-        .hud { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 5; pointer-events: none; }
-        .score-box { background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 10px; }
-
-        /* --- 3. GAME OVER MODAL --- */
-        #game-over {
-            display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: white; padding: 50px; border-radius: 20px; text-align: center;
-            box-shadow: 0 25px 60px rgba(0,0,0,0.3); z-index: 20; min-width: 350px;
+        .gen-btn {
+            width: 100%; padding: 12px; background: var(--accent); border: none;
+            color: white; border-radius: 8px; cursor: pointer; font-weight: 700;
         }
-        #game-over h2 { font-size: 2.5rem; color: #d63031; margin-bottom: 10px; }
-        #game-over p { font-size: 1.2rem; color: #636e72; margin-bottom: 30px; }
+        .gen-btn:hover { background: var(--accent-glow); }
 
-        .btn-restart { background: #2d3436; color: white; width: 100%; margin-bottom: 10px; }
-        .btn-home { background: white; color: #636e72; border: 2px solid #dfe6e9; width: 100%; }
-        .btn-home:hover { background: #dfe6e9; }
+        /* TOOL 2: COLOR PALETTE */
+        .palette { display: flex; height: 50px; border-radius: 8px; overflow: hidden; margin-bottom: 15px; cursor: pointer; }
+        .color-strip { flex: 1; transition: 0.2s; }
+        .color-strip:hover { flex: 1.5; }
 
-        /* Mobile Controls */
-        .controls { position: absolute; bottom: 0; width: 100%; height: 150px; display: flex; z-index: 4; }
-        .touch-zone { flex: 1; }
+        /* --- FOOTER --- */
+        footer {
+            text-align: center; padding: 40px; color: #555; font-size: 0.8rem;
+            border-top: 1px solid var(--border);
+        }
+        footer a { color: #777; text-decoration: none; }
+        footer a:hover { color: var(--accent-glow); }
+
+        /* --- HIDDEN GAME MODAL --- */
+        #game-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 200; justify-content: center; align-items: center; flex-direction: column;
+        }
+        .close-game {
+            position: absolute; top: 20px; right: 30px; font-size: 2rem; color: white; cursor: pointer;
+        }
+        canvas { border: 2px solid var(--accent); box-shadow: 0 0 20px var(--accent); }
+
+        @media (max-width: 600px) { h1 { font-size: 2.5rem; } }
     </style>
 </head>
 <body>
 
-    <!-- SECTION 1: LANDING PAGE -->
-    <div id="landing-page">
-        <div class="card">
-            <h1>ROUND<span>CHAT</span></h1>
-            <p class="subtitle">Senior DevOps Engineering | 7 Years Experience</p>
-            
-            <div class="btn-group">
-                <button class="btn btn-primary" onclick="initGame()">Launch Experience</button>
-            </div>
-            
-            <a href="https://instagram.com/roundchat" target="_blank" class="social-link">
-                Follow @roundchat on Instagram
-            </a>
+    <!-- NAVIGATION -->
+    <nav>
+        <div class="logo">ROUND<span>CHAT</span></div>
+        <div class="nav-links">
+            <a href="https://instagram.com/roundchat" target="_blank" class="social-btn">Join the Collective</a>
+            <div class="arcade-btn" onclick="openGame()" title="Break Time?">🕹️</div>
         </div>
+    </nav>
+
+    <!-- HERO HEADER -->
+    <div class="hero">
+        <h1>Empower Your <br> Next Creation.</h1>
+        <p class="tagline">A digital sanctuary for creators, developers, and thinkers. <br> Use our free tools to break your creative block.</p>
     </div>
 
-    <!-- SECTION 2: THE GAME -->
-    <div id="game-container">
-        <div class="hud score-box">SCORE: <span id="scoreVal">0</span></div>
-        <canvas id="gameCanvas"></canvas>
+    <!-- MAIN TOOLS GRID -->
+    <div class="grid">
         
-        <!-- Mobile Touch Controls -->
-        <div class="controls">
-            <div class="touch-zone" ontouchstart="moveLeft()" ontouchend="stopMove()"></div>
-            <div class="touch-zone" ontouchstart="moveRight()" ontouchend="stopMove()"></div>
+        <!-- CARD 1: PROJECT IDEA GENERATOR -->
+        <div class="card">
+            <h3>⚡ Spark Generator</h3>
+            <p>Stuck on what to build next? Generate a unique project brief instantly.</p>
+            <div class="generator-box" id="idea-output">Click generate to start...</div>
+            <button class="gen-btn" onclick="generateIdea()">New Idea</button>
         </div>
 
-        <!-- GAME OVER MODAL -->
-        <div id="game-over">
-            <h2>CRASHED!</h2>
-            <p>Distance Traveled: <span id="finalScore">0</span>m</p>
-            
-            <button class="btn btn-restart" onclick="startGame()">Try Again</button>
-            <button class="btn btn-home" onclick="goHome()">Back to Portfolio</button>
-            
-            <div style="margin-top: 20px; font-size: 0.9rem; color: #b2bec3;">
-                Need help with your infrastructure? <br>
-                <a href="https://instagram.com/roundchat" style="color:#0984e3; text-decoration:none; font-weight:bold;">Message @roundchat</a>
+        <!-- CARD 2: INSTANT PALETTE -->
+        <div class="card">
+            <h3>🎨 Mood Palette</h3>
+            <p>Need color inspiration? Click to generate a harmonious 4-color scheme for your design.</p>
+            <div class="palette" id="palette-box" onclick="generatePalette()">
+                <div class="color-strip" style="background:#7b2cbf"></div>
+                <div class="color-strip" style="background:#9d4edd"></div>
+                <div class="color-strip" style="background:#e0aaff"></div>
+                <div class="color-strip" style="background:#3c096c"></div>
             </div>
+            <button class="gen-btn" onclick="generatePalette()">Refresh Colors</button>
         </div>
+
+        <!-- CARD 3: COMMUNITY -->
+        <div class="card" style="border-color: var(--accent);">
+            <h3>🚀 The Collective</h3>
+            <p>We are building a community of anonymous creators helping each other grow.</p>
+            <p style="color: #fff; margin-bottom: 10px;">Coming Soon:</p>
+            <ul style="list-style: none; color: #888; font-size: 0.9rem; line-height: 1.8;">
+                <li>▹ Free Code Snippets</li>
+                <li>▹ Design Asset Packs</li>
+                <li>▹ Weekly Challenges</li>
+            </ul>
+            <br>
+            <a href="https://instagram.com/roundchat" target="_blank" class="gen-btn" style="text-decoration: none; display: block; text-align: center;">Follow Updates</a>
+        </div>
+
+    </div>
+
+    <footer>
+        <p>ROUNDCHAT © 2024. Designed to Inspire.</p>
+        <p><a href="https://instagram.com/roundchat">Instagram</a> • <a href="#">Resources</a></p>
+    </footer>
+
+    <!-- HIDDEN GAME LAYER (Snake Game) -->
+    <div id="game-modal">
+        <div class="close-game" onclick="closeGame()">&times;</div>
+        <h2 style="color:white; margin-bottom: 20px;">ROUNDCHAT ARCADE</h2>
+        <canvas id="gameCanvas" width="300" height="300" style="background:black"></canvas>
+        <p style="color:#888; margin-top:10px;">Use Arrow Keys to Play</p>
     </div>
 
 <script>
+    // --- 1. IDEA GENERATOR LOGIC ---
+    const ideas = [
+        "A cyberpunk To-Do list that deletes tasks if not done in 1 hour.",
+        "A meditation app that uses AI generated ambient sounds.",
+        "A portfolio site that looks like a Windows 95 desktop.",
+        "A weather app that insults you when it's raining.",
+        "A chrome extension that replaces ads with cat pictures.",
+        "A budget tracker that visualizes spending as a sinking ship.",
+        "A social network where you can only post once a year.",
+        "An AI tool that turns your messy code into clean poetry."
+    ];
+    function generateIdea() {
+        const output = document.getElementById('idea-output');
+        const random = ideas[Math.floor(Math.random() * ideas.length)];
+        output.style.opacity = 0;
+        setTimeout(() => {
+            output.innerText = random;
+            output.style.opacity = 1;
+        }, 200);
+    }
+
+    // --- 2. COLOR PALETTE LOGIC ---
+    function generatePalette() {
+        const box = document.getElementById('palette-box');
+        box.innerHTML = '';
+        for(let i=0; i<4; i++) {
+            const hex = '#' + Math.floor(Math.random()*16777215).toString(16);
+            const div = document.createElement('div');
+            div.className = 'color-strip';
+            div.style.background = hex;
+            div.title = hex;
+            box.appendChild(div);
+        }
+    }
+
+    // --- 3. GAME LOGIC (Snake) ---
+    const modal = document.getElementById('game-modal');
     const canvas = document.getElementById('gameCanvas');
     const ctx = canvas.getContext('2d');
-    const landing = document.getElementById('landing-page');
-    const gameContainer = document.getElementById('game-container');
-    const gameOverScreen = document.getElementById('game-over');
-    
-    // Game State
-    let gameRunning = false;
-    let score = 0;
-    let speed = 5;
-    let laneWidth = 120; // Width of one lane
-    let roadCenter;
-    
-    // Player
-    let car = { x: 0, y: 0, width: 50, height: 90, color: '#d63031', tilt: 0 };
-    
-    // Environment
-    let obstacles = [];
-    let roadLines = [];
-    let trees = [];
-    
-    // Inputs
-    let keys = { ArrowLeft: false, ArrowRight: false };
-    let animationFrame;
+    let gameInterval;
 
-    function resize() {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-        roadCenter = canvas.width / 2;
-        car.x = roadCenter - (car.width / 2);
-        car.y = canvas.height - 150;
+    function openGame() {
+        modal.style.display = 'flex';
+        startGame();
     }
-    window.addEventListener('resize', resize);
-
-    // --- NAVIGATION LOGIC ---
-    function initGame() {
-        resize();
-        landing.style.opacity = '0';
-        setTimeout(() => {
-            landing.style.display = 'none';
-            gameContainer.style.display = 'block';
-            startGame();
-        }, 500);
+    function closeGame() {
+        modal.style.display = 'none';
+        clearInterval(gameInterval);
     }
 
-    function goHome() {
-        gameRunning = false;
-        cancelAnimationFrame(animationFrame);
-        gameContainer.style.display = 'none';
-        gameOverScreen.style.display = 'none';
-        landing.style.display = 'flex';
-        setTimeout(() => landing.style.opacity = '1', 50);
-    }
-
-    // --- GAME LOGIC ---
     function startGame() {
-        gameRunning = true;
-        score = 0;
-        speed = 8;
-        obstacles = [];
-        roadLines = [];
-        trees = [];
-        gameOverScreen.style.display = 'none';
-        car.x = roadCenter - (car.width / 2);
-        
-        // Init Road Lines
-        for(let i=0; i<15; i++) roadLines.push({ y: i * 80 });
-        
-        loop();
-    }
+        let snake = [{x: 10, y: 10}];
+        let food = {x: 15, y: 15};
+        let dx = 0; let dy = 0;
+        let gridSize = 15;
+        let tileCount = 20;
 
-    function drawRealisticCar(x, y, w, h, color) {
-        // Shadow
-        ctx.fillStyle = 'rgba(0,0,0,0.3)';
-        ctx.beginPath();
-        ctx.ellipse(x + w/2, y + h - 5, w/2 + 5, 10, 0, 0, Math.PI*2);
-        ctx.fill();
+        document.addEventListener('keydown', keyPush);
+        clearInterval(gameInterval);
+        gameInterval = setInterval(game, 100);
 
-        // Tires
-        ctx.fillStyle = '#2d3436';
-        ctx.fillRect(x - 4, y + 10, 8, 15); // FL
-        ctx.fillRect(x + w - 4, y + 10, 8, 15); // FR
-        ctx.fillRect(x - 4, y + h - 20, 8, 15); // RL
-        ctx.fillRect(x + w - 4, y + h - 20, 8, 15); // RR
+        function game() {
+            let headX = snake[0].x + dx;
+            let headY = snake[0].y + dy;
 
-        // Main Body
-        ctx.fillStyle = color;
-        ctx.beginPath();
-        ctx.roundRect(x, y, w, h, 10);
-        ctx.fill();
+            if(headX < 0) headX = tileCount-1;
+            if(headX > tileCount-1) headX = 0;
+            if(headY < 0) headY = tileCount-1;
+            if(headY > tileCount-1) headY = 0;
 
-        // Roof / Cabin
-        ctx.fillStyle = 'rgba(0,0,0,0.2)';
-        ctx.beginPath();
-        ctx.roundRect(x + 5, y + 20, w - 10, h - 35, 5);
-        ctx.fill();
-
-        // Windshield
-        ctx.fillStyle = '#81ecec';
-        ctx.beginPath();
-        ctx.moveTo(x + 8, y + 30);
-        ctx.lineTo(x + w - 8, y + 30);
-        ctx.lineTo(x + w - 12, y + 50);
-        ctx.lineTo(x + 12, y + 50);
-        ctx.closePath();
-        ctx.fill();
-
-        // Rear Window
-        ctx.fillStyle = '#2d3436';
-        ctx.fillRect(x + 10, y + h - 30, w - 20, 5);
-
-        // Headlights
-        ctx.fillStyle = '#ffeaa7';
-        ctx.beginPath();
-        ctx.arc(x + 8, y + 5, 3, 0, Math.PI*2);
-        ctx.arc(x + w - 8, y + 5, 3, 0, Math.PI*2);
-        ctx.fill();
-    }
-
-    function update() {
-        score++;
-        document.getElementById('scoreVal').innerText = Math.floor(score/10);
-
-        // Difficulty Curve
-        if(score % 500 === 0) speed += 1;
-
-        // Player Movement
-        if (keys.ArrowLeft && car.x > roadCenter - 180) car.x -= 8;
-        if (keys.ArrowRight && car.x < roadCenter + 180 - car.width) car.x += 8;
-
-        // --- SPAWNERS ---
-        // Road Lines
-        roadLines.forEach(line => {
-            line.y += speed;
-            if(line.y > canvas.height) line.y = -80;
-        });
-
-        // Obstacles (Traffic)
-        if (Math.random() < 0.03) {
-            let laneOffset = (Math.random() > 0.5 ? 60 : -60); // 2 Lanes logic
-            let obsX = roadCenter + laneOffset - 25; // Center items in lanes
-            // Randomize lane pos slightly for variety
-            obsX += (Math.random() * 40 - 20); 
+            snake.unshift({x: headX, y: headY});
             
-            obstacles.push({ x: obsX, y: -100, w: 50, h: 90, color: getRandomCarColor() });
-        }
-
-        // Environment (Grass details)
-        if (Math.random() < 0.1) {
-            let side = Math.random() > 0.5 ? 1 : -1;
-            let treeX = roadCenter + (side * (250 + Math.random() * 100));
-            trees.push({ x: treeX, y: -50, size: Math.random() * 10 + 5 });
-        }
-
-        // Logic Loop
-        obstacles.forEach((obs, index) => {
-            obs.y += speed * 0.8; // Traffic moves slower than you
-            
-            // Collision
-            if (
-                car.x < obs.x + obs.w &&
-                car.x + car.width > obs.x &&
-                car.y < obs.y + obs.h &&
-                car.height + car.y > obs.y
-            ) {
-                endGame();
+            if(headX === food.x && headY === food.y) {
+                food.x = Math.floor(Math.random()*tileCount);
+                food.y = Math.floor(Math.random()*tileCount);
+            } else {
+                snake.pop();
             }
-            if(obs.y > canvas.height) obstacles.splice(index, 1);
-        });
 
-        trees.forEach((tree, index) => {
-            tree.y += speed;
-            if(tree.y > canvas.height) trees.splice(index, 1);
-        });
+            ctx.fillStyle = 'black';
+            ctx.fillRect(0,0,canvas.width,canvas.height);
+
+            ctx.fillStyle = '#9d4edd';
+            for(let i=0; i<snake.length; i++) {
+                ctx.fillRect(snake[i].x*gridSize, snake[i].y*gridSize, gridSize-2, gridSize-2);
+            }
+
+            ctx.fillStyle = '#e0aaff';
+            ctx.fillRect(food.x*gridSize, food.y*gridSize, gridSize-2, gridSize-2);
+        }
+
+        function keyPush(evt) {
+            switch(evt.keyCode) {
+                case 37: dx=-1;dy=0;break;
+                case 38: dx=0;dy=-1;break;
+                case 39: dx=1;dy=0;break;
+                case 40: dx=0;dy=1;break;
+            }
+        }
     }
-
-    function draw() {
-        // 1. Background (Grass)
-        ctx.fillStyle = '#27ae60'; // Green grass
-        ctx.fillRect(0, 0, canvas.width, canvas.height);
-
-        // 2. Road (Asphalt)
-        ctx.fillStyle = '#34495e'; // Dark Asphalt
-        const roadW = 400;
-        ctx.fillRect(roadCenter - roadW/2, 0, roadW, canvas.height);
-
-        // 3. Road Shoulders (White/Red strips)
-        ctx.fillStyle = '#ecf0f1';
-        ctx.fillRect(roadCenter - roadW/2 - 10, 0, 10, canvas.height);
-        ctx.fillRect(roadCenter + roadW/2, 0, 10, canvas.height);
-
-        // 4. Moving Road Lines
-        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
-        roadLines.forEach(line => {
-            ctx.fillRect(roadCenter - 5, line.y, 10, 40);
-        });
-
-        // 5. Trees / Decor passing by
-        ctx.fillStyle = '#1e8449'; // Darker green trees
-        trees.forEach(tree => {
-            ctx.beginPath();
-            ctx.arc(tree.x, tree.y, tree.size, 0, Math.PI*2);
-            ctx.fill();
-        });
-
-        // 6. Draw Player Car
-        drawRealisticCar(car.x, car.y, car.width, car.height, car.color);
-
-        // 7. Draw Traffic
-        obstacles.forEach(obs => {
-            drawRealisticCar(obs.x, obs.y, obs.w, obs.h, obs.color);
-        });
-    }
-
-    function getRandomCarColor() {
-        const colors = ['#0984e3', '#fdcb6e', '#6c5ce7', '#e17055', '#00b894'];
-        return colors[Math.floor(Math.random() * colors.length)];
-    }
-
-    function loop() {
-        if (!gameRunning) return;
-        update();
-        draw();
-        animationFrame = requestAnimationFrame(loop);
-    }
-
-    function endGame() {
-        gameRunning = false;
-        cancelAnimationFrame(animationFrame);
-        document.getElementById('finalScore').innerText = Math.floor(score/10);
-        gameOverScreen.style.display = 'block';
-    }
-
-    // Controls
-    window.addEventListener('keydown', e => keys[e.key] = true);
-    window.addEventListener('keyup', e => keys[e.key] = false);
-
-    // Mobile Logic
-    function moveLeft() { keys.ArrowLeft = true; }
-    function moveRight() { keys.ArrowRight = true; }
-    function stopMove() { keys.ArrowLeft = false; keys.ArrowRight = false; }
 </script>
 </body>
 </html>

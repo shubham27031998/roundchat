@@ -3,98 +3,116 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ROUNDCHAT | High Performance Network</title>
+    <title>Roundchat | Engineering & Performance</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Roboto:wght@300;400&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;600;800&display=swap');
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        body { background-color: #050505; color: #fff; font-family: 'Roboto', sans-serif; overflow-x: hidden; }
+        body { font-family: 'Montserrat', sans-serif; overflow: hidden; background: #f0f2f5; }
 
-        /* --- LANDING PAGE STYLES --- */
+        /* --- 1. PROFESSIONAL LANDING PAGE --- */
         #landing-page {
-            position: absolute; top: 0; left: 0; width: 100%; min-height: 100vh;
-            background: radial-gradient(circle at center, #1a1a2e 0%, #000000 100%);
+            position: absolute; top: 0; left: 0; width: 100%; height: 100vh;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
             display: flex; flex-direction: column; justify-content: center; align-items: center;
-            text-align: center; z-index: 10; transition: opacity 0.5s;
+            z-index: 10; transition: opacity 0.5s ease;
         }
-        .hero-content { z-index: 2; padding: 20px; }
-        h1 { font-family: 'Orbitron', sans-serif; font-size: 4rem; letter-spacing: 4px; text-transform: uppercase; margin-bottom: 10px; background: linear-gradient(90deg, #00f260, #0575E6); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-        p.subtitle { color: #888; font-size: 1.2rem; margin-bottom: 40px; letter-spacing: 1px; }
-        
-        .play-btn {
-            background: transparent; border: 2px solid #00f260; color: #00f260;
-            padding: 15px 50px; font-size: 1.5rem; font-family: 'Orbitron', sans-serif; font-weight: bold;
-            cursor: pointer; position: relative; overflow: hidden; transition: 0.3s;
-            box-shadow: 0 0 15px rgba(0, 242, 96, 0.2); clip-path: polygon(10% 0, 100% 0, 100% 70%, 90% 100%, 0 100%, 0 30%);
+
+        .card {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 60px 80px;
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+            text-align: center;
+            max-width: 800px;
+            border: 1px solid rgba(255,255,255,0.8);
         }
-        .play-btn:hover { background: #00f260; color: #000; box-shadow: 0 0 30px rgba(0, 242, 96, 0.6); transform: scale(1.05); }
-        .play-btn::after { content: " >> START ENGINE"; }
 
-        /* Social Link */
-        .social-bar { margin-top: 50px; display: flex; gap: 20px; font-size: 0.9rem; color: #666; }
-        .social-bar a { color: #fff; text-decoration: none; border-bottom: 1px solid #0575E6; transition: 0.3s; }
-        .social-bar a:hover { color: #0575E6; }
+        h1 { font-size: 3.5rem; color: #2d3436; margin-bottom: 10px; letter-spacing: -2px; font-weight: 800; }
+        h1 span { color: #0984e3; }
+        .subtitle { font-size: 1.2rem; color: #636e72; margin-bottom: 40px; font-weight: 300; letter-spacing: 1px; }
 
-        /* --- GAME UI LAYERS --- */
-        #game-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: hidden; background: #111; }
+        .btn-group { display: flex; gap: 20px; justify-content: center; }
+
+        .btn {
+            padding: 15px 40px; font-size: 1rem; font-weight: 600; border-radius: 50px;
+            cursor: pointer; transition: all 0.3s ease; text-decoration: none; border: none;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary { background: #0984e3; color: white; }
+        .btn-primary:hover { background: #00cec9; transform: translateY(-3px); box-shadow: 0 15px 30px rgba(9, 132, 227, 0.3); }
+
+        .social-link { margin-top: 30px; display: block; color: #b2bec3; font-size: 0.9rem; text-decoration: none; }
+        .social-link:hover { color: #0984e3; }
+
+        /* --- 2. GAME CANVAS LAYER --- */
+        #game-container { display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: #333; }
         canvas { display: block; width: 100%; height: 100%; }
 
-        #hud { position: absolute; top: 20px; left: 20px; font-family: 'Orbitron', sans-serif; font-size: 20px; color: #fff; text-shadow: 2px 2px 0 #000; pointer-events: none; }
-        
+        /* HUD */
+        .hud { position: absolute; top: 20px; left: 20px; font-size: 1.5rem; font-weight: 800; color: white; text-shadow: 0 2px 5px rgba(0,0,0,0.5); z-index: 5; pointer-events: none; }
+        .score-box { background: rgba(0,0,0,0.6); padding: 10px 20px; border-radius: 10px; }
+
+        /* --- 3. GAME OVER MODAL --- */
         #game-over {
             display: none; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
-            background: rgba(0,0,0,0.9); padding: 40px; border: 2px solid #ff0055; text-align: center;
-            box-shadow: 0 0 50px rgba(255, 0, 85, 0.4); border-radius: 10px; min-width: 300px;
+            background: white; padding: 50px; border-radius: 20px; text-align: center;
+            box-shadow: 0 25px 60px rgba(0,0,0,0.3); z-index: 20; min-width: 350px;
         }
-        #game-over h2 { font-family: 'Orbitron', sans-serif; color: #ff0055; font-size: 3rem; margin-bottom: 10px; }
-        #game-over p { color: #fff; margin-bottom: 20px; font-size: 1.2rem; }
-        .restart-btn { background: #ff0055; color: #fff; border: none; padding: 10px 30px; font-family: 'Orbitron', sans-serif; font-size: 1.2rem; cursor: pointer; margin-bottom: 15px; }
-        .restart-btn:hover { background: #fff; color: #ff0055; }
-        
-        .insta-link { display: block; color: #00f260; text-decoration: none; margin-top: 10px; font-size: 0.9rem; letter-spacing: 1px; }
-        .insta-link:hover { text-decoration: underline; }
+        #game-over h2 { font-size: 2.5rem; color: #d63031; margin-bottom: 10px; }
+        #game-over p { font-size: 1.2rem; color: #636e72; margin-bottom: 30px; }
+
+        .btn-restart { background: #2d3436; color: white; width: 100%; margin-bottom: 10px; }
+        .btn-home { background: white; color: #636e72; border: 2px solid #dfe6e9; width: 100%; }
+        .btn-home:hover { background: #dfe6e9; }
 
         /* Mobile Controls */
-        .controls { position: absolute; bottom: 20px; width: 100%; display: flex; justify-content: space-between; padding: 0 20px; pointer-events: none; }
-        .control-key { display: none; width: 60px; height: 60px; border: 2px solid rgba(255,255,255,0.2); border-radius: 50%; pointer-events: auto; background: rgba(255,255,255,0.1); }
-        @media (max-width: 768px) { .control-key { display: block; } h1 { font-size: 2.5rem; } }
+        .controls { position: absolute; bottom: 0; width: 100%; height: 150px; display: flex; z-index: 4; }
+        .touch-zone { flex: 1; }
     </style>
 </head>
 <body>
 
-    <!-- LANDING PAGE -->
+    <!-- SECTION 1: LANDING PAGE -->
     <div id="landing-page">
-        <div class="hero-content">
-            <h1>ROUNDCHAT</h1>
-            <p class="subtitle">DEVOPS ENGINEERING | CLOUD ARCHITECTURE | AUTOMATION</p>
-            <button class="play-btn" onclick="initGame()"></button>
+        <div class="card">
+            <h1>ROUND<span>CHAT</span></h1>
+            <p class="subtitle">Senior DevOps Engineering | 7 Years Experience</p>
             
-            <div class="social-bar">
-                <span>Follow the journey:</span>
-                <a href="https://instagram.com/roundchat" target="_blank">@roundchat</a>
-                <a href="#">GitHub</a>
-                <a href="#">LinkedIn</a>
+            <div class="btn-group">
+                <button class="btn btn-primary" onclick="initGame()">Launch Experience</button>
             </div>
+            
+            <a href="https://instagram.com/roundchat" target="_blank" class="social-link">
+                Follow @roundchat on Instagram
+            </a>
         </div>
     </div>
 
-    <!-- GAME CONTAINER -->
+    <!-- SECTION 2: THE GAME -->
     <div id="game-container">
-        <div id="hud">SCORE: <span id="scoreVal">0</span></div>
+        <div class="hud score-box">SCORE: <span id="scoreVal">0</span></div>
         <canvas id="gameCanvas"></canvas>
         
-        <!-- Controls for Mobile -->
+        <!-- Mobile Touch Controls -->
         <div class="controls">
-            <div class="control-key" ontouchstart="moveLeft()" ontouchend="stopMove()"></div>
-            <div class="control-key" ontouchstart="moveRight()" ontouchend="stopMove()"></div>
+            <div class="touch-zone" ontouchstart="moveLeft()" ontouchend="stopMove()"></div>
+            <div class="touch-zone" ontouchstart="moveRight()" ontouchend="stopMove()"></div>
         </div>
 
         <!-- GAME OVER MODAL -->
         <div id="game-over">
-            <h2>CRASHED</h2>
-            <p>FINAL SCORE: <span id="finalScore">0</span></p>
-            <button class="restart-btn" onclick="restartGame()">RETRY RACE</button>
-            <a href="https://instagram.com/roundchat" target="_blank" class="insta-link">Follow @roundchat on Instagram &rarr;</a>
+            <h2>CRASHED!</h2>
+            <p>Distance Traveled: <span id="finalScore">0</span>m</p>
+            
+            <button class="btn btn-restart" onclick="startGame()">Try Again</button>
+            <button class="btn btn-home" onclick="goHome()">Back to Portfolio</button>
+            
+            <div style="margin-top: 20px; font-size: 0.9rem; color: #b2bec3;">
+                Need help with your infrastructure? <br>
+                <a href="https://instagram.com/roundchat" style="color:#0984e3; text-decoration:none; font-weight:bold;">Message @roundchat</a>
+            </div>
         </div>
     </div>
 
@@ -109,20 +127,31 @@
     let gameRunning = false;
     let score = 0;
     let speed = 5;
-    let car = { x: 0, y: 0, w: 50, h: 80, color: '#00f260' };
+    let laneWidth = 120; // Width of one lane
+    let roadCenter;
+    
+    // Player
+    let car = { x: 0, y: 0, width: 50, height: 90, color: '#d63031', tilt: 0 };
+    
+    // Environment
     let obstacles = [];
     let roadLines = [];
+    let trees = [];
+    
+    // Inputs
     let keys = { ArrowLeft: false, ArrowRight: false };
     let animationFrame;
 
     function resize() {
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
-        car.x = canvas.width / 2 - 25;
-        car.y = canvas.height - 120;
+        roadCenter = canvas.width / 2;
+        car.x = roadCenter - (car.width / 2);
+        car.y = canvas.height - 150;
     }
     window.addEventListener('resize', resize);
 
+    // --- NAVIGATION LOGIC ---
     function initGame() {
         resize();
         landing.style.opacity = '0';
@@ -133,99 +162,178 @@
         }, 500);
     }
 
+    function goHome() {
+        gameRunning = false;
+        cancelAnimationFrame(animationFrame);
+        gameContainer.style.display = 'none';
+        gameOverScreen.style.display = 'none';
+        landing.style.display = 'flex';
+        setTimeout(() => landing.style.opacity = '1', 50);
+    }
+
+    // --- GAME LOGIC ---
     function startGame() {
         gameRunning = true;
         score = 0;
-        speed = 6;
+        speed = 8;
         obstacles = [];
         roadLines = [];
+        trees = [];
         gameOverScreen.style.display = 'none';
+        car.x = roadCenter - (car.width / 2);
         
-        // Initial Road Lines
-        for(let i=0; i<10; i++) {
-            roadLines.push({ y: i * 100 });
-        }
+        // Init Road Lines
+        for(let i=0; i<15; i++) roadLines.push({ y: i * 80 });
         
         loop();
+    }
+
+    function drawRealisticCar(x, y, w, h, color) {
+        // Shadow
+        ctx.fillStyle = 'rgba(0,0,0,0.3)';
+        ctx.beginPath();
+        ctx.ellipse(x + w/2, y + h - 5, w/2 + 5, 10, 0, 0, Math.PI*2);
+        ctx.fill();
+
+        // Tires
+        ctx.fillStyle = '#2d3436';
+        ctx.fillRect(x - 4, y + 10, 8, 15); // FL
+        ctx.fillRect(x + w - 4, y + 10, 8, 15); // FR
+        ctx.fillRect(x - 4, y + h - 20, 8, 15); // RL
+        ctx.fillRect(x + w - 4, y + h - 20, 8, 15); // RR
+
+        // Main Body
+        ctx.fillStyle = color;
+        ctx.beginPath();
+        ctx.roundRect(x, y, w, h, 10);
+        ctx.fill();
+
+        // Roof / Cabin
+        ctx.fillStyle = 'rgba(0,0,0,0.2)';
+        ctx.beginPath();
+        ctx.roundRect(x + 5, y + 20, w - 10, h - 35, 5);
+        ctx.fill();
+
+        // Windshield
+        ctx.fillStyle = '#81ecec';
+        ctx.beginPath();
+        ctx.moveTo(x + 8, y + 30);
+        ctx.lineTo(x + w - 8, y + 30);
+        ctx.lineTo(x + w - 12, y + 50);
+        ctx.lineTo(x + 12, y + 50);
+        ctx.closePath();
+        ctx.fill();
+
+        // Rear Window
+        ctx.fillStyle = '#2d3436';
+        ctx.fillRect(x + 10, y + h - 30, w - 20, 5);
+
+        // Headlights
+        ctx.fillStyle = '#ffeaa7';
+        ctx.beginPath();
+        ctx.arc(x + 8, y + 5, 3, 0, Math.PI*2);
+        ctx.arc(x + w - 8, y + 5, 3, 0, Math.PI*2);
+        ctx.fill();
     }
 
     function update() {
         score++;
         document.getElementById('scoreVal').innerText = Math.floor(score/10);
 
-        // Increase Speed
+        // Difficulty Curve
         if(score % 500 === 0) speed += 1;
 
-        // Move Car
-        if (keys.ArrowLeft && car.x > 20) car.x -= 7;
-        if (keys.ArrowRight && car.x < canvas.width - car.w - 20) car.x += 7;
+        // Player Movement
+        if (keys.ArrowLeft && car.x > roadCenter - 180) car.x -= 8;
+        if (keys.ArrowRight && car.x < roadCenter + 180 - car.width) car.x += 8;
 
-        // Move Road Lines
+        // --- SPAWNERS ---
+        // Road Lines
         roadLines.forEach(line => {
             line.y += speed;
-            if(line.y > canvas.height) line.y = -100;
+            if(line.y > canvas.height) line.y = -80;
         });
 
-        // Spawn Obstacles
-        if (Math.random() < 0.02) {
-            let lane = Math.random() * (canvas.width - 100) + 50;
-            obstacles.push({ x: lane, y: -100, w: 50, h: 80, color: '#ff0055' });
+        // Obstacles (Traffic)
+        if (Math.random() < 0.03) {
+            let laneOffset = (Math.random() > 0.5 ? 60 : -60); // 2 Lanes logic
+            let obsX = roadCenter + laneOffset - 25; // Center items in lanes
+            // Randomize lane pos slightly for variety
+            obsX += (Math.random() * 40 - 20); 
+            
+            obstacles.push({ x: obsX, y: -100, w: 50, h: 90, color: getRandomCarColor() });
         }
 
-        // Move & Check Obstacles
+        // Environment (Grass details)
+        if (Math.random() < 0.1) {
+            let side = Math.random() > 0.5 ? 1 : -1;
+            let treeX = roadCenter + (side * (250 + Math.random() * 100));
+            trees.push({ x: treeX, y: -50, size: Math.random() * 10 + 5 });
+        }
+
+        // Logic Loop
         obstacles.forEach((obs, index) => {
-            obs.y += speed;
+            obs.y += speed * 0.8; // Traffic moves slower than you
             
-            // Collision Detection
+            // Collision
             if (
                 car.x < obs.x + obs.w &&
-                car.x + car.w > obs.x &&
+                car.x + car.width > obs.x &&
                 car.y < obs.y + obs.h &&
-                car.h + car.y > obs.y
+                car.height + car.y > obs.y
             ) {
                 endGame();
             }
-
-            // Remove off-screen
             if(obs.y > canvas.height) obstacles.splice(index, 1);
+        });
+
+        trees.forEach((tree, index) => {
+            tree.y += speed;
+            if(tree.y > canvas.height) trees.splice(index, 1);
         });
     }
 
     function draw() {
-        // Clear background
-        ctx.fillStyle = '#111';
+        // 1. Background (Grass)
+        ctx.fillStyle = '#27ae60'; // Green grass
         ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-        // Draw Road Effect
-        ctx.fillStyle = 'rgba(255,255,255,0.1)';
+        // 2. Road (Asphalt)
+        ctx.fillStyle = '#34495e'; // Dark Asphalt
+        const roadW = 400;
+        ctx.fillRect(roadCenter - roadW/2, 0, roadW, canvas.height);
+
+        // 3. Road Shoulders (White/Red strips)
+        ctx.fillStyle = '#ecf0f1';
+        ctx.fillRect(roadCenter - roadW/2 - 10, 0, 10, canvas.height);
+        ctx.fillRect(roadCenter + roadW/2, 0, 10, canvas.height);
+
+        // 4. Moving Road Lines
+        ctx.fillStyle = 'rgba(255, 255, 255, 0.5)';
         roadLines.forEach(line => {
-            ctx.fillRect(canvas.width/2 - 5, line.y, 10, 60);
+            ctx.fillRect(roadCenter - 5, line.y, 10, 40);
         });
 
-        // Draw Player Car (Neon Style)
-        ctx.shadowBlur = 20;
-        ctx.shadowColor = car.color;
-        ctx.fillStyle = car.color;
-        ctx.beginPath();
-        ctx.roundRect(car.x, car.y, car.w, car.h, 10);
-        ctx.fill();
-        
-        // Car details
-        ctx.fillStyle = '#000';
-        ctx.fillRect(car.x + 5, car.y + 10, 40, 20); // Windshield
-
-        // Draw Obstacles (Enemy Cars)
-        obstacles.forEach(obs => {
-            ctx.shadowColor = obs.color;
-            ctx.fillStyle = obs.color;
+        // 5. Trees / Decor passing by
+        ctx.fillStyle = '#1e8449'; // Darker green trees
+        trees.forEach(tree => {
             ctx.beginPath();
-            ctx.roundRect(obs.x, obs.y, obs.w, obs.h, 10);
+            ctx.arc(tree.x, tree.y, tree.size, 0, Math.PI*2);
             ctx.fill();
-            ctx.fillStyle = '#000';
-            ctx.fillRect(obs.x + 5, obs.y + 50, 40, 10); // Rear lights
         });
 
-        ctx.shadowBlur = 0; // Reset
+        // 6. Draw Player Car
+        drawRealisticCar(car.x, car.y, car.width, car.height, car.color);
+
+        // 7. Draw Traffic
+        obstacles.forEach(obs => {
+            drawRealisticCar(obs.x, obs.y, obs.w, obs.h, obs.color);
+        });
+    }
+
+    function getRandomCarColor() {
+        const colors = ['#0984e3', '#fdcb6e', '#6c5ce7', '#e17055', '#00b894'];
+        return colors[Math.floor(Math.random() * colors.length)];
     }
 
     function loop() {
@@ -242,10 +350,6 @@
         gameOverScreen.style.display = 'block';
     }
 
-    function restartGame() {
-        startGame();
-    }
-
     // Controls
     window.addEventListener('keydown', e => keys[e.key] = true);
     window.addEventListener('keyup', e => keys[e.key] = false);
@@ -254,7 +358,6 @@
     function moveLeft() { keys.ArrowLeft = true; }
     function moveRight() { keys.ArrowRight = true; }
     function stopMove() { keys.ArrowLeft = false; keys.ArrowRight = false; }
-
 </script>
 </body>
 </html>

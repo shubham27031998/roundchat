@@ -7,111 +7,117 @@
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #09090b;
-            --surface: #18181b;
-            --border: #27272a;
-            --k8s-blue: #326ce5;
-            --k8s-light: #60a5fa;
-            --glow: rgba(50, 108, 229, 0.4);
-            --text-main: #f8fafc;
-            --text-muted: #a1a1aa;
-            --accent-green: #22c55e;
-            --accent-purple: #a855f7;
-            --accent-orange: #f59e0b;
+            --bg: #09090b; --surface: #18181b; --border: #27272a;
+            --k8s-blue: #326ce5; --k8s-light: #60a5fa; --glow: rgba(50, 108, 229, 0.4);
+            --text-main: #f8fafc; --text-muted: #a1a1aa;
+            --accent-green: #22c55e; --accent-purple: #a855f7; --accent-red: #ef4444;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
-        body { background: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; }
+        body { background: var(--bg); color: var(--text-main); line-height: 1.6; overflow-x: hidden; padding-bottom: 50px; }
         
         /* Header */
-        header { text-align: center; padding: 50px 20px 30px; border-bottom: 1px solid var(--border); background: radial-gradient(circle at top, #1e3a8a20 0%, var(--bg) 100%); }
-        header h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; }
-        .k8s-logo { width: 45px; animation: spin 20s linear infinite; }
-        header p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
+        header { text-align: center; padding: 40px 20px; border-bottom: 1px solid var(--border); background: radial-gradient(circle at top, #1e3a8a20 0%, var(--bg) 100%); }
+        header h1 { font-size: 2.5rem; font-weight: 800; margin-bottom: 10px; display: flex; justify-content: center; align-items: center; gap: 15px; }
+        .k8s-logo { width: 40px; animation: spin 20s linear infinite; }
+        header p { color: var(--text-muted); font-size: 1rem; max-width: 700px; margin: 0 auto; }
 
-        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
-        .section-title { font-size: 1.8rem; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 12px; border-left: 4px solid var(--k8s-blue); padding-left: 15px; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
+        .section-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 25px; display: flex; align-items: center; gap: 12px; border-left: 4px solid var(--k8s-blue); padding-left: 15px; }
 
         /* --- ANIMATED ARCHITECTURE --- */
         .arch-simulator {
             background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-            padding: 30px; position: relative; display: grid; grid-template-columns: 1fr 350px; gap: 30px;
+            padding: 20px; display: grid; grid-template-columns: 1fr 380px; gap: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
         @media(max-width: 1024px) { .arch-simulator { grid-template-columns: 1fr; } }
 
-        .arch-canvas { position: relative; height: 500px; background: #0f0f13; border: 1px dashed var(--border); border-radius: 12px; overflow: hidden; }
+        .arch-canvas { position: relative; height: 550px; background: #0f0f13; border: 1px dashed var(--border); border-radius: 12px; overflow: hidden; }
         
-        .k8s-node { position: absolute; background: rgba(39, 39, 42, 0.6); border: 1px solid var(--border); border-radius: 12px; padding: 15px; backdrop-filter: blur(5px); }
-        .control-plane { top: 20px; left: 20px; width: 320px; height: 450px; border-top: 3px solid var(--accent-purple); }
-        .worker-node { top: 20px; right: 20px; width: 300px; height: 450px; border-top: 3px solid var(--k8s-blue); }
-        .node-title { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 20px; text-align: center; }
+        /* Nodes Boundaries */
+        .k8s-node { position: absolute; background: rgba(39, 39, 42, 0.4); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+        .control-plane { top: 20px; left: 100px; width: 340px; height: 500px; border-top: 3px solid var(--accent-purple); }
+        .worker-node { top: 20px; right: 20px; width: 300px; height: 500px; border-top: 3px solid var(--k8s-blue); }
+        .node-title { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 20px; text-align: center; }
 
+        /* Components */
         .comp { 
-            background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; padding: 12px;
-            text-align: center; font-size: 0.9rem; font-weight: 600; margin-bottom: 15px;
-            position: absolute; width: 130px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            z-index: 10;
+            background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; padding: 12px 10px;
+            text-align: center; font-size: 0.85rem; font-weight: 700; position: absolute; width: 140px; 
+            transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 10;
         }
-        .comp.active { border-color: var(--k8s-light); box-shadow: 0 0 20px var(--glow); background: rgba(50, 108, 229, 0.2); transform: scale(1.05); }
+        .comp.active { border-color: var(--k8s-light); box-shadow: 0 0 25px var(--glow); background: rgba(50, 108, 229, 0.3); transform: scale(1.08); }
+        .comp.error { border-color: var(--accent-red); box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.2); }
         
-        /* Fixed Component Positions inside Canvas */
-        #c-api { top: 200px; left: 160px; transform: translateX(-50%); width: 160px; border-color: var(--k8s-blue); }
-        #c-etcd { top: 80px; left: 160px; transform: translateX(-50%); }
-        #c-sched { top: 320px; left: 80px; transform: translateX(-50%); width: 140px; }
-        #c-ctrl { top: 320px; left: 240px; transform: translateX(-50%); width: 140px; }
+        /* Fixed Component Positions */
+        #c-api { top: 240px; left: 270px; transform: translateX(-50%); width: 160px; border-color: var(--k8s-blue); z-index: 15; }
+        #c-etcd { top: 80px; left: 270px; transform: translateX(-50%); }
+        #c-sched { top: 380px; left: 180px; transform: translateX(-50%); width: 130px; }
+        #c-ctrl { top: 380px; left: 360px; transform: translateX(-50%); width: 140px; }
         
         #c-kubelet { top: 80px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; border-color: var(--k8s-blue); }
-        #c-proxy { top: 200px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; }
-        #c-cri { top: 320px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; border-style: dashed; }
+        #c-proxy { top: 240px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; }
+        #c-cri { top: 380px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; border-style: dashed; }
         
-        #user-icon { position: absolute; top: 200px; left: -60px; width: 40px; height: 40px; background: var(--accent-green); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; }
+        #user-icon { position: absolute; top: 240px; left: 20px; width: 50px; height: 50px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 0.8rem; z-index: 15; }
 
-        /* The Data Packet / Flow Animation */
-        .data-packet {
-            position: absolute; width: 12px; height: 12px; background: var(--accent-green);
-            border-radius: 50%; box-shadow: 0 0 15px var(--accent-green); z-index: 20;
-            display: none; transition: all 1s ease-in-out;
+        /* SVG Network Lines */
+        #svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .net-line { stroke: #3f3f46; stroke-width: 2; stroke-dasharray: 4, 4; fill: none; transition: 0.3s; }
+        .net-line.active { stroke: var(--k8s-light); filter: drop-shadow(0 0 5px var(--k8s-blue)); stroke-dasharray: none; }
+
+        /* The Animated Message Pill */
+        .msg-pill {
+            position: absolute; background: var(--k8s-blue); color: #fff; padding: 4px 12px;
+            border-radius: 20px; font-size: 0.75rem; font-weight: 700; font-family: 'Fira Code', monospace;
+            box-shadow: 0 4px 15px var(--glow); z-index: 50; white-space: nowrap; pointer-events: none;
+            opacity: 0; transition: transform ease-in-out, opacity 0.2s;
+            display: flex; align-items: center; gap: 5px;
         }
 
         /* Console Panel */
         .console-panel { display: flex; flex-direction: column; background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
-        .console-header { background: #18181b; padding: 15px; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .btn-sim { background: var(--k8s-blue); color: #fff; border: none; padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.9rem; transition: 0.2s; }
-        .btn-sim:hover { background: var(--k8s-light); }
-        .btn-sim:disabled { background: #3f3f46; cursor: not-allowed; }
-        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.85rem; height: 400px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .log-entry { opacity: 0; transform: translateY(10px); animation: fadeUp 0.3s forwards; color: var(--text-muted); }
-        .log-entry.highlight { color: var(--accent-green); font-weight: bold; }
+        .console-header { background: #18181b; padding: 15px; font-weight: 700; border-bottom: 1px solid var(--border); }
+        
+        .sim-controls { display: flex; flex-direction: column; gap: 8px; padding: 15px; background: #0f0f13; border-bottom: 1px solid var(--border); }
+        .btn-sim { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 8px 15px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .btn-sim:hover { background: #27272a; border-color: var(--k8s-light); }
+        .btn-sim:disabled { opacity: 0.5; cursor: not-allowed; }
+        .btn-sim.green:hover { border-color: var(--accent-green); }
+        .btn-sim.red:hover { border-color: var(--accent-red); }
+
+        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.8rem; height: 280px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .log-entry { opacity: 0; transform: translateY(5px); animation: fadeUp 0.3s forwards; color: var(--text-muted); line-height: 1.4; }
+        .log-entry span { color: var(--k8s-light); }
+        .log-entry.success { color: var(--accent-green); }
+        .log-entry.danger { color: var(--accent-red); }
 
         /* --- SYLLABUS GRID --- */
-        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; }
-        .module-card {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 25px;
-            cursor: pointer; transition: all 0.3s; position: relative; overflow: hidden;
-        }
+        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
+        .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; }
         .module-card:hover { border-color: var(--k8s-blue); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .module-title { font-size: 1.25rem; font-weight: 700; color: #fff; margin-bottom: 15px; display: flex; align-items: center; gap: 10px; }
-        .topic-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        .chip { background: rgba(255,255,255,0.05); border: 1px solid var(--border); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; color: var(--text-muted); transition: 0.2s; }
+        .module-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .topic-list { display: flex; flex-wrap: wrap; gap: 6px; }
+        .chip { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted); transition: 0.2s; }
         .module-card:hover .chip { background: rgba(50, 108, 229, 0.1); border-color: rgba(50, 108, 229, 0.3); color: var(--k8s-light); }
 
         /* Modal */
-        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: 0.3s; }
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: 0.2s; }
         #modal.show { display: flex; opacity: 1; }
-        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 900px; max-height: 85vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.3s; }
+        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 850px; max-height: 85vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.2s; }
         #modal.show .modal-content { transform: scale(1); }
-        .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-radius: 16px 16px 0 0; }
-        .modal-header h2 { font-size: 1.5rem; color: var(--k8s-light); }
+        .modal-header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-radius: 12px 12px 0 0; }
+        .modal-header h2 { font-size: 1.3rem; color: var(--k8s-light); }
         .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         .close-btn:hover { color: #ef4444; }
         .modal-body { padding: 25px; overflow-y: auto; display: grid; gap: 20px; }
         
-        .concept { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; }
-        .concept-title { font-weight: 700; color: #fff; margin-bottom: 10px; font-size: 1.1rem; display: flex; align-items: center; gap: 8px; }
-        .concept-title::before { content: '■'; color: var(--k8s-blue); font-size: 0.8rem; }
-        .concept-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px; }
-        .code { background: #000; padding: 12px; border-radius: 8px; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--accent-green); white-space: pre-wrap; border: 1px solid #27272a; }
+        .concept { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
+        .concept-title { font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        .concept-title::before { content: '■'; color: var(--k8s-blue); font-size: 0.7rem; }
+        .concept-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; }
+        .code { background: #000; padding: 12px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--accent-green); white-space: pre-wrap; border: 1px solid #27272a; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
@@ -126,56 +132,58 @@
             </svg>
             CKA Visual Learning Hub
         </h1>
-        <p>Master Kubernetes Architecture and all Certified Kubernetes Administrator (CKA) concepts through interactive simulations and comprehensive study notes.</p>
+        <p>Master Kubernetes Architecture and CKA concepts through deep interactive simulations.</p>
     </header>
 
     <div class="container">
         
-        <!-- SECTION 1: ARCHITECTURE SIMULATOR -->
         <div class="section-title">1. Cluster Architecture Flow Simulator</div>
         <div class="arch-simulator">
             <div class="arch-canvas" id="canvas">
+                <svg id="svg-lines">
+                    <line id="line-user-api" class="net-line" />
+                    <line id="line-api-etcd" class="net-line" />
+                    <line id="line-api-sched" class="net-line" />
+                    <line id="line-api-ctrl" class="net-line" />
+                    <line id="line-api-kubelet" class="net-line" />
+                    <line id="line-kubelet-cri" class="net-line" />
+                </svg>
+
                 <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
                 <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
                 
-                <div id="user-icon">U</div>
+                <div id="user-icon">Kube<br>Ctl</div>
                 
-                <!-- Components -->
                 <div class="comp" id="c-api">kube-apiserver</div>
                 <div class="comp" id="c-etcd">etcd</div>
                 <div class="comp" id="c-sched">kube-scheduler</div>
                 <div class="comp" id="c-ctrl">controller-manager</div>
                 <div class="comp" id="c-kubelet">kubelet</div>
                 <div class="comp" id="c-proxy">kube-proxy</div>
-                <div class="comp" id="c-cri">Container Runtime<br><span style="font-size:0.7rem; font-weight:normal;">(Pods run here)</span></div>
-                
-                <!-- The animated data packet -->
-                <div class="data-packet" id="packet"></div>
+                <div class="comp" id="c-cri">Container Runtime<br><span style="font-size:0.7rem; font-weight:normal;">(Pods)</span></div>
             </div>
 
             <div class="console-panel">
-                <div class="console-header">
-                    <span>Flow Execution Log</span>
-                    <button class="btn-sim" id="btn-sim" onclick="runSimulation()">Simulate Pod Creation</button>
+                <div class="console-header">Execution Scenarios</div>
+                <div class="sim-controls">
+                    <button class="btn-sim green" id="btn-create" onclick="runCreate()">▶ Create Pod <span>kubectl run</span></button>
+                    <button class="btn-sim red" id="btn-delete" onclick="runDelete()">▶ Delete Pod <span>kubectl delete</span></button>
+                    <button class="btn-sim" id="btn-crash" onclick="runCrash()">▶ Container Crash <span>Self-Healing</span></button>
                 </div>
                 <div class="console-logs" id="logs">
-                    <div class="log-entry">Waiting for simulation to start...</div>
-                    <div class="log-entry" style="color:var(--text-muted); font-size: 0.8rem; margin-top: 10px;">Note: Observe how NO component talks directly to another except through the API Server. This is the golden rule of Kubernetes.</div>
+                    <div class="log-entry">Select a simulation scenario above to trace the internal API communications.</div>
                 </div>
             </div>
         </div>
 
         <br><br><br>
 
-        <!-- SECTION 2: COMPREHENSIVE SYLLABUS -->
-        <div class="section-title">2. Complete CKA Syllabus (KodeKloud Aligned)</div>
+        <div class="section-title">2. Complete CKA Syllabus Masterclass</div>
         <div class="syllabus-grid" id="syllabus-grid">
-            <!-- Populated by JS -->
-        </div>
+            </div>
 
     </div>
 
-    <!-- MODAL -->
     <div id="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
@@ -188,116 +196,193 @@
 
     <script>
         // ==========================================
-        // 1. ANIMATION / SIMULATION LOGIC
+        // 1. ARCHITECTURE ANIMATION LOGIC
         // ==========================================
-        const packet = document.getElementById('packet');
+        const canvas = document.getElementById('canvas');
         const logs = document.getElementById('logs');
-        const btnSim = document.getElementById('btn-sim');
+        const buttons = document.querySelectorAll('.btn-sim');
 
-        // Helper to get center coordinates of an element relative to the canvas
-        function getCoords(id) {
-            const el = document.getElementById(id);
-            if(!el) return {x:0, y:0};
-            const parent = document.getElementById('canvas').getBoundingClientRect();
-            const rect = el.getBoundingClientRect();
-            return {
-                x: rect.left - parent.left + (rect.width / 2) - 6, // 6 is half packet width
-                y: rect.top - parent.top + (rect.height / 2) - 6
+        // Draw SVG lines dynamically
+        function drawLines() {
+            const getCenter = (id) => {
+                const el = document.getElementById(id);
+                if(!el) return {x:0, y:0};
+                const p = canvas.getBoundingClientRect();
+                const r = el.getBoundingClientRect();
+                return { x: r.left - p.left + r.width/2, y: r.top - p.top + r.height/2 };
             };
-        }
+            
+            const pairs = [
+                ['user-icon', 'c-api', 'line-user-api'],
+                ['c-api', 'c-etcd', 'line-api-etcd'],
+                ['c-api', 'c-sched', 'line-api-sched'],
+                ['c-api', 'c-ctrl', 'line-api-ctrl'],
+                ['c-api', 'c-kubelet', 'line-api-kubelet'],
+                ['c-kubelet', 'c-cri', 'line-kubelet-cri']
+            ];
 
-        function log(msg, highlight=false) {
+            pairs.forEach(([from, to, lineId]) => {
+                const p1 = getCenter(from);
+                const p2 = getCenter(to);
+                const line = document.getElementById(lineId);
+                line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
+                line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+            });
+        }
+        window.addEventListener('resize', drawLines);
+        drawLines();
+
+        // Helpers
+        function log(msg, type='') {
             const div = document.createElement('div');
-            div.className = `log-entry ${highlight ? 'highlight' : ''}`;
+            div.className = `log-entry ${type}`;
             div.innerHTML = `> ${msg}`;
             logs.appendChild(div);
             logs.scrollTop = logs.scrollHeight;
         }
 
-        function setActive(id) {
-            document.querySelectorAll('.comp').forEach(c => c.classList.remove('active'));
-            if(id) document.getElementById(id).classList.add('active');
+        function setActive(id, lineId = null, colorClass = 'active') {
+            document.querySelectorAll('.comp').forEach(c => { c.classList.remove('active'); c.classList.remove('error'); });
+            document.querySelectorAll('.net-line').forEach(l => l.classList.remove('active'));
+            
+            if(id) document.getElementById(id).classList.add(colorClass);
+            if(lineId) document.getElementById(lineId).classList.add('active');
         }
 
-        async function runSimulation() {
-            btnSim.disabled = true;
-            logs.innerHTML = '';
-            packet.style.display = 'block';
-            
-            const start = getCoords('user-icon');
-            packet.style.transform = `translate(${start.x}px, ${start.y}px)`;
-            
-            // Sleep helper
-            const sleep = ms => new Promise(r => setTimeout(r, ms));
-            const move = async (from, to, time=1000) => {
-                const dest = getCoords(to);
-                packet.style.transition = `transform ${time}ms ease-in-out`;
-                packet.style.transform = `translate(${dest.x}px, ${dest.y}px)`;
-                await sleep(time);
+        const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+        // Animated Data Packet
+        async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1000) {
+            const getC = (id) => {
+                const p = canvas.getBoundingClientRect();
+                const r = document.getElementById(id).getBoundingClientRect();
+                return { x: r.left - p.left + r.width/2, y: r.top - p.top + r.height/2 };
             };
-
-            // Step 1: User to API
-            log("1. User runs `kubectl run pod`", true);
-            await sleep(500);
-            await move('user-icon', 'c-api');
-            setActive('c-api');
-            log("API Server authenticates user and validates request.");
-            await sleep(800);
-
-            // Step 2: API to ETCD
-            log("2. API Server saves Pod state (Pending) to ETCD.", true);
-            await move('c-api', 'c-etcd');
-            setActive('c-etcd');
-            log("ETCD acknowledges save. Cluster state updated.");
-            await sleep(800);
-
-            // Step 3: ETCD back to API (Watcher triggers)
-            log("3. API Server notifies watchers of new Pending pod.");
-            await move('c-etcd', 'c-api');
-            setActive('c-api');
-            await sleep(800);
-
-            // Step 4: API to Scheduler
-            log("4. Scheduler sees unscheduled Pod.", true);
-            await move('c-api', 'c-sched');
-            setActive('c-sched');
-            log("Scheduler evaluates nodes (Taints, Affinity, Resources). Selects Worker Node.");
-            await sleep(1500);
-
-            // Step 5: Scheduler to API to ETCD
-            log("5. Scheduler binds Pod to Node via API.", true);
-            await move('c-sched', 'c-api');
-            setActive('c-api');
-            await move('c-api', 'c-etcd', 600);
-            setActive('c-etcd');
-            log("ETCD updates Pod status with assigned Node.");
-            await sleep(800);
             
-            // Step 6: ETCD to API to Kubelet
-            await move('c-etcd', 'c-api', 600);
-            setActive('c-api');
-            log("6. Kubelet on Worker Node sees a Pod assigned to its node.", true);
-            await move('c-api', 'c-kubelet', 1500);
-            setActive('c-kubelet');
-            log("Kubelet translates Pod specs into container requirements.");
+            const start = getC(fromId);
+            const end = getC(toId);
+
+            const pill = document.createElement('div');
+            pill.className = 'msg-pill';
+            pill.style.background = color;
+            pill.innerHTML = `● ${text}`;
+            pill.style.transform = `translate(${start.x - 50}px, ${start.y - 12}px)`; // offset for center
+            canvas.appendChild(pill);
+
+            // Force reflow
+            pill.getBoundingClientRect();
+            pill.style.opacity = '1';
+            pill.style.transition = `transform ${duration}ms ease-in-out, opacity 0.2s`;
+            pill.style.transform = `translate(${end.x - 50}px, ${end.y - 12}px)`;
+
+            await sleep(duration);
+            pill.style.opacity = '0';
+            setTimeout(() => pill.remove(), 200);
+        }
+
+        function lockUI(lock) {
+            buttons.forEach(b => b.disabled = lock);
+        }
+
+        // --- SCENARIO 1: CREATE POD ---
+        async function runCreate() {
+            lockUI(true); logs.innerHTML = '';
+            
+            log("User runs: <span>kubectl run web --image=nginx</span>");
+            await sendData('user-icon', 'c-api', "POST /pods", 'var(--k8s-blue)', 800);
+            setActive('c-api', 'line-user-api');
+            log("API Server validates RBAC and syntax.");
+            await sleep(600);
+
+            log("API saves Pod status (Pending) to ETCD.");
+            await sendData('c-api', 'c-etcd', "Save: Pending", 'var(--accent-purple)', 600);
+            setActive('c-etcd', 'line-api-etcd');
+            await sendData('c-etcd', 'c-api', "Ack OK", 'var(--text-muted)', 400);
+            await sleep(400);
+
+            log("Scheduler watches API. Notices unassigned Pod.");
+            await sendData('c-api', 'c-sched', "Watch Event", 'var(--k8s-blue)', 600);
+            setActive('c-sched', 'line-api-sched');
+            log("Scheduler evaluates node capacities, taints, and labels.");
             await sleep(1000);
 
-            // Step 7: Kubelet to CRI
-            log("7. Kubelet instructs Container Runtime (CRI) to pull image and start.", true);
-            await move('c-kubelet', 'c-cri', 800);
-            setActive('c-cri');
-            packet.style.boxShadow = "0 0 30px #a855f7";
-            packet.style.background = "#a855f7";
-            log("SUCCESS: Pod is now RUNNING!", true);
+            log("Scheduler binds Pod to Worker Node.");
+            await sendData('c-sched', 'c-api', "POST /binding", 'var(--k8s-blue)', 600);
+            await sendData('c-api', 'c-etcd', "Save: Node Assigned", 'var(--accent-purple)', 600);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(400);
+
+            log("Kubelet on Worker watches API. Sees a pod assigned to it.");
+            await sendData('c-api', 'c-kubelet', "Watch Event", 'var(--accent-green)', 800);
+            setActive('c-kubelet', 'line-api-kubelet');
+            await sleep(500);
+
+            log("Kubelet commands Container Runtime (CRI) to pull image and start.");
+            await sendData('c-kubelet', 'c-cri', "Create Container", 'var(--accent-green)', 600);
+            setActive('c-cri', 'line-kubelet-cri', 'active');
             
-            await sleep(2000);
+            log("SUCCESS: Pod is now Running.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
+        // --- SCENARIO 2: DELETE POD ---
+        async function runDelete() {
+            lockUI(true); logs.innerHTML = '';
             
-            // Reset
-            packet.style.display = 'none';
-            packet.style.boxShadow = "0 0 15px var(--accent-green)";
-            packet.style.background = "var(--accent-green)";
-            setActive(null);
-            btnSim.disabled = false;
+            log("User runs: <span>kubectl delete pod web</span>");
+            await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 800);
+            setActive('c-api', 'line-user-api');
+            await sleep(400);
+
+            log("API updates ETCD state to Terminating.");
+            await sendData('c-api', 'c-etcd', "Save: Terminating", 'var(--accent-purple)', 600);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(400);
+
+            log("Kubelet sees Terminating state for its pod.");
+            await sendData('c-api', 'c-kubelet', "Watch: Terminate", 'var(--accent-red)', 800);
+            setActive('c-kubelet', 'line-api-kubelet');
+            await sleep(500);
+
+            log("Kubelet sends SIGTERM to Runtime (grace period 30s).");
+            await sendData('c-kubelet', 'c-cri', "Stop Container", 'var(--accent-red)', 600);
+            setActive('c-cri', 'line-kubelet-cri');
+            await sleep(1000);
+
+            log("Container stopped. Kubelet notifies API.");
+            await sendData('c-kubelet', 'c-api', "Status: Terminated", 'var(--text-muted)', 800);
+            await sendData('c-api', 'c-etcd', "Delete Record", 'var(--accent-purple)', 600);
+            
+            log("SUCCESS: Pod completely removed.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
+        // --- SCENARIO 3: CRASH RECOVERY ---
+        async function runCrash() {
+            lockUI(true); logs.innerHTML = '';
+            
+            setActive('c-cri', 'line-kubelet-cri', 'error');
+            log("ALERT: Container Process crashed (OOM / Error).", 'danger');
+            await sendData('c-cri', 'c-kubelet', "Exit Code 1", 'var(--accent-red)', 600);
+            setActive('c-kubelet', 'line-kubelet-cri');
+            await sleep(500);
+
+            log("Kubelet updates Pod status to Failed/CrashLoopBackOff.");
+            await sendData('c-kubelet', 'c-api', "Status: Failed", 'var(--accent-red)', 800);
+            await sendData('c-api', 'c-etcd', "Save State", 'var(--accent-purple)', 500);
+            await sleep(500);
+
+            log("Controller Manager watches ReplicaSet. Desired: 3, Actual: 2.");
+            await sendData('c-api', 'c-ctrl', "Watch Event", 'var(--accent-orange)', 600);
+            setActive('c-ctrl', 'line-api-ctrl');
+            await sleep(800);
+
+            log("Controller asks API to create a new Pod replica.");
+            await sendData('c-ctrl', 'c-api', "POST /pods (Replica)", 'var(--k8s-blue)', 600);
+            setActive('c-api', 'line-api-ctrl');
+            
+            log("Standard scheduling flow triggers automatically...", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
         }
 
 
@@ -306,78 +391,60 @@
         // ==========================================
         const syllabus = [
             {
-                mod: "Core Concepts",
-                topics: ["Pods", "ReplicaSets", "Deployments", "Namespaces", "Imperative Commands"],
+                mod: "Core Concepts & Workloads",
+                topics: ["Pods", "Deployments", "DaemonSets", "Namespaces", "Labels"],
                 data: [
-                    { t: "Pods", d: "The smallest deployable unit. Usually 1 container per pod, but can have sidecars. They share network namespace (localhost).", c: "kubectl run nginx --image=nginx\nkubectl get pods -o wide" },
-                    { t: "ReplicaSets", d: "Ensures a specified number of pod replicas are running at any given time. Replaces old ReplicationControllers. Uses Labels/Selectors to track pods.", c: "apiVersion: apps/v1\nkind: ReplicaSet\n..." },
-                    { t: "Deployments", d: "A higher-level abstraction that manages ReplicaSets. Enables declarative updates, rolling updates, and rollbacks.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl scale deploy web --replicas=5" },
-                    { t: "Namespaces", d: "Virtual clusters backed by the same physical cluster. Default namespaces: default, kube-system, kube-public.", c: "kubectl create ns dev\nkubectl get pods -n dev" },
-                    { t: "Imperative vs Declarative", d: "Imperative uses commands (good for exam speed). Declarative uses YAML files (good for prod/gitops).", c: "# Fast exam trick:\nexport do=\"--dry-run=client -o yaml\"\nkubectl run pod --image=nginx $do > pod.yaml" }
+                    { t: "Pods & Multi-Container", d: "Smallest unit. Containers in a pod share IP and Volumes. Patterns: Sidecar, Adapter, Ambassador.", c: "kubectl run nginx --image=nginx\n# Multi-container spec:\nspec:\n  containers:\n  - name: main\n    image: nginx\n  - name: sidecar\n    image: log-agent" },
+                    { t: "Deployments & Rollouts", d: "Manages ReplicaSets for declarative updates. Rollbacks are instantaneous because ReplicaSets are kept in history.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
+                    { t: "DaemonSets", d: "Ensures a copy of a Pod runs on ALL (or selected) nodes. Great for logging (Fluentd) or networking plugins (Weave).", c: "# Imperative creation trick:\nkubectl create deploy fluentd --image=fluentd --dry-run=client -o yaml > ds.yaml\n# Change 'kind: Deployment' to 'kind: DaemonSet' and remove 'replicas'" },
+                    { t: "Labels & Selectors", d: "Key-value pairs to organize objects. Services use Selectors to know which pods to route traffic to.", c: "kubectl run app --image=nginx --labels=\"env=prod,tier=frontend\"\nkubectl get pods -l env=prod" }
                 ]
             },
             {
-                mod: "Scheduling",
-                topics: ["Labels", "Taints", "Affinity", "DaemonSets", "Static Pods", "Limits"],
+                mod: "Scheduling Concepts",
+                topics: ["Taints", "Tolerations", "Affinity", "Static Pods", "Limits"],
                 data: [
-                    { t: "Labels & Selectors", d: "Labels are key-value pairs attached to objects. Selectors are used to group them (e.g., Service selecting Pods).", c: "kubectl run pod --image=nginx --labels=\"app=v1,env=prod\"\nkubectl get pods -l env=prod" },
-                    { t: "Taints & Tolerations", d: "Taints are on Nodes (repels pods). Tolerations are on Pods (allows them to schedule on tainted nodes). Master nodes are tainted by default.", c: "kubectl taint node node01 app=web:NoSchedule\n# Pod YAML:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"web\"\n  effect: \"NoSchedule\"" },
-                    { t: "Node Selectors & Affinity", d: "NodeSelector is simple (disktype: ssd). NodeAffinity provides advanced rules (In, NotIn, Exists) and preference vs requirement.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" },
-                    { t: "DaemonSets", d: "Ensures a copy of a Pod runs on ALL (or some) Nodes. Used for logging agents (Fluentd), networking (Kube-proxy, Weave).", c: "# No direct kubectl command, create deploy and change kind:\nkubectl create deploy log-agent --image=fluentd $do > ds.yaml\n# Change 'kind: Deployment' to 'kind: DaemonSet', remove replicas." },
-                    { t: "Static Pods", d: "Pods managed directly by the Kubelet without API server intervention. Kubelet watches a specific directory.", c: "cat /var/lib/kubelet/config.yaml | grep staticPodPath\n# Usually /etc/kubernetes/manifests" },
-                    { t: "Resource Limits/Requests", d: "Requests = what the pod needs to be scheduled. Limits = maximum resources it can use before throttling/OOMKill.", c: "resources:\n  requests:\n    memory: \"64Mi\"\n    cpu: \"250m\"\n  limits:\n    memory: \"128Mi\"\n    cpu: \"500m\"" }
+                    { t: "Taints & Tolerations", d: "Taints (on nodes) repel pods. Tolerations (on pods) allow them to bypass taints. Does NOT guarantee the pod goes to that node.", c: "kubectl taint node node-1 app=web:NoSchedule\n# Pod YAML:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"web\"\n  effect: \"NoSchedule\"" },
+                    { t: "Node Affinity", d: "Attracts pods to specific nodes based on Node labels. Supports 'required' (hard) or 'preferred' (soft) rules.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" },
+                    { t: "Static Pods", d: "Created directly by the Kubelet reading YAML files from a specific directory on the host, without API server interaction.", c: "cat /var/lib/kubelet/config.yaml | grep staticPodPath\n# Usually /etc/kubernetes/manifests" },
+                    { t: "Resource Limits/Requests", d: "Requests: Guaranteed resources to schedule. Limits: Max threshold before throttling (CPU) or OOMKilled (Memory).", c: "resources:\n  requests:\n    memory: \"64Mi\"\n    cpu: \"250m\"\n  limits:\n    memory: \"128Mi\"\n    cpu: \"500m\"" }
                 ]
             },
             {
-                mod: "Application Lifecycle",
-                topics: ["Rollouts", "ConfigMaps", "Secrets", "Multi-Container"],
+                mod: "Networking & Services",
+                topics: ["ClusterIP", "NodePort", "Ingress", "Network Policies", "CoreDNS"],
                 data: [
-                    { t: "Rolling Updates & Rollbacks", d: "Default deployment strategy. Updates pods one by one. Rollout history saves previous states.", c: "kubectl set image deploy/nginx nginx=nginx:1.17\nkubectl rollout status deploy/nginx\nkubectl rollout history deploy/nginx\nkubectl rollout undo deploy/nginx" },
-                    { t: "ConfigMaps", d: "Pass non-sensitive configuration data to pods. Can be injected as Environment Variables or mounted as Volumes.", c: "kubectl create cm app-config --from-literal=COLOR=blue\n# Pod YAML:\nenv:\n- name: APP_COLOR\n  valueFrom:\n    configMapKeyRef:\n      name: app-config\n      key: COLOR" },
-                    { t: "Secrets", d: "Stores sensitive data (base64 encoded, NOT encrypted by default unless configured).", c: "kubectl create secret generic db-pass --from-literal=password=12345\n# Note: Echo base64 carefully:\necho -n '12345' | base64" },
-                    { t: "Multi-Container Pods", d: "Patterns: Sidecar, Adapter, Ambassador. They share lifecycle, network, and volumes.", c: "spec:\n  containers:\n  - name: app\n    image: nginx\n  - name: sidecar\n    image: log-agent" },
-                    { t: "InitContainers", d: "Runs to completion BEFORE app containers start. Useful for setup scripts or waiting for a DB.", c: "spec:\n  initContainers:\n  - name: init-myservice\n    image: busybox\n    command: ['sh', '-c', 'until nslookup myservice; do sleep 2; done;']" }
+                    { t: "Services", d: "ClusterIP: Internal only. NodePort: Opens a port (30000-32767) on ALL nodes. LoadBalancer: Hooks into AWS/GCP.", c: "kubectl expose pod web --port=80 --name=web-svc --type=NodePort" },
+                    { t: "Ingress", d: "Layer 7 HTTP/S routing to Services based on URLs or Hostnames. Requires an Ingress Controller.", c: "kubectl create ingress web-ing --rule=\"test.com/path*=svc:8080\"" },
+                    { t: "Network Policies", d: "Pod-level firewalls. By default, pods are open. Once selected by a policy, all non-whitelisted traffic is dropped.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nspec:\n  podSelector:\n    matchLabels:\n      role: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          role: frontend" },
+                    { t: "CoreDNS", d: "K8s internal DNS. Naming convention: service-name.namespace.svc.cluster.local", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns" }
                 ]
             },
             {
-                mod: "Storage",
+                mod: "Storage Configuration",
                 topics: ["Volumes", "PV", "PVC", "StorageClasses"],
                 data: [
-                    { t: "Volumes (ephemeral/host)", d: "emptyDir shares data between containers and dies with the pod. hostPath maps a directory from the Node.", c: "volumes:\n- name: data-vol\n  hostPath:\n    path: /data\n    type: Directory" },
-                    { t: "Persistent Volumes (PV)", d: "Cluster-wide storage pool provisioned by admin.", c: "apiVersion: v1\nkind: PersistentVolume\nmetadata:\n  name: pv-vol\nspec:\n  capacity:\n    storage: 1Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /tmp/data" },
-                    { t: "Persistent Volume Claims (PVC)", d: "User's request for storage. Binds to a PV based on capacity and accessModes. Pods mount the PVC, not the PV.", c: "kubectl get pvc,pv" },
-                    { t: "Storage Classes", d: "Allows dynamic provisioning. When a PVC is created specifying a StorageClass, K8s automatically talks to cloud provider to create disk & PV.", c: "kubectl get sc\n# PVC YAML:\nstorageClassName: standard" }
-                ]
-            },
-            {
-                mod: "Networking",
-                topics: ["CNI", "Services", "Ingress", "Network Policies", "CoreDNS"],
-                data: [
-                    { t: "Pod Networking (CNI)", d: "Every pod gets an IP. Pods can communicate without NAT. Plugins: WeaveNet, Flannel, Calico.", c: "ls /etc/cni/net.d/" },
-                    { t: "Services (ClusterIP & NodePort)", d: "ClusterIP: Internal IP. NodePort: Exposes service on a port (30000-32767) across ALL nodes.", c: "kubectl expose pod redis --port=6379 --name redis-svc\nkubectl create svc nodeport web --tcp=80:80 --node-port=30080" },
-                    { t: "Ingress", d: "Layer 7 routing (HTTP/HTTPS) from outside to internal services based on path or domain. Requires an Ingress Controller (e.g. NGINX).", c: "kubectl create ingress simple --rule=\"foo.com/bar=svc1:8080\"" },
-                    { t: "CoreDNS", d: "Deployed as a Deployment in kube-system. Configured via Corefile ConfigMap. DNS format: service.namespace.svc.cluster.local.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl get cm -n kube-system coredns" },
-                    { t: "Network Policies", d: "Firewalls for pods. By default, pods are non-isolated (accept all traffic). Once a policy selects a pod, it rejects all traffic except what is explicitly whitelisted.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\n# Must specify podSelector and ingress/egress rules carefully." }
+                    { t: "Ephemeral Volumes", d: "emptyDir: Lives and dies with the Pod. hostPath: Mounts a file/directory directly from the Node's filesystem.", c: "volumes:\n- name: log-volume\n  emptyDir: {}" },
+                    { t: "Persistent Volumes (PV)", d: "Cluster-wide storage resource provisioned by an Admin. AccessModes: ReadWriteOnce, ReadOnlyMany, ReadWriteMany.", c: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 5Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" },
+                    { t: "Persistent Volume Claims (PVC)", d: "A request for storage by a developer. Binds to a PV. Pods mount the PVC, not the PV directly.", c: "kubectl get pvc,pv" }
                 ]
             },
             {
                 mod: "Security & Cluster Admin",
-                topics: ["RBAC", "Kubeconfig", "Upgrades", "ETCD Backup"],
+                topics: ["RBAC", "Kubeadm Upgrades", "ETCD Backup", "Secrets"],
                 data: [
-                    { t: "RBAC (Roles & Bindings)", d: "Role (Namespace level) vs ClusterRole (Cluster level). Bindings attach a Role to a User/Group/ServiceAccount.", c: "kubectl create role dev --verb=create,list,get --resource=pods\nkubectl create rolebinding dev-bind --role=dev --user=john\nkubectl auth can-i create pods --as=john" },
-                    { t: "Service Accounts", d: "Identities for processes running in Pods. Useful for letting a Pod query the K8s API.", c: "kubectl create sa dashboard-sa\n# Pod YAML:\nserviceAccountName: dashboard-sa" },
-                    { t: "Security Contexts", d: "Define privileges and access control settings for a Pod or Container (e.g., run as user ID 1000, read-only root fs).", c: "securityContext:\n  runAsUser: 1000\n  capabilities:\n    add: [\"MAC_ADMIN\"]" },
-                    { t: "Cluster Upgrades (Kubeadm)", d: "Upgrade sequence: Master node first (kubeadm -> kubelet), then Worker nodes. Drain node before upgrading.", c: "kubectl drain controlplane --ignore-daemonsets\napt update && apt install kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt install kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
-                    { t: "ETCD Backup/Restore", d: "CRITICAL CKA TOPIC. You must pass the certs for authentication.", c: "ETCDCTL_API=3 etcdctl snapshot save /opt/snap.db \\\n  --endpoints=127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" }
+                    { t: "RBAC", d: "Role (Namespace) vs ClusterRole (Global). RoleBinding attaches the role to a User, Group, or ServiceAccount.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-bind --role=pod-reader --user=jane" },
+                    { t: "ETCD Backup & Restore", d: "CRITICAL EXAM TOPIC. You must snapshot the database passing the correct certificates.", c: "ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
+                    { t: "Cluster Upgrades (Kubeadm)", d: "Always upgrade the Control Plane first, then Workers. Drain nodes before upgrading.", c: "kubectl drain controlplane --ignore-daemonsets\napt install kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt install kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" }
                 ]
             },
             {
                 mod: "Troubleshooting",
-                topics: ["Control Plane", "Worker Node", "Applications"],
+                topics: ["Logs", "Node Failures", "Control Plane"],
                 data: [
-                    { t: "Application Failure", d: "CrashLoopBackOff or Error state. Check logs. Check previous crashed instance. Check events.", c: "kubectl describe pod myapp\nkubectl logs myapp\nkubectl logs myapp --previous" },
-                    { t: "Worker Node Failure", d: "Node is NotReady. SSH into node. Check kubelet status. Check system logs. Check disk space. Ensure swap is off.", c: "ssh node01\nsystemctl status kubelet\njournalctl -u kubelet -f\nfree -m # check swap" },
-                    { t: "Control Plane Failure", d: "Static pods are down (api, scheduler, etcd). Check manifests directory. Check docker/containerd containers directly.", c: "cd /etc/kubernetes/manifests\n# Fix typos in YAML files here. Kubelet will auto-restart them.\ncrictl ps" }
+                    { t: "Pod Failures", d: "Check logs. If CrashLoopBackOff, the application is failing to start. Use -p to check previous crashed instance.", c: "kubectl describe pod failing-pod\nkubectl logs failing-pod\nkubectl logs failing-pod -p" },
+                    { t: "Worker Node NotReady", d: "SSH into node. Verify kubelet is running. Check disk space. Check for Swap (Swap must be disabled for kubelet).", c: "systemctl status kubelet\njournalctl -u kubelet -f\nfree -m" },
+                    { t: "Control Plane Down", d: "If kubectl fails, check if API server is running. Check static pod manifests in /etc/kubernetes/manifests for typos.", c: "cd /etc/kubernetes/manifests\ncrictl ps" }
                 ]
             }
         ];
@@ -414,12 +481,12 @@
             
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
-            document.body.style.overflow = 'hidden'; // prevent bg scroll
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeModal() {
             modal.classList.remove('show');
-            setTimeout(() => modal.style.display = 'none', 300);
+            setTimeout(() => modal.style.display = 'none', 200);
             document.body.style.overflow = 'auto';
         }
     </script>

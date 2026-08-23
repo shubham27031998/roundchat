@@ -3,309 +3,429 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>K8s Architecture & CKA Masterclass</title>
-    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Inter:wght@300;500;700&display=swap" rel="stylesheet">
+    <title>Roundchat | CKA Interactive Masterclass</title>
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Outfit:wght@300;500;700;800&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg: #0f172a;
-            --panel: #1e293b;
-            --border: #334155;
+            --bg-dark: #090e17;
+            --panel: rgba(17, 24, 39, 0.7);
+            --border: #1e293b;
             --k8s-blue: #326ce5;
-            --k8s-dark: #1b3a82;
+            --k8s-light: #6eb0ff;
+            --k8s-glow: rgba(50, 108, 229, 0.5);
             --text-main: #f8fafc;
             --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --success: #10b981;
-            --warning: #f59e0b;
+            --accent-green: #10b981;
+            --accent-purple: #8b5cf6;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', sans-serif; }
-        body { background-color: var(--bg); color: var(--text-main); line-height: 1.6; padding-bottom: 50px; }
-
-        /* HEADER */
-        header { background: rgba(30, 41, 59, 0.8); backdrop-filter: blur(10px); padding: 20px; border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 100; text-align: center; }
-        header h1 { color: var(--k8s-blue); font-size: 2rem; display: flex; align-items: center; justify-content: center; gap: 10px; }
-        header p { color: var(--text-muted); font-size: 0.9rem; margin-top: 5px; }
-
-        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
-
-        /* INTERACTIVE ARCHITECTURE SECTION */
-        .section-title { font-size: 1.5rem; margin-bottom: 15px; border-left: 4px solid var(--k8s-blue); padding-left: 10px; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Outfit', sans-serif; }
         
-        .arch-container { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 40px; }
-        @media(max-width: 900px) { .arch-container { grid-template-columns: 1fr; } }
+        body { 
+            background: var(--bg-dark); color: var(--text-main); 
+            line-height: 1.6; overflow-x: hidden; 
+            background-image: radial-gradient(circle at top right, rgba(50, 108, 229, 0.1), transparent 40%),
+                              radial-gradient(circle at bottom left, rgba(139, 92, 246, 0.1), transparent 40%);
+            background-attachment: fixed;
+        }
 
-        .diagram-box { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
-        .diagram-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-        @media(max-width: 600px) { .diagram-grid { grid-template-columns: 1fr; } }
+        /* --- HEADER --- */
+        header { 
+            text-align: center; padding: 40px 20px; position: relative; z-index: 10;
+            border-bottom: 1px solid var(--border); background: rgba(9, 14, 23, 0.8); backdrop-filter: blur(12px);
+        }
+        .logo-wrap { display: inline-block; animation: float 6s ease-in-out infinite; margin-bottom: 10px; }
+        header h1 { font-size: 2.5rem; font-weight: 800; background: linear-gradient(90deg, var(--k8s-light), var(--accent-purple)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+        header p { color: var(--text-muted); font-size: 1.1rem; max-width: 600px; margin: 0 auto; }
 
-        .node-box { border: 2px dashed var(--border); border-radius: 8px; padding: 15px; position: relative; }
-        .node-title { position: absolute; top: -12px; left: 15px; background: var(--panel); padding: 0 10px; font-weight: bold; color: var(--accent); font-size: 0.85rem; }
+        .container { max-width: 1400px; margin: 0 auto; padding: 40px 20px; }
+        .section-title { font-size: 2rem; font-weight: 700; margin-bottom: 30px; display: flex; align-items: center; gap: 15px; }
+        .section-title span { background: var(--panel); padding: 5px 15px; border-radius: 20px; font-size: 1rem; color: var(--k8s-light); border: 1px solid var(--border); }
+
+        /* --- ANIMATED ARCHITECTURE --- */
+        .arch-wrapper {
+            background: var(--panel); border: 1px solid var(--border); border-radius: 20px;
+            padding: 40px; position: relative; overflow: hidden; box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+            backdrop-filter: blur(10px);
+        }
         
-        .component { background: var(--k8s-dark); border: 1px solid var(--k8s-blue); padding: 12px; border-radius: 6px; margin-bottom: 10px; text-align: center; font-weight: 600; cursor: pointer; transition: 0.2s; font-size: 0.9rem; }
-        .component:hover, .component.active { background: var(--k8s-blue); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(50, 108, 229, 0.4); }
-
-        .info-panel { background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; display: flex; flex-direction: column; }
-        .info-panel h3 { color: var(--accent); margin-bottom: 10px; border-bottom: 1px solid var(--border); padding-bottom: 10px; }
-        .info-panel p { font-size: 0.95rem; color: var(--text-muted); }
-        .info-panel .cka-tip { margin-top: auto; background: rgba(245, 158, 11, 0.1); border-left: 3px solid var(--warning); padding: 10px; font-size: 0.85rem; color: var(--warning); }
-
-        /* CKA SYLLABUS TABS */
-        .tabs { display: flex; gap: 5px; overflow-x: auto; margin-bottom: 20px; padding-bottom: 5px; }
-        .tab-btn { background: var(--panel); border: 1px solid var(--border); color: var(--text-main); padding: 10px 20px; border-radius: 6px; cursor: pointer; white-space: nowrap; font-weight: 600; transition: 0.2s; }
-        .tab-btn.active { background: var(--k8s-blue); border-color: var(--k8s-blue); }
-        .tab-content { display: none; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; padding: 20px; animation: fadeIn 0.3s; }
-        .tab-content.active { display: block; }
-        .tab-content h3 { margin-bottom: 15px; color: var(--accent); }
-        .tab-content ul { list-style-position: inside; color: var(--text-muted); }
-        .tab-content li { margin-bottom: 8px; font-size: 0.95rem; }
-        .tab-content code { background: #0f172a; padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.85rem; color: var(--success); }
-
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-        /* KUBECTL TERMINAL */
-        .terminal-wrap { margin-top: 40px; }
-        .terminal { background: #050811; border: 1px solid var(--border); border-radius: 8px; padding: 20px; font-family: 'Fira Code', monospace; font-size: 0.9rem; height: 350px; overflow-y: auto; box-shadow: inset 0 0 20px rgba(0,0,0,0.5); }
-        .term-line { margin-bottom: 8px; word-break: break-all; }
-        .prompt { color: var(--success); font-weight: bold; }
-        .term-input-box { display: flex; align-items: center; gap: 10px; margin-top: 10px; }
-        .term-input { flex: 1; background: transparent; border: none; color: #fff; font-family: 'Fira Code', monospace; font-size: 0.9rem; outline: none; }
+        .nodes-container { display: flex; justify-content: center; gap: 60px; flex-wrap: wrap; position: relative; z-index: 2; }
         
+        .node-card {
+            background: rgba(15, 23, 42, 0.8); border: 1px solid var(--border); border-radius: 16px;
+            padding: 25px; width: 380px; position: relative; transition: all 0.3s;
+        }
+        .node-card:hover { border-color: var(--k8s-blue); box-shadow: 0 0 30px var(--k8s-glow); }
+        .node-header { font-size: 1.2rem; font-weight: 700; color: var(--k8s-light); margin-bottom: 20px; text-transform: uppercase; letter-spacing: 2px; border-bottom: 1px dashed var(--border); padding-bottom: 10px; }
+        
+        .comp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .comp {
+            background: rgba(30, 41, 59, 0.8); border: 1px solid var(--border); border-radius: 10px;
+            padding: 15px 10px; text-align: center; font-weight: 600; font-size: 0.9rem;
+            cursor: pointer; transition: all 0.3s; position: relative; z-index: 5;
+        }
+        .comp:hover, .comp.active {
+            background: var(--k8s-blue); color: white; border-color: var(--k8s-light);
+            transform: translateY(-5px); box-shadow: 0 10px 20px var(--k8s-glow);
+        }
+
+        /* SVG Flow Lines */
+        #arch-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
+        .flow-line { fill: none; stroke: var(--border); stroke-width: 2; stroke-dasharray: 5, 5; }
+        .flow-line.active { stroke: var(--k8s-blue); animation: dash 20s linear infinite; filter: drop-shadow(0 0 5px var(--k8s-light)); }
+
+        .info-panel {
+            margin-top: 30px; background: rgba(15, 23, 42, 0.9); border: 1px solid var(--k8s-blue);
+            border-radius: 12px; padding: 25px; min-height: 120px; display: flex; flex-direction: column; justify-content: center;
+            box-shadow: inset 0 0 20px rgba(50, 108, 229, 0.1);
+        }
+        .info-title { font-size: 1.4rem; font-weight: 700; color: var(--k8s-light); margin-bottom: 10px; }
+        .info-desc { color: var(--text-muted); font-size: 1rem; }
+
+        /* --- SYLLABUS GRID --- */
+        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 20px; }
+        .module-card {
+            background: var(--panel); border: 1px solid var(--border); border-radius: 16px; padding: 25px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); position: relative; overflow: hidden;
+            backdrop-filter: blur(10px); cursor: pointer;
+        }
+        .module-card::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%;
+            background: var(--k8s-blue); transition: 0.3s;
+        }
+        .module-card:hover { transform: translateY(-5px); border-color: var(--k8s-blue); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .module-card:hover::before { width: 100%; opacity: 0.05; }
+        
+        .mod-weight { position: absolute; top: 15px; right: 15px; background: rgba(50, 108, 229, 0.2); color: var(--k8s-light); padding: 4px 10px; border-radius: 20px; font-size: 0.8rem; font-weight: 700; }
+        .mod-title { font-size: 1.3rem; font-weight: 700; margin-bottom: 15px; color: #fff; }
+        .mod-topics { display: flex; flex-wrap: wrap; gap: 8px; }
+        .topic-chip { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 5px 12px; border-radius: 12px; font-size: 0.8rem; color: var(--text-muted); transition: 0.2s; }
+        .module-card:hover .topic-chip { background: rgba(50, 108, 229, 0.1); color: var(--text-main); border-color: var(--k8s-blue); }
+
+        /* Modal for Syllabus Details */
+        #modal {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(15px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px;
+            opacity: 0; transition: opacity 0.3s;
+        }
+        #modal.show { display: flex; opacity: 1; }
+        .modal-content {
+            background: var(--bg-dark); border: 1px solid var(--border); border-radius: 20px;
+            width: 100%; max-width: 800px; max-height: 85vh; overflow-y: auto;
+            position: relative; transform: translateY(20px); transition: 0.3s; box-shadow: 0 25px 50px rgba(0,0,0,0.6);
+        }
+        #modal.show .modal-content { transform: translateY(0); }
+        .modal-header { padding: 25px; border-bottom: 1px solid var(--border); background: var(--panel); position: sticky; top: 0; z-index: 10; display: flex; justify-content: space-between; align-items: center; }
+        .modal-title { font-size: 1.8rem; font-weight: 700; color: var(--k8s-light); }
+        .close-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; width: 36px; height: 36px; border-radius: 50%; cursor: pointer; transition: 0.2s; font-size: 1.2rem; }
+        .close-btn:hover { background: var(--accent-red); }
+        .modal-body { padding: 25px; }
+        
+        .concept-block { margin-bottom: 25px; background: rgba(255,255,255,0.02); border: 1px solid var(--border); border-radius: 12px; padding: 20px; }
+        .concept-title { font-size: 1.2rem; font-weight: 700; color: #fff; margin-bottom: 10px; display: flex; align-items: center; gap: 10px; }
+        .concept-title::before { content: '⚡'; }
+        .concept-desc { color: var(--text-muted); margin-bottom: 15px; font-size: 0.95rem; }
+        
+        .code-block {
+            background: #050811; border: 1px solid #1e293b; border-radius: 8px;
+            padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.9rem;
+            color: var(--accent-green); position: relative;
+        }
+        .code-block::before { content: '$ '; color: var(--text-muted); }
+
+        /* Animations */
+        @keyframes float { 0% { transform: translateY(0px); } 50% { transform: translateY(-10px); } 100% { transform: translateY(0px); } }
+        @keyframes dash { to { stroke-dashoffset: -1000; } }
+
+        /* --- TERMINAL HINT --- */
+        .term-hint {
+            background: rgba(16, 185, 129, 0.1); border: 1px solid var(--accent-green);
+            padding: 20px; border-radius: 12px; margin-top: 40px; text-align: center;
+            font-family: 'Fira Code', monospace; color: var(--accent-green);
+            animation: pulse 2s infinite;
+        }
+        @keyframes pulse { 0% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.4); } 70% { box-shadow: 0 0 0 10px rgba(16, 185, 129, 0); } 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); } }
+
+        @media(max-width: 768px) {
+            .nodes-container { flex-direction: column; align-items: center; }
+            .node-card { width: 100%; }
+        }
     </style>
 </head>
 <body>
 
     <header>
-        <h1>☸️ Interactive CKA Learning Hub</h1>
-        <p>Master Kubernetes Architecture and Certification Concepts Visually</p>
+        <div class="logo-wrap">
+            <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="#326CE5"/>
+                <circle cx="50" cy="50" r="20" fill="white"/>
+            </svg>
+        </div>
+        <h1>Kubernetes & CKA Visual Lab</h1>
+        <p>Interactive architecture explorer and complete certification syllabus. Master concepts visually before you take the exam.</p>
     </header>
 
     <div class="container">
-        <!-- ARCHITECTURE SECTION -->
-        <h2 class="section-title">1. Cluster Architecture (Click components to learn)</h2>
-        <div class="arch-container">
-            <div class="diagram-box">
-                <div class="diagram-grid">
-                    <!-- Control Plane -->
-                    <div class="node-box">
-                        <div class="node-title">Control Plane (Master)</div>
-                        <div style="height: 15px;"></div>
-                        <div class="component" onclick="showInfo('apiserver', this)">kube-apiserver</div>
-                        <div class="component" onclick="showInfo('etcd', this)">etcd</div>
-                        <div class="component" onclick="showInfo('scheduler', this)">kube-scheduler</div>
-                        <div class="component" onclick="showInfo('controller', this)">kube-controller-manager</div>
-                        <div class="component" onclick="showInfo('ccm', this)">cloud-controller-manager</div>
+        
+        <!-- MODULE 1: ARCHITECTURE -->
+        <div class="section-title">
+            1. Core Architecture Visualizer <span>Interactive</span>
+        </div>
+        <div class="arch-wrapper">
+            <!-- SVG for data flow lines -->
+            <svg id="arch-svg">
+                <!-- Lines will be drawn dynamically via JS to be responsive -->
+                <path id="line-api-etcd" class="flow-line" />
+                <path id="line-api-sched" class="flow-line" />
+                <path id="line-api-ctrl" class="flow-line" />
+                <path id="line-api-kubelet" class="flow-line" />
+            </svg>
+
+            <div class="nodes-container">
+                <!-- Control Plane -->
+                <div class="node-card" id="cp-node">
+                    <div class="node-header">Control Plane</div>
+                    <div class="comp-grid">
+                        <div class="comp" id="comp-api" onclick="activateComp('api')">kube-apiserver</div>
+                        <div class="comp" id="comp-etcd" onclick="activateComp('etcd')">etcd</div>
+                        <div class="comp" id="comp-sched" onclick="activateComp('sched')">kube-scheduler</div>
+                        <div class="comp" id="comp-ctrl" onclick="activateComp('ctrl')">controller-manager</div>
                     </div>
-                    
-                    <!-- Worker Node -->
-                    <div class="node-box">
-                        <div class="node-title">Worker Node</div>
-                        <div style="height: 15px;"></div>
-                        <div class="component" onclick="showInfo('kubelet', this)">kubelet</div>
-                        <div class="component" onclick="showInfo('kubeproxy', this)">kube-proxy</div>
-                        <div class="component" onclick="showInfo('runtime', this)">Container Runtime (CRI)</div>
-                        <div class="node-box" style="margin-top: 15px; border-color: var(--k8s-blue);">
-                            <div class="node-title" style="color: var(--text-main);">Pod</div>
-                            <div style="background: #0f172a; padding: 10px; border-radius: 4px; font-size: 0.8rem; text-align: center; color: var(--success);">Container(s)</div>
-                        </div>
+                </div>
+
+                <!-- Worker Node -->
+                <div class="node-card" id="w-node">
+                    <div class="node-header">Worker Node</div>
+                    <div class="comp-grid">
+                        <div class="comp" id="comp-kubelet" onclick="activateComp('kubelet')">kubelet</div>
+                        <div class="comp" id="comp-proxy" onclick="activateComp('proxy')">kube-proxy</div>
+                    </div>
+                    <div class="comp" style="margin-top: 15px; grid-column: 1 / span 2; border-style: dashed; border-color: var(--k8s-light);" id="comp-pod" onclick="activateComp('pod')">
+                        Pod (Containers)
                     </div>
                 </div>
             </div>
 
-            <div class="info-panel">
-                <h3 id="info-title">Select a component</h3>
-                <p id="info-desc">Click on any component in the architecture diagram to view its core responsibilities and how it relates to the CKA exam.</p>
-                <div id="info-tip" class="cka-tip" style="display: none;"></div>
+            <div class="info-panel" id="arch-info">
+                <div class="info-title">Cluster Hub</div>
+                <div class="info-desc">Click any component in the Control Plane or Worker Node above to see its data flow, core function, and CKA exam relevance. The API server is the only component that communicates with ETCD.</div>
             </div>
         </div>
 
-        <!-- CKA CURRICULUM SECTION -->
-        <h2 class="section-title">2. CKA Curriculum & Cheat Sheet</h2>
-        <div class="tabs">
-            <button class="tab-btn active" onclick="switchTab('cluster', this)">Cluster Architecture (25%)</button>
-            <button class="tab-btn" onclick="switchTab('workloads', this)">Workloads & Scheduling (15%)</button>
-            <button class="tab-btn" onclick="switchTab('services', this)">Services & Networking (20%)</button>
-            <button class="tab-btn" onclick="switchTab('storage', this)">Storage (10%)</button>
-            <button class="tab-btn" onclick="switchTab('trouble', this)">Troubleshooting (30%)</button>
+        <br><br>
+
+        <!-- MODULE 2: CKA SYLLABUS -->
+        <div class="section-title" style="margin-top: 40px;">
+            2. Complete CKA Syllabus Matrix <span>Click to Expand</span>
+        </div>
+        
+        <div class="syllabus-grid" id="syllabus-container">
+            <!-- Generated via JS -->
         </div>
 
-        <div id="cluster" class="tab-content active">
-            <h3>Cluster Architecture, Installation & Configuration</h3>
-            <ul>
-                <li><strong>RBAC:</strong> Understand Roles, RoleBindings, ClusterRoles, and ClusterRoleBindings. Commands: <code>kubectl create role</code>, <code>kubectl auth can-i</code></li>
-                <li><strong>Kubeadm:</strong> Know how to bootstrap a cluster. Use <code>kubeadm init</code> and <code>kubeadm join</code>. Know how to upgrade the cluster (drain node, <code>kubeadm upgrade</code>, uncordon).</li>
-                <li><strong>ETCD Backup & Restore:</strong> Critical exam topic. Use <code>ETCDCTL_API=3 etcdctl snapshot save</code> and <code>snapshot restore</code>. Must pass correct certs/keys.</li>
-            </ul>
+        <div class="term-hint">
+            <strong>Pro Tip for Exam:</strong> Set your aliases immediately: <br>
+            <span style="color:#fff;">alias k=kubectl</span> <br>
+            <span style="color:#fff;">export do="--dry-run=client -o yaml"</span>
         </div>
 
-        <div id="workloads" class="tab-content">
-            <h3>Workloads & Scheduling</h3>
-            <ul>
-                <li><strong>Deployments & Rollbacks:</strong> Know <code>kubectl create deploy</code>, <code>kubectl rollout status</code>, <code>kubectl rollout undo</code>.</li>
-                <li><strong>Scheduling:</strong> NodeSelectors, NodeAffinity, PodAffinity/AntiAffinity, Taints and Tolerations.</li>
-                <li><strong>ConfigMaps & Secrets:</strong> Create from literals/files. Mount them as environment variables or Volumes inside Pods.</li>
-            </ul>
-        </div>
+    </div>
 
-        <div id="services" class="tab-content">
-            <h3>Services & Networking</h3>
-            <ul>
-                <li><strong>Services:</strong> ClusterIP (default), NodePort, LoadBalancer. Connect Pods via selectors.</li>
-                <li><strong>Network Policies:</strong> Act as firewalls for Pods. Default deny-all vs specific allow rules (Ingress/Egress).</li>
-                <li><strong>Ingress:</strong> Expose HTTP/HTTPS routes from outside the cluster to services. Requires an Ingress Controller (e.g., NGINX).</li>
-                <li><strong>DNS:</strong> Understand CoreDNS. Pod DNS resolution: <code>service.namespace.svc.cluster.local</code></li>
-            </ul>
-        </div>
-
-        <div id="storage" class="tab-content">
-            <h3>Storage</h3>
-            <ul>
-                <li><strong>Volumes:</strong> emptyDir (ephemeral), hostPath (node specific).</li>
-                <li><strong>PersistentVolumes (PV):</strong> Cluster-wide storage resource. Know AccessModes (ReadWriteOnce, ReadOnlyMany, ReadWriteMany).</li>
-                <li><strong>PersistentVolumeClaims (PVC):</strong> Namespace-bound request for storage. Pods mount the PVC, not the PV directly.</li>
-                <li><strong>StorageClasses:</strong> Enables dynamic provisioning of PVs.</li>
-            </ul>
-        </div>
-
-        <div id="trouble" class="tab-content">
-            <h3>Troubleshooting</h3>
-            <ul>
-                <li><strong>Node Failure:</strong> Check <code>kubectl describe node</code>. SSH into node, check <code>systemctl status kubelet</code>, check <code>journalctl -u kubelet</code>.</li>
-                <li><strong>Pod Failure:</strong> <code>kubectl describe pod</code> (look at events at the bottom), <code>kubectl logs &lt;pod-name&gt;</code>. CrashLoopBackOff usually means application error.</li>
-                <li><strong>Network Failure:</strong> Are endpoints created? <code>kubectl get endpoints</code>. Check CoreDNS pods. Check CNI (kube-flannel, calico) logs.</li>
-                <li><strong>Evaluation:</strong> Always use <code>--dry-run=client -o yaml</code> to generate manifests quickly rather than writing from scratch.</li>
-            </ul>
-        </div>
-
-        <!-- TERMINAL SECTION -->
-        <div class="terminal-wrap">
-            <h2 class="section-title">3. Command Line Sandbox (Practice kubectl)</h2>
-            <div class="terminal" id="term-body">
-                <div class="term-line" style="color: var(--warning);">Connected to mock CKA Cluster (v1.30.0). Type 'help' for available mock commands.</div>
+    <!-- MODAL FOR DETAILED CONCEPTS -->
+    <div id="modal" onclick="if(event.target===this) closeModal()">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="modal-title" id="modalTitle">Module Title</div>
+                <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
-            <div style="background: #090d16; padding: 10px; border: 1px solid var(--border); border-top: none; border-radius: 0 0 8px 8px;">
-                <div class="term-input-box">
-                    <span class="prompt">admin@k8s-master:~$</span>
-                    <input type="text" class="term-input" id="cli" autofocus onkeydown="handleCli(event)">
-                </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Populated by JS -->
             </div>
         </div>
     </div>
 
     <script>
-        // ARCHITECTURE DATA
-        const archData = {
-            apiserver: {
+        /* --- ARCHITECTURE DATA & LOGIC --- */
+        const components = {
+            api: {
                 title: "kube-apiserver",
-                desc: "The front end of the Kubernetes control plane. It exposes the Kubernetes API and validates/configures data for API objects (pods, services, etc). All other components communicate through it.",
-                tip: "CKA Tip: If the API server is down, you cannot run `kubectl` commands. It runs as a static pod. Check its manifest at /etc/kubernetes/manifests/kube-apiserver.yaml."
+                desc: "The brain of the cluster. It exposes the K8s API. It is the ONLY component that communicates with etcd. Every other component (scheduler, kubelet) watches the API server for changes.",
+                lines: ['line-api-etcd', 'line-api-sched', 'line-api-ctrl', 'line-api-kubelet']
             },
             etcd: {
                 title: "etcd",
-                desc: "Consistent and highly-available key value store used as Kubernetes' backing store for all cluster data.",
-                tip: "CKA Tip: You MUST know how to backup and restore etcd. Memorize ETCDCTL_API=3 etcdctl snapshot save. You will need to provide --endpoints, --cacert, --cert, and --key."
+                desc: "Highly-available key-value store holding the entire cluster state. <br><br><b>CKA Critical:</b> Know how to backup: <code>ETCDCTL_API=3 etcdctl snapshot save</code> and provide certs/keys.",
+                lines: ['line-api-etcd']
             },
-            scheduler: {
+            sched: {
                 title: "kube-scheduler",
-                desc: "Watches for newly created Pods with no assigned node, and selects a node for them to run on based on resource requirements, taints/tolerations, and affinity rules.",
-                tip: "CKA Tip: If pods are stuck in 'Pending' state but have no errors in logs, the scheduler might be down, or the node lacks resources/has a taint the pod can't tolerate."
+                desc: "Watches the API Server for newly created Pods with no assigned node, and assigns them a node based on resources, taints, tolerations, and affinity.",
+                lines: ['line-api-sched']
             },
-            controller: {
+            ctrl: {
                 title: "kube-controller-manager",
-                desc: "Runs controller processes. Logically, each controller is a separate process, but they are compiled into a single binary. Includes Node, Job, Endpoints, and ServiceAccount controllers.",
-                tip: "CKA Tip: If nodes go down and pods are not being rescheduled after 5 minutes, check the controller-manager logs."
-            },
-            ccm: {
-                title: "cloud-controller-manager",
-                desc: "Embeds cloud-specific control logic (AWS, GCP, Azure). Links your cluster into the cloud provider's API for load balancers and routing.",
-                tip: "CKA Tip: Less heavily tested on the CKA compared to on-prem configurations, but essential for understanding LoadBalancer service types."
+                desc: "Runs controller loops (Node Controller, ReplicaSet Controller). If a pod dies, the controller notices the desired state doesn't match the actual state and asks the API to create a new one.",
+                lines: ['line-api-ctrl']
             },
             kubelet: {
                 title: "kubelet",
-                desc: "An agent that runs on each node in the cluster. It makes sure that containers are running in a Pod by communicating with the container runtime.",
-                tip: "CKA Tip: Kubelet runs as a systemd service, NOT a pod. To troubleshoot a broken node, ssh into it and run `systemctl status kubelet` or `journalctl -u kubelet`."
+                desc: "The captain of the Worker Node. Registers the node with the API server, takes instructions to run Pods, and interacts with the Container Runtime (CRI) to start containers.",
+                lines: ['line-api-kubelet']
             },
-            kubeproxy: {
+            proxy: {
                 title: "kube-proxy",
-                desc: "A network proxy that runs on each node. Maintains network rules (iptables or IPVS) on nodes, allowing network communication to Pods from inside or outside the cluster.",
-                tip: "CKA Tip: If a Service is created but you cannot reach the pods via the ClusterIP, there might be an issue with kube-proxy or the CNI plugin."
+                desc: "Maintains network rules on nodes. It uses iptables or IPVS to route traffic hitting a Service IP to the actual Pod IP.",
+                lines: []
             },
-            runtime: {
-                title: "Container Runtime",
-                desc: "The software that is responsible for running containers (e.g., containerd, CRI-O). Kubernetes interacts with it via the Container Runtime Interface (CRI).",
-                tip: "CKA Tip: Docker is deprecated as a runtime. You will likely interact with containerd. Use `crictl` to inspect containers directly on a node if kubelet is down."
+            pod: {
+                title: "Pods & Container Runtime",
+                desc: "The smallest deployable unit. Pods share a network namespace. The Container Runtime (like containerd) actually pulls the image and runs the process.",
+                lines: []
             }
         };
 
-        function showInfo(key, element) {
-            document.querySelectorAll('.component').forEach(el => el.classList.remove('active'));
-            element.classList.add('active');
+        function drawLines() {
+            const getCenter = (el) => {
+                const rect = el.getBoundingClientRect();
+                const wrapper = document.querySelector('.arch-wrapper').getBoundingClientRect();
+                return { x: rect.left - wrapper.left + rect.width/2, y: rect.top - wrapper.top + rect.height/2 };
+            };
 
-            const data = archData[key];
-            document.getElementById('info-title').innerText = data.title;
-            document.getElementById('info-desc').innerText = data.desc;
-            const tipEl = document.getElementById('info-tip');
-            tipEl.innerText = data.tip;
-            tipEl.style.display = 'block';
-        }
+            const api = getCenter(document.getElementById('comp-api'));
+            const targets = {
+                'line-api-etcd': getCenter(document.getElementById('comp-etcd')),
+                'line-api-sched': getCenter(document.getElementById('comp-sched')),
+                'line-api-ctrl': getCenter(document.getElementById('comp-ctrl')),
+                'line-api-kubelet': getCenter(document.getElementById('comp-kubelet'))
+            };
 
-        // TABS LOGIC
-        function switchTab(tabId, element) {
-            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-            
-            element.classList.add('active');
-            document.getElementById(tabId).classList.add('active');
-        }
-
-        // MOCK TERMINAL LOGIC
-        function handleCli(e) {
-            if (e.key === 'Enter') {
-                const input = e.target.value.trim();
-                if (!input) return;
-
-                const termBody = document.getElementById('term-body');
-                
-                // Add input line
-                const cmdLine = document.createElement('div');
-                cmdLine.innerHTML = `<span class="prompt">admin@k8s-master:~$</span> ${input}`;
-                termBody.appendChild(cmdLine);
-
-                // Process command
-                const responseLine = document.createElement('div');
-                responseLine.style.color = "var(--text-main)";
-
-                const cmd = input.toLowerCase();
-
-                if (cmd === 'help') {
-                    responseLine.innerHTML = "Mock commands available: <br> - kubectl get nodes<br> - kubectl get pods<br> - kubectl run nginx --image=nginx<br> - clear";
-                } else if (cmd === 'kubectl get nodes') {
-                    responseLine.innerHTML = `
-NAME           STATUS   ROLES           AGE   VERSION
-k8s-master     Ready    control-plane   45d   v1.30.0
-k8s-worker-1   Ready    <none>          45d   v1.30.0
-k8s-worker-2   Ready    <none>          45d   v1.30.0`;
-                    responseLine.style.whiteSpace = "pre";
-                } else if (cmd === 'kubectl get pods') {
-                    responseLine.innerHTML = "No resources found in default namespace.";
-                } else if (cmd.startsWith('kubectl run')) {
-                    responseLine.innerHTML = "pod/nginx created (mock)";
-                } else if (cmd === 'clear') {
-                    termBody.innerHTML = '';
-                    e.target.value = '';
-                    return;
-                } else if (cmd.startsWith('kubectl')) {
-                    responseLine.innerHTML = "Error from server (Forbidden): mock command not implemented in sandbox.";
-                    responseLine.style.color = "var(--warning)";
-                } else {
-                    responseLine.innerHTML = `bash: ${input.split(' ')[0]}: command not found`;
-                    responseLine.style.color = "var(--warning)";
-                }
-
-                termBody.appendChild(responseLine);
-                termBody.scrollTop = termBody.scrollHeight;
-                e.target.value = '';
+            for (let id in targets) {
+                const path = document.getElementById(id);
+                const t = targets[id];
+                // Draw bezier curve for smooth organic tech look
+                path.setAttribute('d', `M ${api.x} ${api.y} Q ${(api.x + t.x)/2} ${api.y - 50} ${t.x} ${t.y}`);
             }
+        }
+        
+        window.addEventListener('resize', drawLines);
+        setTimeout(drawLines, 500); // init draw
+
+        function activateComp(key) {
+            // Reset
+            document.querySelectorAll('.comp').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.flow-line').forEach(el => el.classList.remove('active'));
+            
+            // Activate
+            document.getElementById(`comp-${key}`).classList.add('active');
+            
+            const data = components[key];
+            document.getElementById('arch-info').innerHTML = `
+                <div class="info-title">${data.title}</div>
+                <div class="info-desc">${data.desc}</div>
+            `;
+
+            data.lines.forEach(id => {
+                document.getElementById(id).classList.add('active');
+            });
+        }
+
+
+        /* --- SYLLABUS DATA --- */
+        const syllabusData = [
+            {
+                title: "Cluster Architecture & Config",
+                weight: "25%",
+                topics: ["RBAC", "Kubeadm", "ETCD", "Upgrades"],
+                concepts: [
+                    { t: "Role Based Access Control (RBAC)", d: "Use Roles and RoleBindings to restrict access within a Namespace. Use ClusterRoles for cluster-wide access.", c: "kubectl create role pod-reader --verb=get,list --resource=pods" },
+                    { t: "Cluster Upgrades (Kubeadm)", d: "Always upgrade Master node first, then workers. Drain the node, upgrade kubeadm, apply, upgrade kubelet, uncordon.", c: "kubectl drain <node> --ignore-daemonsets" },
+                    { t: "ETCD Backup & Restore", d: "Requires passing certificates. Store the snapshot in the designated path.", c: "ETCDCTL_API=3 etcdctl snapshot save /tmp/backup.db \\\n--endpoints=https://127.0.0.1:2379 \\\n--cacert=/etc/.../ca.crt \\\n--cert=/etc/.../server.crt \\\n--key=/etc/.../server.key" }
+                ]
+            },
+            {
+                title: "Workloads & Scheduling",
+                weight: "15%",
+                topics: ["Deployments", "Taints", "Affinity", "ConfigMaps"],
+                concepts: [
+                    { t: "Taints & Tolerations", d: "Taints are applied to Nodes to repel Pods. Tolerations are applied to Pods to allow them to schedule on tainted nodes.", c: "kubectl taint nodes node1 key1=value1:NoSchedule" },
+                    { t: "Node Affinity", d: "Attracts Pods to specific nodes based on node labels (e.g., disktype=ssd). Requires scheduling vs Preferred scheduling.", c: "nodeSelector:\n  disktype: ssd" },
+                    { t: "Deployments & Rollbacks", d: "Manage stateless applications. Update image to trigger a rollout. Undo to revert.", c: "kubectl set image deployment/nginx nginx=nginx:1.16\nkubectl rollout undo deployment/nginx" }
+                ]
+            },
+            {
+                title: "Services & Networking",
+                weight: "20%",
+                topics: ["ClusterIP", "NodePort", "Network Policies", "Ingress"],
+                concepts: [
+                    { t: "Service Types", d: "ClusterIP (internal only), NodePort (exposes port on every node's IP), LoadBalancer (provisions cloud LB).", c: "kubectl expose deploy web --port=80 --type=NodePort" },
+                    { t: "Network Policies", d: "The firewall for Pods. If no policy selects a pod, it allows all traffic. If a policy selects it, it denies all traffic except what is explicitly allowed in Ingress/Egress rules.", c: "# Must define namespace and podSelector carefully" },
+                    { t: "Ingress", d: "Exposes HTTP/HTTPS routes from outside to services inside. Requires an Ingress Controller installed.", c: "kubectl create ingress web-ing --rule=\"hello-world.info/*=web:8080\"" }
+                ]
+            },
+            {
+                title: "Storage",
+                weight: "10%",
+                topics: ["PV", "PVC", "StorageClass"],
+                concepts: [
+                    { t: "Persistent Volumes (PV)", d: "Cluster-level storage resource. Independent of Pod lifecycle. Access modes: ReadWriteOnce, ReadOnlyMany, ReadWriteMany.", c: "kubectl get pv" },
+                    { t: "Persistent Volume Claims (PVC)", d: "A request for storage by a user/namespace. Pods mount the PVC. K8s binds the PVC to a suitable PV based on size and access mode.", c: "kubectl get pvc" },
+                    { t: "StorageClasses", d: "Enables dynamic volume provisioning. When a PVC requests a StorageClass, the provisioner automatically creates a PV for it.", c: "kubectl get sc" }
+                ]
+            },
+            {
+                title: "Troubleshooting",
+                weight: "30%",
+                topics: ["Logs", "Node Fail", "Pod Crash", "Network Issues"],
+                concepts: [
+                    { t: "Application Failures (CrashLoopBackOff)", d: "Check the pod's logs. If previous instance crashed, use -p. Usually a configuration or application code error.", c: "kubectl logs <pod-name>\nkubectl logs <pod-name> -p" },
+                    { t: "Control Plane / Node Failure", d: "If a node is NotReady, SSH into it. Check kubelet service. Check journalctl. Is the disk full? Is swap enabled (kubelet fails if swap is on)?", c: "systemctl status kubelet\njournalctl -u kubelet -f" },
+                    { t: "Networking Issues", d: "Can pods communicate? Check CoreDNS pods in kube-system. Ensure the CNI (e.g., Weave, Calico) is running correctly.", c: "kubectl get pods -n kube-system" }
+                ]
+            }
+        ];
+
+        // Render Syllabus
+        const grid = document.getElementById('syllabus-container');
+        syllabusData.forEach((mod, idx) => {
+            const topicsHtml = mod.topics.map(t => `<span class="topic-chip">${t}</span>`).join('');
+            grid.innerHTML += `
+                <div class="module-card" onclick="openModal(${idx})">
+                    <div class="mod-weight">${mod.weight}</div>
+                    <div class="mod-title">${mod.title}</div>
+                    <div class="mod-topics">${topicsHtml}</div>
+                </div>
+            `;
+        });
+
+        // Modal Logic
+        const modal = document.getElementById('modal');
+        function openModal(idx) {
+            const data = syllabusData[idx];
+            document.getElementById('modalTitle').innerText = data.title;
+            
+            let bodyHtml = '';
+            data.concepts.forEach(c => {
+                bodyHtml += `
+                    <div class="concept-block">
+                        <div class="concept-title">${c.t}</div>
+                        <div class="concept-desc">${c.d}</div>
+                        <div class="code-block">${c.c.replace(/\n/g, '<br>')}</div>
+                    </div>
+                `;
+            });
+            
+            document.getElementById('modalBody').innerHTML = bodyHtml;
+            modal.style.display = 'flex';
+            setTimeout(() => modal.classList.add('show'), 10);
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            modal.classList.remove('show');
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>

@@ -23,10 +23,7 @@
 
         .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .section-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid var(--k8s-blue); padding-left: 15px; }
-
-        .mode-tabs { display: flex; gap: 10px; }
-        .tab-btn { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
-        .tab-btn.active { background: var(--k8s-blue); color: #fff; border-color: var(--k8s-light); }
+        .helper-text { font-size: 0.85rem; color: var(--text-muted); font-weight: normal; }
 
         /* --- ARCHITECTURE GRID --- */
         .arch-simulator {
@@ -91,17 +88,11 @@
         .btn-sim.green:hover { border-color: var(--accent-green); }
         .btn-sim.red:hover { border-color: var(--accent-red); }
 
-        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.78rem; height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.78rem; height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
         .log-entry { opacity: 0; transform: translateY(5px); animation: fadeUp 0.3s forwards; color: var(--text-muted); line-height: 1.4; }
         .log-entry span { color: var(--k8s-light); }
         .log-entry.success { color: var(--accent-green); font-weight: bold; }
         .log-entry.danger { color: var(--accent-red); font-weight: bold; }
-
-        /* Inspector Box */
-        .info-box { padding: 20px; background: #0f0f13; border-top: 1px solid var(--border); font-size: 0.88rem; display: none; }
-        .info-box h4 { color: var(--k8s-light); margin-bottom: 6px; font-size: 1.05rem; }
-        .info-box p { color: var(--text-muted); margin-bottom: 10px; }
-        .info-box code { background: #000; padding: 6px 10px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent-green); font-size: 0.78rem; display: block; white-space: pre-wrap; }
 
         /* --- SYLLABUS GRID --- */
         .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
@@ -147,12 +138,10 @@
 
     <div class="container">
         
+        <!-- SECTION 1: ARCHITECTURE HUB -->
         <div class="section-title">
             <span>1. Cluster Architecture Hub</span>
-            <div class="mode-tabs">
-                <button class="tab-btn active" id="tab-sim" onclick="switchMode('sim')">Workflows (5 Simulations)</button>
-                <button class="tab-btn" id="tab-inspect" onclick="switchMode('inspect')">Component Inspector</button>
-            </div>
+            <span class="helper-text">💡 Click any component box on the canvas to inspect details</span>
         </div>
 
         <div class="arch-simulator">
@@ -172,16 +161,18 @@
                 
                 <div id="user-icon">Kube<br>Ctl</div>
                 
+                <!-- Components with Click Inspection -->
                 <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
                 <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
                 <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
-                <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation Loops</span></div>
+                <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
                 <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
                 <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
                 <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
             </div>
 
-            <div class="console-panel" id="panel-sim">
+            <!-- Simulation Console Panel -->
+            <div class="console-panel">
                 <div class="console-header">
                     <span>Simulation Engine</span>
                     <div class="speed-control">
@@ -202,33 +193,20 @@
                     <button class="btn-sim red" style="background:#451a03; border-color:#d97706; color:#fde68a;" onclick="stopCurrentSimulation()">■ Stop Simulation <span>Halt & Reset</span></button>
                 </div>
                 <div class="console-logs" id="logs">
-                    <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect it.</div>
-                </div>
-            </div>
-
-            <div class="console-panel" id="panel-inspect" style="display: none;">
-                <div class="console-header">
-                    <span>Component Inspector</span>
-                    <span id="inspect-counter" style="font-family:'Fira Code'; color:var(--k8s-light); font-size:0.78rem;">Active</span>
-                </div>
-                <div class="console-logs" id="inspect-logs" style="height: 180px;">
-                    <div class="log-entry highlight">Click any component box on the left canvas to examine its exact CKA responsibilities, configuration paths, and exam verification tips.</div>
-                </div>
-                <div class="info-box" id="inspect-info" style="display: block;">
-                    <h4 id="insp-title">kube-apiserver</h4>
-                    <p id="insp-desc">The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.</p>
-                    <div id="insp-code-wrap"><code># Static Manifest Path:\n/etc/kubernetes/manifests/kube-apiserver.yaml</code></div>
+                    <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect its architecture.</div>
                 </div>
             </div>
         </div>
 
         <br><br><br>
 
+        <!-- SECTION 2: ULTIMATE CKA SYLLABUS -->
         <div class="section-title">2. Complete CKA Syllabus Masterclass (Exam Ready)</div>
         <div class="syllabus-grid" id="syllabus-grid"></div>
 
     </div>
 
+    <!-- MODAL -->
     <div id="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
@@ -252,10 +230,10 @@
         const logs = document.getElementById('logs');
         const buttons = document.querySelectorAll('.btn-sim');
 
-        let activeSimToken = 0; // Incremented to cancel active async workflows immediately
+        let activeSimToken = 0;
 
         function stopCurrentSimulation() {
-            activeSimToken++; // Invalidates any running async loops
+            activeSimToken++;
             lockUI(false);
             setActive(null);
             document.querySelectorAll('.msg-pill').forEach(p => p.remove());
@@ -263,7 +241,7 @@
         }
 
         async function runWorkflow(workflowFn) {
-            stopCurrentSimulation(); // Halts any existing workflow cleanly
+            stopCurrentSimulation();
             const currentToken = activeSimToken;
             lockUI(true);
             logs.innerHTML = '';
@@ -370,13 +348,12 @@
         }
 
         function lockUI(lock) {
-            // Locks start buttons during simulation, but leave stop button enabled
             buttons.forEach(b => {
                 if(!b.textContent.includes('Stop Simulation')) b.disabled = lock;
             });
         }
 
-        // --- SIMULATION 1: CREATE POD ---
+        // --- SIMULATIONS ---
         async function runCreate(token) {
             log("1. User runs: <span>kubectl run web --image=nginx</span>");
             await sendData('user-icon', 'c-api', "POST /api/v1/pods", 'var(--k8s-blue)', 1200, token);
@@ -415,7 +392,6 @@
             setActive(null);
         }
 
-        // --- SIMULATION 2: DELETE POD ---
         async function runDelete(token) {
             log("1. User runs: <span>kubectl delete pod web</span>");
             await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 1200, token);
@@ -446,7 +422,6 @@
             setActive(null);
         }
 
-        // --- SIMULATION 3: SELF-HEALING ---
         async function runCrash(token) {
             setActive('c-cri', 'line-kubelet-cri', 'error');
             log("ALERT: Container process crashed unexpectedly (Exit Code 1).", 'danger');
@@ -473,7 +448,6 @@
             setActive(null);
         }
 
-        // --- SIMULATION 4: NODE DRAIN ---
         async function runDrain(token) {
             log("1. Admin runs: <span>kubectl drain worker-01 --ignore-daemonsets</span>");
             await sendData('user-icon', 'c-api', "POST /cordon & Evict", 'var(--accent-orange)', 1200, token);
@@ -504,7 +478,6 @@
             setActive(null);
         }
 
-        // --- SIMULATION 5: SERVICE ROUTING ---
         async function runProxy(token) {
             log("1. External traffic hits ClusterIP Service IP (e.g., 10.96.0.10:80).");
             await sendData('user-icon', 'c-proxy', "GET /service-ip", 'var(--k8s-blue)', 1200, token);
@@ -524,7 +497,7 @@
 
 
         // ==========================================
-        // 2. COMPONENT INSPECTOR DATA
+        // 2. COMPONENT INSPECTOR MODAL DATA
         // ==========================================
         const inspectors = {
             api: {
@@ -540,12 +513,12 @@
             sched: {
                 title: "kube-scheduler",
                 desc: "Watches for newly created pods without a node assigned, evaluates hardware specs, taints, tolerations, and affinity rules to bind the best node.",
-                code: "# Config / Manifest:\n/etc/kubernetes/manifests/kube-scheduler.yaml"
+                code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-scheduler.yaml"
             },
             ctrl: {
                 title: "kube-controller-manager",
                 desc: "Runs background reconciliation control loops (Node Controller, ReplicaSet Controller, Endpoint Controller) to match actual state with desired state.",
-                code: "# Check controller health:\nkubectl get po -n kube-system -l component=kube-controller-manager"
+                code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-controller-manager.yaml"
             },
             kubelet: {
                 title: "kubelet",
@@ -564,30 +537,21 @@
             }
         };
 
-        function switchMode(mode) {
-            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            if(mode === 'sim') {
-                document.getElementById('tab-sim').classList.add('active');
-                document.getElementById('panel-sim').style.display = 'flex';
-                document.getElementById('panel-inspect').style.display = 'none';
-                stopCurrentSimulation();
-            } else {
-                stopCurrentSimulation(); // Immediately stop any sim when switching to inspector
-                document.getElementById('tab-inspect').classList.add('active');
-                document.getElementById('panel-sim').style.display = 'none';
-                document.getElementById('panel-inspect').style.display = 'flex';
-                inspectComp('api');
-            }
-        }
-
         function inspectComp(key) {
-            switchMode('inspect');
+            setActive(`c-${key}`);
             const data = inspectors[key];
             if(data) {
-                document.getElementById('insp-title').innerText = data.title;
-                document.getElementById('insp-desc').innerText = data.desc;
-                document.getElementById('insp-code-wrap').innerHTML = `<code>${data.code}</code>`;
-                setActive(`c-${key}`);
+                document.getElementById('m-title').innerText = data.title;
+                document.getElementById('m-body').innerHTML = `
+                    <div class="concept">
+                        <div class="concept-title">Architecture Role & Responsibilities</div>
+                        <div class="concept-desc">${data.desc}</div>
+                        <div class="code">${data.code}</div>
+                    </div>
+                `;
+                modal.style.display = 'flex';
+                setTimeout(() => modal.classList.add('show'), 10);
+                document.body.style.overflow = 'hidden';
             }
         }
 

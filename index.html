@@ -24,85 +24,85 @@
         .container { max-width: 1400px; margin: 0 auto; padding: 30px 20px; }
         .section-title { font-size: 1.6rem; font-weight: 700; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; border-left: 4px solid var(--k8s-blue); padding-left: 15px; }
 
-        /* Mode Switcher Tabs */
         .mode-tabs { display: flex; gap: 10px; }
         .tab-btn { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); padding: 6px 14px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; transition: 0.2s; }
         .tab-btn.active { background: var(--k8s-blue); color: #fff; border-color: var(--k8s-light); }
 
-        /* --- ANIMATED ARCHITECTURE --- */
+        /* --- ARCHITECTURE GRID --- */
         .arch-simulator {
             background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
-            padding: 20px; display: grid; grid-template-columns: 1fr 400px; gap: 20px;
+            padding: 20px; display: grid; grid-template-columns: 1fr 420px; gap: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
-        @media(max-width: 1024px) { .arch-simulator { grid-template-columns: 1fr; } }
+        @media(max-width: 1100px) { .arch-simulator { grid-template-columns: 1fr; } }
 
-        .arch-canvas { position: relative; height: 560px; background: #0f0f13; border: 1px dashed var(--border); border-radius: 12px; overflow: hidden; }
+        .arch-canvas { position: relative; height: 580px; background: #0f0f13; border: 1px dashed var(--border); border-radius: 12px; overflow: hidden; }
         
-        .k8s-node { position: absolute; background: rgba(39, 39, 42, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
-        .control-plane { top: 20px; left: 100px; width: 340px; height: 520px; border-top: 3px solid var(--accent-purple); }
-        .worker-node { top: 20px; right: 20px; width: 300px; height: 520px; border-top: 3px solid var(--k8s-blue); }
+        .k8s-node { position: absolute; background: rgba(39, 39, 42, 0.25); border: 1px solid var(--border); border-radius: 12px; padding: 15px; }
+        .control-plane { top: 20px; left: 90px; width: 360px; height: 540px; border-top: 3px solid var(--accent-purple); }
+        .worker-node { top: 20px; right: 20px; width: 300px; height: 540px; border-top: 3px solid var(--k8s-blue); }
         .node-title { font-size: 0.85rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: var(--text-muted); margin-bottom: 20px; text-align: center; }
 
         .comp { 
-            background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; padding: 12px 10px;
-            text-align: center; font-size: 0.85rem; font-weight: 700; position: absolute; width: 140px; 
+            background: #18181b; border: 1px solid #3f3f46; border-radius: 8px; padding: 10px;
+            text-align: center; font-size: 0.8rem; font-weight: 700; position: absolute; width: 150px; 
             transition: all 0.3s; box-shadow: 0 4px 10px rgba(0,0,0,0.5); z-index: 10; cursor: pointer;
         }
-        .comp:hover { border-color: var(--k8s-light); }
-        .comp.active { border-color: var(--k8s-light); box-shadow: 0 0 25px var(--glow); background: rgba(50, 108, 229, 0.3); transform: scale(1.05); }
+        .comp span { display: block; font-size: 0.7rem; color: var(--text-muted); font-weight: normal; margin-top: 2px; }
+        .comp:hover { border-color: var(--k8s-light); transform: translateY(-2px); }
+        .comp.active { border-color: var(--k8s-light); box-shadow: 0 0 25px var(--glow); background: rgba(50, 108, 229, 0.3); transform: scale(1.04); }
         .comp.error { border-color: var(--accent-red); box-shadow: 0 0 25px rgba(239, 68, 68, 0.4); background: rgba(239, 68, 68, 0.2); }
         
-        #c-api { top: 240px; left: 270px; transform: translateX(-50%); width: 160px; border-color: var(--k8s-blue); z-index: 15; }
-        #c-etcd { top: 80px; left: 270px; transform: translateX(-50%); }
-        #c-sched { top: 390px; left: 180px; transform: translateX(-50%); width: 130px; }
-        #c-ctrl { top: 390px; left: 360px; transform: translateX(-50%); width: 140px; }
+        #c-api { top: 250px; left: 270px; transform: translateX(-50%); width: 170px; border-color: var(--k8s-blue); z-index: 15; }
+        #c-etcd { top: 75px; left: 270px; transform: translateX(-50%); }
+        #c-sched { top: 415px; left: 180px; transform: translateX(-50%); width: 135px; }
+        #c-ctrl { top: 415px; left: 370px; transform: translateX(-50%); width: 145px; }
         
-        #c-kubelet { top: 80px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; border-color: var(--k8s-blue); }
-        #c-proxy { top: 240px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; }
-        #c-cri { top: 390px; left: calc(100% - 170px); transform: translateX(-50%); width: 140px; border-style: dashed; }
+        #c-kubelet { top: 75px; left: calc(100% - 170px); transform: translateX(-50%); width: 145px; border-color: var(--k8s-blue); }
+        #c-proxy { top: 250px; left: calc(100% - 170px); transform: translateX(-50%); width: 145px; }
+        #c-cri { top: 415px; left: calc(100% - 170px); transform: translateX(-50%); width: 145px; border-style: dashed; }
         
-        #user-icon { position: absolute; top: 240px; left: 20px; width: 50px; height: 50px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 0.8rem; z-index: 15; }
+        #user-icon { position: absolute; top: 250px; left: 15px; width: 55px; height: 55px; background: var(--surface); border: 1px solid var(--border); border-radius: 50%; display: flex; flex-direction:column; justify-content: center; align-items: center; font-weight: bold; font-size: 0.75rem; z-index: 15; }
 
-        /* SVG Network Lines */
         #svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .net-line { stroke: #3f3f46; stroke-width: 2; stroke-dasharray: 4, 4; fill: none; transition: 0.3s; }
-        .net-line.active { stroke: var(--k8s-light); filter: drop-shadow(0 0 5px var(--k8s-blue)); stroke-dasharray: none; }
+        .net-line.active { stroke: var(--k8s-light); filter: drop-shadow(0 0 6px var(--k8s-blue)); stroke-dasharray: none; }
 
-        /* Readable Message Pill */
         .msg-pill {
             position: absolute; background: var(--k8s-blue); color: #fff; padding: 6px 14px;
-            border-radius: 20px; font-size: 0.8rem; font-weight: 700; font-family: 'Fira Code', monospace;
+            border-radius: 20px; font-size: 0.78rem; font-weight: 700; font-family: 'Fira Code', monospace;
             box-shadow: 0 4px 20px var(--glow); z-index: 50; white-space: nowrap; pointer-events: none;
             opacity: 0; transition: transform ease-in-out, opacity 0.3s;
             display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.2);
         }
 
-        /* Console Panel */
+        /* Console Panels */
         .console-panel { display: flex; flex-direction: column; background: #000; border-radius: 12px; border: 1px solid var(--border); overflow: hidden; }
         .console-header { background: #18181b; padding: 12px 15px; font-weight: 700; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; font-size: 0.9rem; }
         
-        .speed-control { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: var(--text-muted); }
+        .speed-control { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: var(--text-muted); }
         .speed-control select { background: var(--surface); color: #fff; border: 1px solid var(--border); padding: 3px 8px; border-radius: 4px; font-family: 'Fira Code', monospace; }
 
-        .sim-controls { display: flex; flex-direction: column; gap: 8px; padding: 12px; background: #0f0f13; border-bottom: 1px solid var(--border); }
-        .btn-sim { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 8px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
+        .sim-controls { display: flex; flex-direction: column; gap: 6px; padding: 12px; background: #0f0f13; border-bottom: 1px solid var(--border); }
+        .btn-sim { background: var(--surface); color: var(--text-main); border: 1px solid var(--border); padding: 7px 12px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; transition: 0.2s; display: flex; justify-content: space-between; align-items: center; }
         .btn-sim:hover { background: #27272a; border-color: var(--k8s-light); }
         .btn-sim:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-sim span { font-size: 0.72rem; color: var(--text-muted); font-family: 'Fira Code', monospace; }
         .btn-sim.green:hover { border-color: var(--accent-green); }
         .btn-sim.red:hover { border-color: var(--accent-red); }
 
-        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.8rem; height: 300px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
+        .console-logs { padding: 15px; font-family: 'Fira Code', monospace; font-size: 0.78rem; height: 320px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; }
         .log-entry { opacity: 0; transform: translateY(5px); animation: fadeUp 0.3s forwards; color: var(--text-muted); line-height: 1.4; }
         .log-entry span { color: var(--k8s-light); }
         .log-entry.success { color: var(--accent-green); font-weight: bold; }
         .log-entry.danger { color: var(--accent-red); font-weight: bold; }
 
-        /* Guided Tour Panel Info Box */
-        .tour-info-box { padding: 20px; background: #0f0f13; border-top: 1px solid var(--border); font-size: 0.9rem; display: none; }
-        .tour-info-box h4 { color: var(--k8s-light); margin-bottom: 6px; font-size: 1.05rem; }
-        .tour-info-box p { color: var(--text-muted); margin-bottom: 12px; }
-        .tour-nav { display: flex; justify-content: space-between; }
+        /* Inspector / Tour Box */
+        .info-box { padding: 20px; background: #0f0f13; border-top: 1px solid var(--border); font-size: 0.88rem; display: none; }
+        .info-box h4 { color: var(--k8s-light); margin-bottom: 6px; font-size: 1.05rem; }
+        .info-box p { color: var(--text-muted); margin-bottom: 10px; }
+        .info-box code { background: #000; padding: 3px 6px; border-radius: 4px; font-family: 'Fira Code'; color: var(--accent-green); font-size: 0.78rem; }
+        .tour-nav { display: flex; justify-content: space-between; margin-top: 10px; }
         .tour-btn { background: var(--k8s-blue); color: #fff; border: none; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 0.8rem; }
 
         /* --- SYLLABUS GRID --- */
@@ -144,16 +144,17 @@
             </svg>
             CKA Visual Learning Hub
         </h1>
-        <p>Master Kubernetes Architecture and CKA concepts with readable simulations and interactive guided tours.</p>
+        <p>Master Kubernetes Architecture and CKA concepts with readable, slow-motion simulations and interactive component inspectors.</p>
     </header>
 
     <div class="container">
         
+        <!-- SECTION 1: ARCHITECTURE HUB -->
         <div class="section-title">
             <span>1. Cluster Architecture Hub</span>
             <div class="mode-tabs">
-                <button class="tab-btn active" id="tab-sim" onclick="switchMode('sim')">Workflow Simulations</button>
-                <button class="tab-btn" id="tab-tour" onclick="switchMode('tour')">Guided Component Tour</button>
+                <button class="tab-btn active" id="tab-sim" onclick="switchMode('sim')">Workflows (5 Simulations)</button>
+                <button class="tab-btn" id="tab-inspect" onclick="switchMode('inspect')">Component Inspector</button>
             </div>
         </div>
 
@@ -166,6 +167,7 @@
                     <line id="line-api-ctrl" class="net-line" />
                     <line id="line-api-kubelet" class="net-line" />
                     <line id="line-kubelet-cri" class="net-line" />
+                    <line id="line-proxy-app" class="net-line" />
                 </svg>
 
                 <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
@@ -173,64 +175,67 @@
                 
                 <div id="user-icon">Kube<br>Ctl</div>
                 
-                <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver</div>
-                <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd</div>
-                <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler</div>
-                <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager</div>
-                <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet</div>
-                <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy</div>
-                <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<br><span style="font-size:0.7rem; font-weight:normal;">(Pods)</span></div>
+                <!-- Components -->
+                <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
+                <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
+                <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
+                <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation Loops</span></div>
+                <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
+                <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
+                <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
             </div>
 
+            <!-- Panel 1: Simulations -->
             <div class="console-panel" id="panel-sim">
                 <div class="console-header">
                     <span>Simulation Engine</span>
                     <div class="speed-control">
                         Speed: 
                         <select id="speed-select" onchange="updateSpeed()">
-                            <option value="1.5">Slow (1.5x)</option>
-                            <option value="1" selected>Normal (1x)</option>
-                            <option value="0.6">Fast (1.6x)</option>
+                            <option value="2.0" selected>Slow (2.0x - Recommended)</option>
+                            <option value="1.0">Normal (1.0x)</option>
+                            <option value="0.5">Fast (0.5x)</option>
                         </select>
                     </div>
                 </div>
                 <div class="sim-controls">
-                    <button class="btn-sim green" id="btn-create" onclick="runCreate()">▶ Create Pod Workflow <span>kubectl run</span></button>
-                    <button class="btn-sim red" id="btn-delete" onclick="runDelete()">▶ Delete Pod Workflow <span>kubectl delete</span></button>
-                    <button class="btn-sim" id="btn-crash" onclick="runCrash()">▶ ReplicaSet Self-Healing <span>Crash Recovery</span></button>
+                    <button class="btn-sim green" onclick="runCreate()">▶ 1. Create Pod <span>kubectl run</span></button>
+                    <button class="btn-sim red" onclick="runDelete()">▶ 2. Delete Pod <span>kubectl delete</span></button>
+                    <button class="btn-sim" onclick="runCrash()">▶ 3. Self-Healing Crash <span>ReplicaSet Loop</span></button>
+                    <button class="btn-sim" onclick="runDrain()">▶ 4. Node Drain <span>kubectl drain</span></button>
+                    <button class="btn-sim" onclick="runProxy()">▶ 5. Service Routing <span>ClusterIP / Proxy</span></button>
                 </div>
                 <div class="console-logs" id="logs">
-                    <div class="log-entry">Select a workflow above. Animations run at a readable pace with detailed step explanations.</div>
+                    <div class="log-entry">Simulations are set to <span>Slow (2.0x)</span> by default for maximum readability. Select any simulation above to trace step-by-step communications.</div>
                 </div>
             </div>
 
-            <div class="console-panel" id="panel-tour" style="display: none;">
+            <!-- Panel 2: Component Inspector -->
+            <div class="console-panel" id="panel-inspect" style="display: none;">
                 <div class="console-header">
-                    <span>Component Guided Tour</span>
-                    <span id="tour-counter" style="font-family:'Fira Code'; color:var(--k8s-light); font-size:0.8rem;">1 / 6</span>
+                    <span>Component Inspector</span>
+                    <span id="inspect-counter" style="font-family:'Fira Code'; color:var(--k8s-light); font-size:0.78rem;">Click any box</span>
                 </div>
-                <div class="console-logs" id="tour-logs" style="height: 220px;">
-                    <div class="log-entry highlight">Click 'Start Tour' or click any component box on the left canvas to learn its exact CKA role.</div>
+                <div class="console-logs" id="inspect-logs" style="height: 220px;">
+                    <div class="log-entry highlight">Click any component box on the left canvas to examine its exact CKA responsibilities, configuration paths, and exam verification tips.</div>
                 </div>
-                <div class="tour-info-box" id="tour-info" style="display: block;">
-                    <h4 id="tour-title">kube-apiserver</h4>
-                    <p id="tour-desc">The central management hub and front-end of the control plane. Exposes the Kubernetes API and handles authentication, authorization, and validation.</p>
-                    <div class="tour-nav">
-                        <button class="tour-btn" onclick="prevTourStep()">◀ Previous</button>
-                        <button class="tour-btn" onclick="nextTourStep()">Next Component ▶</button>
-                    </div>
+                <div class="info-box" id="inspect-info" style="display: block;">
+                    <h4 id="insp-title">Select a Component</h4>
+                    <p id="insp-desc">Click on kube-apiserver, etcd, kubelet, or any other component block to view its deep architectural breakdown.</p>
+                    <div id="insp-code-wrap"><code># CKA Tip: Know manifest paths in /etc/kubernetes/manifests</code></div>
                 </div>
             </div>
         </div>
 
         <br><br><br>
 
-        <div class="section-title">2. Complete CKA Syllabus Masterclass</div>
-        <div class="syllabus-grid" id="syllabus-grid">
-            </div>
+        <!-- SECTION 2: ULTIMATE CKA SYLLABUS -->
+        <div class="section-title">2. Complete CKA Syllabus Masterclass (Exam Ready)</div>
+        <div class="syllabus-grid" id="syllabus-grid"></div>
 
     </div>
 
+    <!-- MODAL -->
     <div id="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
@@ -243,9 +248,9 @@
 
     <script>
         // ==========================================
-        // 1. ARCHITECTURE ANIMATION & MODES
+        // 1. ANIMATION & SPEED CONTROLS
         // ==========================================
-        let currentSpeed = 1;
+        let currentSpeed = 2.0; // Default slow speed as requested
         function updateSpeed() {
             currentSpeed = parseFloat(document.getElementById('speed-select').value);
         }
@@ -269,15 +274,18 @@
                 ['c-api', 'c-sched', 'line-api-sched'],
                 ['c-api', 'c-ctrl', 'line-api-ctrl'],
                 ['c-api', 'c-kubelet', 'line-api-kubelet'],
-                ['c-kubelet', 'c-cri', 'line-kubelet-cri']
+                ['c-kubelet', 'c-cri', 'line-kubelet-cri'],
+                ['c-proxy', 'c-cri', 'line-proxy-app']
             ];
 
             pairs.forEach(([from, to, lineId]) => {
                 const p1 = getCenter(from);
                 const p2 = getCenter(to);
                 const line = document.getElementById(lineId);
-                line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
-                line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+                if(line) {
+                    line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y);
+                    line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y);
+                }
             });
         }
         window.addEventListener('resize', drawLines);
@@ -296,12 +304,15 @@
             document.querySelectorAll('.net-line').forEach(l => l.classList.remove('active'));
             
             if(id) document.getElementById(id).classList.add(colorClass);
-            if(lineId) document.getElementById(lineId).classList.add('active');
+            if(lineId) {
+                const l = document.getElementById(lineId);
+                if(l) l.classList.add('active');
+            }
         }
 
         const sleep = ms => new Promise(r => setTimeout(r, ms * currentSpeed));
 
-        async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1200) {
+        async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1400) {
             const getC = (id) => {
                 const p = canvas.getBoundingClientRect();
                 const r = document.getElementById(id).getBoundingClientRect();
@@ -316,241 +327,287 @@
             pill.className = 'msg-pill';
             pill.style.background = color;
             pill.innerHTML = `<span>⚡</span> ${text}`;
-            pill.style.transform = `translate(${start.x - 60}px, ${start.y - 15}px)`;
+            pill.style.transform = `translate(${start.x - 70}px, ${start.y - 15}px)`;
             canvas.appendChild(pill);
 
             pill.getBoundingClientRect();
             pill.style.opacity = '1';
             pill.style.transition = `transform ${actualDuration}ms ease-in-out, opacity 0.3s`;
-            pill.style.transform = `translate(${end.x - 60}px, ${end.y - 15}px)`;
+            pill.style.transform = `translate(${end.x - 70}px, ${end.y - 15}px)`;
 
             await sleep(actualDuration / currentSpeed);
             pill.style.opacity = '0';
-            setTimeout(() => pill.remove(), 300);
+            setTimeout(() => pill.remove(), 400);
         }
 
         function lockUI(lock) {
             buttons.forEach(b => b.disabled = lock);
         }
 
-        // --- SCENARIO 1: CREATE POD ---
+        // --- SIMULATION 1: CREATE POD ---
         async function runCreate() {
             lockUI(true); logs.innerHTML = '';
-            
             log("1. User runs: <span>kubectl run web --image=nginx</span>");
-            await sendData('user-icon', 'c-api', "POST /api/v1/pods", 'var(--k8s-blue)', 1000);
+            await sendData('user-icon', 'c-api', "POST /api/v1/pods", 'var(--k8s-blue)', 1200);
             setActive('c-api', 'line-user-api');
-            log("-> API Server validates request, checks RBAC permissions & authenticates.");
-            await sleep(800);
-
-            log("2. API Server records the new Pod state as 'Pending' in etcd.");
-            await sendData('c-api', 'c-etcd', "Save State: Pending", 'var(--accent-purple)', 800);
-            setActive('c-etcd', 'line-api-etcd');
-            await sendData('c-etcd', 'c-api', "ETCD Write OK", 'var(--text-muted)', 500);
-            await sleep(600);
-
-            log("3. Scheduler watches API. Discovers unassigned Pod with no node name.");
-            await sendData('c-api', 'c-sched', "Watch Event Trigger", 'var(--k8s-blue)', 800);
-            setActive('c-sched', 'line-api-sched');
-            log("-> Scheduler evaluates node resources, taints, tolerations & affinities.");
-            await sleep(1200);
-
-            log("4. Scheduler assigns suitable Worker Node and sends binding info.");
-            await sendData('c-sched', 'c-api', "Bind Pod -> Worker01", 'var(--k8s-blue)', 800);
-            await sendData('c-api', 'c-etcd', "Update: Node Assigned", 'var(--accent-purple)', 800);
-            setActive('c-etcd', 'line-api-etcd');
-            await sleep(600);
-
-            log("5. Kubelet on Worker Node watches API, notices Pod assigned to it.");
-            await sendData('c-api', 'c-kubelet', "Watch: New Pod Assigned", 'var(--accent-green)', 1000);
-            setActive('c-kubelet', 'line-api-kubelet');
-            await sleep(800);
-
-            log("6. Kubelet instructs Container Runtime Interface (CRI) to pull image & start.");
-            await sendData('c-kubelet', 'c-cri', "CRI: Start Container", 'var(--accent-green)', 800);
-            setActive('c-cri', 'line-kubelet-cri', 'active');
-            
-            log("SUCCESS: Pod is now running and ready!", 'success');
-            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
-        }
-
-        // --- SCENARIO 2: DELETE POD ---
-        async function runDelete() {
-            lockUI(true); logs.innerHTML = '';
-            
-            log("1. User runs: <span>kubectl delete pod web</span>");
-            await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 1000);
-            setActive('c-api', 'line-user-api');
-            await sleep(600);
-
-            log("2. API Server updates state in etcd to 'Terminating'.");
-            await sendData('c-api', 'c-etcd', "State: Terminating", 'var(--accent-purple)', 800);
-            setActive('c-etcd', 'line-api-etcd');
-            await sleep(600);
-
-            log("3. Kubelet receives termination notice for its local pod.");
-            await sendData('c-api', 'c-kubelet', "Watch: Terminate Pod", 'var(--accent-red)', 1000);
-            setActive('c-kubelet', 'line-api-kubelet');
-            await sleep(800);
-
-            log("4. Kubelet sends SIGTERM to Container Runtime (grace period countdown).");
-            await sendData('c-kubelet', 'c-cri', "CRI: Stop Container", 'var(--accent-red)', 800);
-            setActive('c-cri', 'line-kubelet-cri');
-            await sleep(1200);
-
-            log("5. Container stopped. Kubelet sends final deletion notice to API.");
-            await sendData('c-kubelet', 'c-api', "Confirm Deletion", 'var(--text-muted)', 1000);
-            await sendData('c-api', 'c-etcd', "Remove from etcd", 'var(--accent-purple)', 800);
-            
-            log("SUCCESS: Pod completely purged from cluster.", 'success');
-            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
-        }
-
-        // --- SCENARIO 3: CRASH RECOVERY ---
-        async function runCrash() {
-            lockUI(true); logs.innerHTML = '';
-            
-            setActive('c-cri', 'line-kubelet-cri', 'error');
-            log("ALERT: Container process encountered a fatal crash (Exit Code 1).", 'danger');
-            await sendData('c-cri', 'c-kubelet', "Container Failure", 'var(--accent-red)', 800);
-            setActive('c-kubelet', 'line-kubelet-cri');
-            await sleep(800);
-
-            log("Kubelet updates Pod status to Failed/CrashLoopBackOff.");
-            await sendData('c-kubelet', 'c-api', "Status Update: Failed", 'var(--accent-red)', 1000);
-            await sendData('c-api', 'c-etcd', "Save Failed State", 'var(--accent-purple)', 600);
-            await sleep(800);
-
-            log("Controller Manager (ReplicaSet Controller) detects mismatch: Desired 3, Active 2.");
-            await sendData('c-api', 'c-ctrl', "Reconciliation Loop", 'var(--accent-orange)', 800);
-            setActive('c-ctrl', 'line-api-ctrl');
+            log("-> API Server authenticates user & validates YAML/JSON syntax.");
             await sleep(1000);
 
-            log("Controller Manager asks API Server to create a replacement pod replica.");
-            await sendData('c-ctrl', 'c-api', "POST /pods (Replacement)", 'var(--k8s-blue)', 800);
+            log("2. API Server records initial Pod spec as 'Pending' in etcd database.");
+            await sendData('c-api', 'c-etcd', "Save State: Pending", 'var(--accent-purple)', 1000);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(800);
+
+            log("3. Scheduler watches API. Discovers unassigned Pod with no node name.");
+            await sendData('c-api', 'c-sched', "Watch Event Trigger", 'var(--k8s-blue)', 1000);
+            setActive('c-sched', 'line-api-sched');
+            log("-> Scheduler checks node resource capacity, taints, and affinities.");
+            await sleep(1400);
+
+            log("4. Scheduler selects Worker Node and posts binding decision.");
+            await sendData('c-sched', 'c-api', "Bind Pod -> Worker01", 'var(--k8s-blue)', 1000);
+            await sendData('c-api', 'c-etcd', "Update: Node Assigned", 'var(--accent-purple)', 1000);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(800);
+
+            log("5. Kubelet on Worker Node detects new Pod scheduled to it.");
+            await sendData('c-api', 'c-kubelet', "Watch: Assigned Pod", 'var(--accent-green)', 1200);
+            setActive('c-kubelet', 'line-api-kubelet');
+            await sleep(1000);
+
+            log("6. Kubelet commands Container Runtime (CRI) to pull image & spin container.");
+            await sendData('c-kubelet', 'c-cri', "CRI: Start Container", 'var(--accent-green)', 1000);
+            setActive('c-cri', 'line-kubelet-cri', 'active');
+            
+            log("SUCCESS: Pod status updated to Running in etcd.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
+        // --- SIMULATION 2: DELETE POD ---
+        async function runDelete() {
+            lockUI(true); logs.innerHTML = '';
+            log("1. User runs: <span>kubectl delete pod web</span>");
+            await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 1200);
+            setActive('c-api', 'line-user-api');
+            await sleep(800);
+
+            log("2. API Server updates state in etcd to 'Terminating'.");
+            await sendData('c-api', 'c-etcd', "State: Terminating", 'var(--accent-purple)', 1000);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(800);
+
+            log("3. Kubelet receives termination signal for the local pod.");
+            await sendData('c-api', 'c-kubelet', "Watch: Terminate", 'var(--accent-red)', 1200);
+            setActive('c-kubelet', 'line-api-kubelet');
+            await sleep(1000);
+
+            log("4. Kubelet invokes Container Runtime to stop container (Grace period).");
+            await sendData('c-kubelet', 'c-cri', "CRI: Stop Container", 'var(--accent-red)', 1000);
+            setActive('c-cri', 'line-kubelet-cri');
+            await sleep(1400);
+
+            log("5. Container terminated. Kubelet sends final removal notice to API.");
+            await sendData('c-kubelet', 'c-api', "Confirm Deletion", 'var(--text-muted)', 1200);
+            await sendData('c-api', 'c-etcd', "Purge from etcd", 'var(--accent-purple)', 1000);
+            
+            log("SUCCESS: Pod deleted completely.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
+        // --- SIMULATION 3: SELF-HEALING ---
+        async function runCrash() {
+            lockUI(true); logs.innerHTML = '';
+            setActive('c-cri', 'line-kubelet-cri', 'error');
+            log("ALERT: Container process crashed unexpectedly (Exit Code 1).", 'danger');
+            await sendData('c-cri', 'c-kubelet', "Container Crash", 'var(--accent-red)', 1000);
+            setActive('c-kubelet', 'line-kubelet-cri');
+            await sleep(1000);
+
+            log("Kubelet updates Pod status in API server to Failed/CrashLoopBackOff.");
+            await sendData('c-kubelet', 'c-api', "Status: Failed", 'var(--accent-red)', 1200);
+            await sendData('c-api', 'c-etcd', "Save Failed State", 'var(--accent-purple)', 800);
+            await sleep(1000);
+
+            log("Controller Manager (ReplicaSet Controller) notes state mismatch: Desired 3, Active 2.");
+            await sendData('c-api', 'c-ctrl', "Reconciliation Loop", 'var(--accent-orange)', 1000);
+            setActive('c-ctrl', 'line-api-ctrl');
+            await sleep(1200);
+
+            log("Controller Manager requests API Server to create a new replacement replica.");
+            await sendData('c-ctrl', 'c-api', "POST /pods (Replacement)", 'var(--k8s-blue)', 1000);
             setActive('c-api', 'line-api-ctrl');
             
             log("SUCCESS: Self-healing triggered. New pod scheduled automatically.", 'success');
             setTimeout(() => { setActive(null); lockUI(false); }, 1500);
         }
 
+        // --- SIMULATION 4: NODE DRAIN ---
+        async function runDrain() {
+            lockUI(true); logs.innerHTML = '';
+            log("1. Admin runs: <span>kubectl drain worker-01 --ignore-daemonsets</span>");
+            await sendData('user-icon', 'c-api', "POST /cordon & Evict", 'var(--accent-orange)', 1200);
+            setActive('c-api', 'line-user-api');
+            await sleep(1000);
+
+            log("2. API Server marks Worker Node as Cordoned (Unschedulable).");
+            await sendData('c-api', 'c-etcd', "State: Unschedulable", 'var(--accent-purple)', 1000);
+            setActive('c-etcd', 'line-api-etcd');
+            await sleep(1000);
+
+            log("3. Controller Manager triggers graceful eviction of pods running on node.");
+            await sendData('c-api', 'c-ctrl', "Eviction Controller", 'var(--accent-orange)', 1000);
+            setActive('c-ctrl', 'line-api-ctrl');
+            await sleep(1200);
+
+            log("4. Kubelet receives eviction notice and terminates local pods safely.");
+            await sendData('c-ctrl', 'c-kubelet', "Evict Pods", 'var(--accent-red)', 1200);
+            setActive('c-kubelet', 'line-api-kubelet');
+            await sleep(1000);
+
+            log("5. Scheduler picks up evicted pods and reschedules them onto healthy nodes.");
+            await sendData('c-kubelet', 'c-sched', "Reschedule Pods", 'var(--k8s-blue)', 1200);
+            setActive('c-sched', 'line-api-sched');
+
+            log("SUCCESS: Node successfully drained and safely isolated for maintenance.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
+        // --- SIMULATION 5: SERVICE ROUTING ---
+        async function runProxy() {
+            lockUI(true); logs.innerHTML = '';
+            log("1. External traffic hits ClusterIP Service IP (e.g., 10.96.0.10:80).");
+            await sendData('user-icon', 'c-proxy', "GET /service-ip", 'var(--k8s-blue)', 1200);
+            setActive('c-proxy', 'line-user-api');
+            await sleep(1000);
+
+            log("2. kube-proxy (running on node via iptables/IPVS rules) intercepts packet.");
+            await sendData('c-proxy', 'c-cri', "DNAT & Load Balance", 'var(--accent-green)', 1200);
+            setActive('c-cri', 'line-proxy-app', 'active');
+            await sleep(1200);
+
+            log("3. Packet is forwarded directly to the backend Container Pod IP & Port.");
+            log("SUCCESS: Traffic successfully routed to container endpoint.", 'success');
+            setTimeout(() => { setActive(null); lockUI(false); }, 1500);
+        }
+
 
         // ==========================================
-        // 2. GUIDED TOUR MODE (NEW FEATURE)
+        // 2. COMPONENT INSPECTOR DATA
         // ==========================================
-        const tourSteps = [
-            { id: 'c-api', title: 'kube-apiserver', desc: 'The core brain and front door of the cluster. It exposes the Kubernetes API and validates requests from kubectl, controllers, and workers. It is the ONLY component that talks directly to etcd.' },
-            { id: 'c-etcd', title: 'etcd', desc: 'A consistent and highly-available distributed key-value store used as Kubernetes backing store for all cluster data. Critical CKA exam topic for backup/restore operations.' },
-            { id: 'c-sched', title: 'kube-scheduler', desc: 'Watches for newly created pods with no assigned node, evaluates hardware resources, taints, tolerations, and node affinity rules, then assigns the best node.' },
-            { id: 'c-ctrl', title: 'kube-controller-manager', desc: 'Runs background control loops (Node Controller, ReplicaSet Controller, Deployment Controller) ensuring actual cluster state matches desired state.' },
-            { id: 'c-kubelet', title: 'kubelet', desc: 'The primary node agent running on every worker node. It registers the node, ensures containers described in pod specs are running and healthy.' },
-            { id: 'c-cri', title: 'Container Runtime (CRI)', desc: 'The software responsible for running containers (e.g., containerd, CRI-O). Pulls container images from registries and manages container lifecycle.' }
-        ];
-        let currentTourIdx = 0;
+        const inspectors = {
+            api: {
+                title: "kube-apiserver",
+                desc: "The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.",
+                code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-apiserver.yaml\n# Check logs:\nkubectl logs -n kube-system kube-apiserver-controlplane"
+            },
+            etcd: {
+                title: "etcd",
+                desc: "Consistent and highly-available key-value store holding all cluster state data. Vital for disaster recovery and CKA backup exam tasks.",
+                code: "# ETCD Snapshot Backup Command:\nETCDCTL_API=3 etcdctl snapshot save /tmp/snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key"
+            },
+            sched: {
+                title: "kube-scheduler",
+                desc: "Watches for newly created pods without a node assigned, evaluates hardware specs, taints, tolerations, and affinity rules to bind the best node.",
+                code: "# Config / Manifest:\n/etc/kubernetes/manifests/kube-scheduler.yaml"
+            },
+            ctrl: {
+                title: "kube-controller-manager",
+                desc: "Runs background reconciliation control loops (Node Controller, ReplicaSet Controller, Endpoint Controller) to match actual state with desired state.",
+                code: "# Check controller health:\nkubectl get po -n kube-system -l component=kube-controller-manager"
+            },
+            kubelet: {
+                title: "kubelet",
+                desc: "The primary node agent running on every worker node. Ensures containers specified in pod specs are running and healthy.",
+                code: "# Check kubelet status:\nsystemctl status kubelet\njournalctl -u kubelet -f"
+            },
+            proxy: {
+                title: "kube-proxy",
+                desc: "Maintains network rules on worker nodes. Implements Kubernetes Service abstraction by managing iptables or IPVS rules for packet forwarding.",
+                code: "# Check daemonset logs:\nkubectl logs -n kube-system -l k8s-app=kube-proxy"
+            },
+            cri: {
+                title: "Container Runtime (CRI)",
+                desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.",
+                code: "# Inspect containers with crictl (on worker nodes):\ncrictl ps\ncrictl pods"
+            }
+        };
 
         function switchMode(mode) {
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             if(mode === 'sim') {
                 document.getElementById('tab-sim').classList.add('active');
                 document.getElementById('panel-sim').style.display = 'flex';
-                document.getElementById('panel-tour').style.display = 'none';
+                document.getElementById('panel-inspect').style.display = 'none';
                 setActive(null);
             } else {
-                document.getElementById('tab-tour').classList.add('active');
+                document.getElementById('tab-inspect').classList.add('active');
                 document.getElementById('panel-sim').style.display = 'none';
-                document.getElementById('panel-tour').style.display = 'flex';
-                loadTourStep(0);
+                document.getElementById('panel-inspect').style.display = 'flex';
+                inspectComp('api');
             }
         }
 
-        function loadTourStep(idx) {
-            currentTourIdx = idx;
-            const step = tourSteps[idx];
-            document.getElementById('tour-counter').innerText = `${idx + 1} / ${tourSteps.length}`;
-            document.getElementById('tour-title').innerText = step.title;
-            document.getElementById('tour-desc').innerText = step.desc;
-            setActive(step.id);
-        }
-
-        function nextTourStep() {
-            let next = (currentTourIdx + 1) % tourSteps.length;
-            loadTourStep(next);
-        }
-
-        function prevTourStep() {
-            let prev = (currentTourIdx - 1 + tourSteps.length) % tourSteps.length;
-            loadTourStep(prev);
-        }
-
-        function inspectComp(compId) {
-            // If in Tour mode, find component index and jump to it
-            const idx = tourSteps.findIndex(s => s.id === `c-${compId}`);
-            if(idx !== -1) {
-                switchMode('tour');
-                loadTourStep(idx);
+        function inspectComp(key) {
+            switchMode('inspect');
+            const data = inspectors[key];
+            if(data) {
+                document.getElementById('insp-title').innerText = data.title;
+                document.getElementById('insp-desc').innerText = data.desc;
+                document.getElementById('insp-code-wrap').innerHTML = `<code>${data.code}</code>`;
+                setActive(`c-${key}`);
             }
         }
 
 
         // ==========================================
-        // 3. COMPLETE CKA SYLLABUS DATA
+        // 3. ULTIMATE CKA SYLLABUS DATA
         // ==========================================
         const syllabus = [
             {
-                mod: "Core Concepts & Workloads",
-                topics: ["Pods", "Deployments", "DaemonSets", "Namespaces", "Labels"],
+                mod: "Cluster Architecture, Installation & Upgrades",
+                topics: ["Kubeadm", "Upgrades", "ETCD Backup", "Static Pods", "RBAC"],
                 data: [
-                    { t: "Pods & Multi-Container", d: "Smallest deployable unit. Containers share IP and volumes. Patterns: Sidecar, Adapter, Ambassador.", c: "kubectl run nginx --image=nginx\n# Multi-container spec:\nspec:\n  containers:\n  - name: main\n    image: nginx\n  - name: sidecar\n    image: log-agent" },
-                    { t: "Deployments & Rollouts", d: "Manages ReplicaSets for declarative updates. Rollbacks are instantaneous.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
-                    { t: "DaemonSets", d: "Ensures a copy of a Pod runs on ALL (or selected) nodes. Great for logging (Fluentd) or networking plugins.", c: "# Imperative creation trick:\nkubectl create deploy fluentd --image=fluentd --dry-run=client -o yaml > ds.yaml\n# Change 'kind: Deployment' to 'kind: DaemonSet' and remove 'replicas'" },
-                    { t: "Labels & Selectors", d: "Key-value pairs to organize objects. Services use Selectors to know which pods to route traffic to.", c: "kubectl run app --image=nginx --labels=\"env=prod,tier=frontend\"\nkubectl get pods -l env=prod" }
+                    { t: "Kubeadm Cluster Lifecycle", d: "Provisioning clusters, bootstrapping nodes with token generation, and cluster configuration.", c: "kubeadm init --pod-network-cidr=10.244.0.0/16\nkubeadm join <control-plane-ip>:6443 --token <token>" },
+                    { t: "Kubeadm Cluster Upgrades", d: "Step-by-step upgrade procedure for control plane nodes first, followed by worker nodes.", c: "kubectl drain controlplane --ignore-daemonsets\napt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
+                    { t: "ETCD Backup & Restore", d: "Taking point-in-time snapshots and restoring state during cluster emergencies.", c: "ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
+                    { t: "Role-Based Access Control (RBAC)", d: "Managing fine-grained permissions using Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" }
                 ]
             },
             {
-                mod: "Scheduling Concepts",
-                topics: ["Taints", "Tolerations", "Affinity", "Static Pods", "Limits"],
+                mod: "Workloads & Scheduling",
+                topics: ["Deployments", "DaemonSets", "Taints/Tolerations", "Affinity", "Resource Quotas"],
                 data: [
-                    { t: "Taints & Tolerations", d: "Taints (on nodes) repel pods. Tolerations (on pods) allow them to bypass taints.", c: "kubectl taint node node-1 app=web:NoSchedule\n# Pod YAML:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"web\"\n  effect: \"NoSchedule\"" },
-                    { t: "Node Affinity", d: "Attracts pods to specific nodes based on Node labels. Supports 'required' (hard) or 'preferred' (soft) rules.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" },
-                    { t: "Static Pods", d: "Created directly by the Kubelet reading YAML files from a specific directory on the host, without API server interaction.", c: "cat /var/lib/kubelet/config.yaml | grep staticPodPath\n# Usually /etc/kubernetes/manifests" },
-                    { t: "Resource Limits/Requests", d: "Requests: Guaranteed resources to schedule. Limits: Max threshold before throttling (CPU) or OOMKilled (Memory).", c: "resources:\n  requests:\n    memory: \"64Mi\"\n    cpu: \"250m\"\n  limits:\n    memory: \"128Mi\"\n    cpu: \"500m\"" }
+                    { t: "Deployments & Rollouts", d: "Declarative application deployments supporting zero-downtime rolling updates and instant rollbacks.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
+                    { t: "Taints & Tolerations", d: "Node taints repel unauthorized pods unless matching tolerations are defined in pod specs.", c: "kubectl taint node worker-1 workload=gpu:NoSchedule\n# In Pod Spec:\ntolerations:\n- key: \"workload\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" },
+                    { t: "Node Affinity & Anti-Affinity", d: "Advanced scheduling constraints based on node labels to attract or repel pod placement.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: topology.kubernetes.io/zone\n          operator: In\n          values: [zone-a]" },
+                    { t: "Resource Requests & Limits", d: "CPU and memory guarantees (requests) and hard ceilings (limits) to prevent resource starvation.", c: "resources:\n  requests:\n    memory: \"128Mi\"\n    cpu: \"500m\"\n  limits:\n    memory: \"256Mi\"\n    cpu: \"1\"" }
                 ]
             },
             {
-                mod: "Networking & Services",
+                mod: "Services & Networking",
                 topics: ["ClusterIP", "NodePort", "Ingress", "Network Policies", "CoreDNS"],
                 data: [
-                    { t: "Services", d: "ClusterIP: Internal only. NodePort: Opens a port (30000-32767) on ALL nodes. LoadBalancer: Hooks into cloud providers.", c: "kubectl expose pod web --port=80 --name=web-svc --type=NodePort" },
-                    { t: "Ingress", d: "Layer 7 HTTP/S routing to Services based on URLs or Hostnames. Requires an Ingress Controller.", c: "kubectl create ingress web-ing --rule=\"test.com/path*=svc:8080\"" },
-                    { t: "Network Policies", d: "Pod-level firewalls. By default, pods are open. Once selected by a policy, all non-whitelisted traffic is dropped.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nspec:\n  podSelector:\n    matchLabels:\n      role: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          role: frontend" },
-                    { t: "CoreDNS", d: "K8s internal DNS. Naming convention: service-name.namespace.svc.cluster.local", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns" }
+                    { t: "Kubernetes Services", d: "ClusterIP (internal), NodePort (external port on all nodes), and LoadBalancer abstraction.", c: "kubectl expose pod web --port=80 --type=NodePort --name=web-service" },
+                    { t: "Ingress Controllers & Rules", d: "Layer 7 HTTP/S routing directing traffic to internal services based on hostname or URL path.", c: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: app-ingress\nspec:\n  rules:\n  - host: myapp.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" },
+                    { t: "Network Policies", d: "Pod-level firewalls isolating inbound and outbound traffic using label selectors.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: backend" },
+                    { t: "CoreDNS Resolution", d: "Internal cluster DNS providing name resolution for services and pods.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns" }
                 ]
             },
             {
                 mod: "Storage Configuration",
                 topics: ["Volumes", "PV", "PVC", "StorageClasses"],
                 data: [
-                    { t: "Ephemeral Volumes", d: "emptyDir: Lives and dies with the Pod. hostPath: Mounts a file/directory directly from the Node's filesystem.", c: "volumes:\n- name: log-volume\n  emptyDir: {}" },
-                    { t: "Persistent Volumes (PV)", d: "Cluster-wide storage resource provisioned by an Admin. AccessModes: ReadWriteOnce, ReadOnlyMany, ReadWriteMany.", c: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 5Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" },
-                    { t: "Persistent Volume Claims (PVC)", d: "A request for storage by a developer. Binds to a PV. Pods mount the PVC, not the PV directly.", c: "kubectl get pvc,pv" }
+                    { t: "Ephemeral vs Persistent Storage", d: "emptyDir and hostPath for temporary storage; PersistentVolumes (PV) and PVCs for decoupled storage management.", c: "kubectl get pv,pvc\nkubectl describe pvc my-claim" },
+                    { t: "PersistentVolumeClaims", d: "User requests for storage. Automatically binds to matching PVs or dynamically provisions via StorageClasses.", c: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 1Gi" }
                 ]
             },
             {
-                mod: "Security & Cluster Admin",
-                topics: ["RBAC", "Kubeadm Upgrades", "ETCD Backup", "Secrets"],
+                mod: "Troubleshooting & Debugging",
+                topics: ["Pod Logs", "Node Failures", "Network Debugging", "Control Plane"],
                 data: [
-                    { t: "RBAC", d: "Role (Namespace) vs ClusterRole (Global). RoleBinding attaches the role to a User, Group, or ServiceAccount.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-bind --role=pod-reader --user=jane" },
-                    { t: "ETCD Backup & Restore", d: "CRITICAL EXAM TOPIC. You must snapshot the database passing the correct certificates.", c: "ETCDCTL_API=3 etcdctl snapshot save /tmp/etcd.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
-                    { t: "Cluster Upgrades (Kubeadm)", d: "Always upgrade the Control Plane first, then Workers. Drain nodes before upgrading.", c: "kubectl drain controlplane --ignore-daemonsets\napt install kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt install kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" }
-                ]
-            },
-            {
-                mod: "Troubleshooting",
-                topics: ["Logs", "Node Failures", "Control Plane"],
-                data: [
-                    { t: "Pod Failures", d: "Check logs. If CrashLoopBackOff, the application is failing to start. Use -p to check previous crashed instance.", c: "kubectl describe pod failing-pod\nkubectl logs failing-pod\nkubectl logs failing-pod -p" },
-                    { t: "Worker Node NotReady", d: "SSH into node. Verify kubelet is running. Check disk space. Check for Swap (Swap must be disabled for kubelet).", c: "systemctl status kubelet\njournalctl -u kubelet -f\nfree -m" },
-                    { t: "Control Plane Down", d: "If kubectl fails, check if API server is running. Check static pod manifests in /etc/kubernetes/manifests for typos.", c: "cd /etc/kubernetes/manifests\ncrictl ps" }
+                    { t: "Pod & Container Troubleshooting", d: "Diagnosing CrashLoopBackOff, ImagePullBackOff, and OOMKilled failures.", c: "kubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous" },
+                    { t: "Worker Node NotReady", d: "Checking kubelet service status, disk pressure, memory pressure, and disabled swap configuration.", c: "systemctl status kubelet\njournalctl -u kubelet -e\nfree -m" },
+                    { t: "Control Plane Component Diagnostics", d: "Inspecting static pod manifests and container runtimes when API server goes down.", c: "cd /etc/kubernetes/manifests\ncrictl ps\ncrictl logs <container-id>" }
                 ]
             }
         ];

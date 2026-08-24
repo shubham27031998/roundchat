@@ -1089,19 +1089,21 @@
         let timer = 20;
         let timerInterval = null;
         let gameActive = false;
-        let gameMode = 'classic'; // 'classic' | 'ai_infinite'
+        let gameMode = 'ai_infinite'; // Default to 100% Dynamic AI-Generated Questions
         let activeScenario = null;
+        let prefetchedScenario = null;
         let gameAnswersHistory = [];
 
-        function startGame(mode = 'classic') {
+        function startGame(mode = 'ai_infinite') {
             gameMode = mode;
             document.getElementById('game-start-screen').style.display = 'none';
             document.getElementById('game-play-area').style.display = 'block';
-            document.getElementById('game-mode-tag').innerText = mode === 'ai_infinite' ? '🤖 Infinite AI' : '⚡ Classic (5)';
+            document.getElementById('game-mode-tag').innerText = '🤖 AI Generated';
             currentGameIdx = 0;
             score = 0;
             streak = 0;
             gameAnswersHistory = [];
+            prefetchedScenario = null;
             loadQuestion();
         }
 
@@ -1116,7 +1118,22 @@
                 } else if (aiMode === "direct") {
                     const apiKey = localStorage.getItem('roundchat_gemini_key');
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
-                    const prompt = 'Generate a realistic CKA Kubernetes cluster incident challenge. Return ONLY a valid JSON object without markdown fences with keys: title (string), desc (string with error logs), options (array of 4 distinct solutions), correct (integer 0-3), explanation (string).';
+                    
+                    const domains = [
+                        "Storage & PersistentVolumes (PV, PVC, StorageClasses)",
+                        "Services & Ingress Networking (ClusterIP, NodePort, Ingress, NetworkPolicies)",
+                        "Scheduling, Taints & Tolerations (NodeAffinity, ResourceQuotas, Limits)",
+                        "Cluster Maintenance & ETCD (ETCD backup/restore, kubeadm upgrade, kubelet)",
+                        "Application Lifecycle (Deployments, RollingUpdates, Rollbacks, InitContainers)",
+                        "Security & RBAC (Roles, RoleBindings, ClusterRoles, ServiceAccounts)",
+                        "Troubleshooting (CrashLoopBackOff, Node NotReady, OOMKilled, crictl)"
+                    ];
+                    const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+                    const prompt = `Generate a realistic, unique Kubernetes production outage challenge for a CKA exam.
+Domain: ${randomDomain}
+Random Seed: ${Math.floor(Math.random() * 90000) + 10000}
+Return ONLY a valid JSON object without markdown fences with keys: title (string), domain (string), desc (string with error logs), correct_answer (string), wrong_answers (array of 3 distinct strings), explanation (string).`;
+                    
                     const res = await fetch(endpoint, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1128,23 +1145,45 @@
                         if (raw.startsWith('```json')) raw = raw.substring(7);
                         if (raw.startsWith('```')) raw = raw.substring(3);
                         if (raw.endsWith('```')) raw = raw.substring(0, raw.length - 3);
-                        return JSON.parse(raw.trim());
+                        const parsed = JSON.parse(raw.trim());
+
+                        const correctAns = parsed.correct_answer || (parsed.options && parsed.options[parsed.correct || 0]);
+                        const wrongAns = parsed.wrong_answers || (parsed.options ? parsed.options.filter((_, i) => i !== (parsed.correct || 0)) : []);
+                        const allOpts = [correctAns, ...wrongAns.slice(0, 3)].sort(() => Math.random() - 0.5);
+                        const correctIdx = allOpts.indexOf(correctAns);
+
+                        return {
+                            title: parsed.title || "Kubernetes Incident",
+                            domain: parsed.domain || randomDomain.split('(')[0].trim(),
+                            desc: parsed.desc || "Cluster issue detected.",
+                            options: allOpts,
+                            correct: correctIdx,
+                            explanation: parsed.explanation || "Resolves the issue correctly."
+                        };
                     }
                 }
             } catch (err) {
-                console.warn("AI Scenario generation fallback to preset:", err);
+                console.warn("AI Scenario generation error, using dynamic fallback:", err);
             }
-            // Fallback to rotating curated questions
+            // Dynamic rotation fallback if offline
             const fallbackIdx = currentGameIdx % gameQuestions.length;
-            return gameQuestions[fallbackIdx];
+            const fb = gameQuestions[fallbackIdx];
+            return {
+                title: fb.title,
+                domain: "CKA Core Challenge",
+                desc: fb.desc,
+                options: [...fb.options].sort(() => Math.random() - 0.5),
+                correct: 0,
+                explanation: fb.explanation
+            };
+        }
+
+        // Prefetch next scenario in background for zero delay
+        function prefetchNextScenario() {
+            fetchAiScenario().then(s => { prefetchedScenario = s; }).catch(() => {});
         }
 
         async function loadQuestion() {
-            if (gameMode === 'classic' && currentGameIdx >= gameQuestions.length) {
-                endGame();
-                return;
-            }
-
             clearInterval(timerInterval);
             gameActive = false;
 
@@ -1163,14 +1202,18 @@
             feedbackEl.className = 'game-feedback';
             feedbackEl.style.display = 'none';
 
-            if (gameMode === 'ai_infinite') {
-                scTitle.innerHTML = `<span>⏳</span> Generating AI Chaos Incident #${currentGameIdx + 1}...`;
-                scDesc.innerText = 'Consulting Gemini AI cluster orchestrator for a fresh production outage...';
-                optsGrid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding: 25px; color: var(--text-muted); font-family: \'Fira Code\'; font-size: 0.85rem;"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Gemini is crafting an active incident...</div>';
-                activeScenario = await fetchAiScenario();
+            if (prefetchedScenario) {
+                activeScenario = prefetchedScenario;
+                prefetchedScenario = null;
             } else {
-                activeScenario = gameQuestions[currentGameIdx];
+                scTitle.innerHTML = `<span>⏳</span> Generating AI Chaos Incident #${currentGameIdx + 1}...`;
+                scDesc.innerText = 'Gemini AI is crafting a unique, randomized production cluster emergency...';
+                optsGrid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding: 25px; color: var(--text-muted); font-family: \'Fira Code\'; font-size: 0.85rem;"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Contacting Gemini AI for live incident spec...</div>';
+                activeScenario = await fetchAiScenario();
             }
+
+            // Immediately start prefetching the following question in the background
+            prefetchNextScenario();
 
             gameActive = true;
             timer = 20;
@@ -1179,7 +1222,8 @@
             document.getElementById('score-val').innerText = score;
             document.getElementById('streak-val').innerText = streak;
 
-            scTitle.innerHTML = `<span>🚨</span> Incident #${currentGameIdx + 1}: ${activeScenario.title}`;
+            const domainTag = activeScenario.domain ? `<span style="font-size:0.75rem; background:rgba(50, 108, 229, 0.2); border:1px solid var(--k8s-blue); color:#93c5fd; padding:2px 8px; border-radius:10px; margin-left:8px; font-weight:normal;">${escapeHtml(activeScenario.domain)}</span>` : '';
+            scTitle.innerHTML = `<span>🚨</span> Incident #${currentGameIdx + 1}: ${escapeHtml(activeScenario.title)} ${domainTag}`;
             scDesc.innerText = activeScenario.desc;
 
             optsGrid.innerHTML = '';

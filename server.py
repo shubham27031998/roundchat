@@ -158,16 +158,35 @@ async def game_scenario():
     try:
         from google import genai
         import json
+        import random
+
         client = genai.Client(api_key=api_key)
-        prompt = """Generate a realistic, unique CKA Kubernetes cluster incident challenge.
+
+        domains = [
+            "Storage & Volumes (PV, PVC, StorageClasses, access modes, volumeMounts)",
+            "Services & Networking (ClusterIP, NodePort, Ingress, NetworkPolicies, CoreDNS, CNI)",
+            "Scheduling & Pod Placement (Taints, Tolerations, NodeAffinity, ResourceQuotas, Limits)",
+            "Cluster Maintenance & Upgrades (ETCD backup/restore, kubeadm upgrade, kubelet certificates)",
+            "Application Lifecycle & Rollouts (Deployments, RollingUpdates, Rollbacks, InitContainers)",
+            "Security & Cluster Access (RBAC Roles, RoleBindings, ClusterRoles, ServiceAccounts)",
+            "Advanced Troubleshooting (CrashLoopBackOff, OOMKilled, Worker Node NotReady, crictl)"
+        ]
+        selected_domain = random.choice(domains)
+
+        prompt = f"""Generate a unique, creative, realistic Kubernetes production outage or troubleshooting incident for a CKA exam challenge.
+Focused Domain: {selected_domain}
+Random Seed: {random.randint(10000, 99999)}
+
 Return ONLY a valid JSON object without markdown fences, with these exact keys:
-{
+{{
   "title": "Incident Name",
-  "desc": "Detailed problem description with realistic error symptom or logs",
-  "options": ["Option 1 (command or YAML snippet)", "Option 2", "Option 3", "Option 4"],
-  "correct": 0,
-  "explanation": "Why this option is correct and how it resolves the failure"
-}"""
+  "domain": "{selected_domain.split('(')[0].strip()}",
+  "desc": "Detailed problem description with realistic error output / kubectl logs",
+  "correct_answer": "The single correct kubectl command or YAML fix",
+  "wrong_answers": ["Realistic distractor 1", "Realistic distractor 2", "Realistic distractor 3"],
+  "explanation": "Clear explanation of why the correct fix works and how the underlying K8s subsystem behaves"
+}}"""
+
         for model_name in ["gemini-3.7-flash", "gemini-3.5-flash-lite"]:
             try:
                 res = client.models.generate_content(model=model_name, contents=prompt)
@@ -180,11 +199,28 @@ Return ONLY a valid JSON object without markdown fences, with these exact keys:
                     if clean_text.endswith("```"):
                         clean_text = clean_text[:-3]
                     data = json.loads(clean_text.strip())
-                    return {"scenario": data, "status": "success"}
+
+                    # Shuffle options randomly
+                    correct_ans = data.get("correct_answer") or data.get("options", [""])[data.get("correct", 0)]
+                    wrong_ans = data.get("wrong_answers") or [opt for i, opt in enumerate(data.get("options", [])) if i != data.get("correct", 0)]
+                    
+                    all_options = [correct_ans] + wrong_ans[:3]
+                    random.shuffle(all_options)
+                    correct_idx = all_options.index(correct_ans)
+
+                    scenario_obj = {
+                        "title": data.get("title", "Kubernetes Outage Incident"),
+                        "domain": data.get("domain", selected_domain.split('(')[0].strip()),
+                        "desc": data.get("desc", "A cluster issue occurred requiring resolution."),
+                        "options": all_options,
+                        "correct": correct_idx,
+                        "explanation": data.get("explanation", "This resolves the failure by correctly configuring Kubernetes resources.")
+                    }
+                    return {"scenario": scenario_obj, "status": "success"}
             except Exception as e:
                 print(f"Scenario generation attempt with {model_name} failed: {e}", file=sys.stderr)
                 continue
-        raise Exception("Failed to generate valid scenario.")
+        raise Exception("Failed to generate valid randomized scenario.")
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
 

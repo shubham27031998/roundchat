@@ -122,15 +122,31 @@ app.post('/api/game/scenario', async (req, res) => {
   }
   try {
     const ai = new GoogleGenAI({ apiKey });
-    const prompt = `Generate a realistic, unique CKA Kubernetes cluster incident challenge.
+    const domains = [
+      "Storage & Volumes (PV, PVC, StorageClasses, access modes)",
+      "Services & Networking (ClusterIP, NodePort, Ingress, NetworkPolicies, CoreDNS, CNI)",
+      "Scheduling & Pod Placement (Taints, Tolerations, NodeAffinity, ResourceQuotas)",
+      "Cluster Maintenance & Upgrades (ETCD backup/restore, kubeadm upgrade, kubelet certs)",
+      "Application Lifecycle & Rollouts (Deployments, RollingUpdates, Rollbacks, InitContainers)",
+      "Security & Cluster Access (RBAC Roles, RoleBindings, ClusterRoles, ServiceAccounts)",
+      "Advanced Troubleshooting (CrashLoopBackOff, OOMKilled, Worker Node NotReady, crictl)"
+    ];
+    const selectedDomain = domains[Math.floor(Math.random() * domains.length)];
+
+    const prompt = `Generate a unique, creative, realistic Kubernetes production outage or troubleshooting incident for a CKA exam challenge.
+Focused Domain: ${selectedDomain}
+Random Seed: ${Math.floor(Math.random() * 90000) + 10000}
+
 Return ONLY a valid JSON object without markdown fences, with these exact keys:
 {
   "title": "Incident Name",
-  "desc": "Detailed problem description with realistic error symptom or logs",
-  "options": ["Option 1 (command or YAML snippet)", "Option 2", "Option 3", "Option 4"],
-  "correct": 0,
-  "explanation": "Why this option is correct and how it resolves the failure"
+  "domain": "${selectedDomain.split('(')[0].trim()}",
+  "desc": "Detailed problem description with realistic error output / kubectl logs",
+  "correct_answer": "The single correct kubectl command or YAML fix",
+  "wrong_answers": ["Realistic distractor 1", "Realistic distractor 2", "Realistic distractor 3"],
+  "explanation": "Clear explanation of why the correct fix works"
 }`;
+
     for (const modelName of ['gemini-3.7-flash', 'gemini-3.5-flash-lite']) {
       try {
         const response = await ai.models.generateContent({ model: modelName, contents: prompt });
@@ -140,7 +156,21 @@ Return ONLY a valid JSON object without markdown fences, with these exact keys:
           if (clean.startsWith('```')) clean = clean.substring(3);
           if (clean.endsWith('```')) clean = clean.substring(0, clean.length - 3);
           const data = JSON.parse(clean.trim());
-          return res.json({ scenario: data, status: 'success' });
+
+          const correctAns = data.correct_answer || (data.options && data.options[data.correct || 0]);
+          const wrongAns = data.wrong_answers || (data.options ? data.options.filter((_, i) => i !== (data.correct || 0)) : []);
+          const allOptions = [correctAns, ...wrongAns.slice(0, 3)].sort(() => Math.random() - 0.5);
+          const correctIdx = allOptions.indexOf(correctAns);
+
+          const scenarioObj = {
+            title: data.title || "Kubernetes Outage Incident",
+            domain: data.domain || selectedDomain.split('(')[0].trim(),
+            desc: data.desc || "A cluster issue occurred requiring resolution.",
+            options: allOptions,
+            correct: correctIdx,
+            explanation: data.explanation || "This resolves the failure by correctly configuring Kubernetes resources."
+          };
+          return res.json({ scenario: scenarioObj, status: 'success' });
         }
       } catch (e) {}
     }

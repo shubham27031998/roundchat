@@ -205,31 +205,288 @@
         .log-entry.danger { color: #fca5a5; font-weight: 600; }
         .log-entry.danger .log-step-badge { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: #fca5a5; }
 
-        /* --- 2. SYLLABUS MATRIX --- */
-        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; }
+        /* --- 2. SYLLABUS MASTERCLASS DESIGN --- */
+        .syllabus-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+        }
+        .domain-filters {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .domain-filter-btn {
+            background: rgba(19, 25, 43, 0.6);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+            padding: 8px 14px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .domain-filter-btn span {
+            font-size: 0.72rem;
+            background: rgba(255, 255, 255, 0.08);
+            padding: 2px 6px;
+            border-radius: 6px;
+            color: var(--text-main);
+        }
+        .domain-filter-btn:hover {
+            border-color: var(--k8s-light);
+            color: #fff;
+            background: rgba(50, 108, 229, 0.15);
+            transform: translateY(-2px);
+        }
+        .domain-filter-btn.active {
+            background: rgba(50, 108, 229, 0.25);
+            border-color: var(--k8s-blue);
+            color: #fff;
+            box-shadow: 0 4px 14px rgba(50, 108, 229, 0.3);
+        }
+        .domain-filter-btn.active span {
+            background: var(--k8s-blue);
+            color: #fff;
+        }
+
+        .syllabus-search-wrap {
+            position: relative;
+            min-width: 260px;
+            flex: 1;
+            max-width: 380px;
+        }
+        .syllabus-search-wrap .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+        .syllabus-search-input {
+            width: 100%;
+            background: #090c16;
+            border: 1px solid var(--border);
+            padding: 9px 36px 9px 34px;
+            border-radius: 10px;
+            color: #fff;
+            font-size: 0.82rem;
+            outline: none;
+            transition: all 0.2s;
+        }
+        .syllabus-search-input:focus {
+            border-color: var(--k8s-light);
+            box-shadow: 0 0 15px rgba(50, 108, 229, 0.25);
+            background: #0d1220;
+        }
+        .search-clear-btn {
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            border: none;
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            cursor: pointer;
+            padding: 2px 6px;
+        }
+        .search-clear-btn:hover { color: #fff; }
+
+        .syllabus-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+            gap: 22px;
+            align-items: start;
+        }
+
         .module-card { 
-            background: var(--surface); border: 1px solid var(--border); border-radius: 16px; 
-            padding: 24px; transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
-            position: relative; overflow: hidden;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 16px; 
+            padding: 20px;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            backdrop-filter: blur(12px);
         }
         .module-card::before {
-            content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
-            background: linear-gradient(90deg, var(--k8s-blue), var(--accent-purple));
-            opacity: 0.6; transition: opacity 0.3s;
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, var(--card-accent, var(--k8s-blue)), transparent);
+            opacity: 0.8;
+            transition: opacity 0.3s;
         }
-        .module-card:hover { border-color: var(--border-hover); transform: translateY(-4px); box-shadow: 0 14px 35px rgba(0,0,0,0.5); }
-        .module-card:hover::before { opacity: 1; }
-        .module-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 10px; display: flex; align-items: center; justify-content: space-between; }
-        .topic-list { display: flex; flex-wrap: wrap; gap: 8px; }
-        
-        .chip { 
-            background: rgba(255,255,255,0.04); border: 1px solid var(--border); padding: 7px 14px; 
-            border-radius: 8px; font-size: 0.8rem; color: var(--text-muted); transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); cursor: pointer;
-            display: inline-flex; align-items: center; gap: 6px; font-weight: 500;
+        .module-card:hover {
+            border-color: var(--card-accent, var(--border-hover));
+            transform: translateY(-4px);
+            box-shadow: 0 16px 40px rgba(0,0,0,0.6);
         }
-        .chip::after { content: '›'; font-weight: bold; color: var(--k8s-light); opacity: 0; transition: 0.2s; }
-        .chip:hover { background: rgba(50, 108, 229, 0.18); border-color: var(--k8s-light); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(50, 108, 229, 0.25); }
-        .chip:hover::after { opacity: 1; }
+        .module-card:hover::before { opacity: 1; height: 4px; }
+
+        .module-card-header {
+            display: flex;
+            align-items: flex-start;
+            gap: 14px;
+            margin-bottom: 16px;
+            padding-bottom: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        }
+        .module-icon-box {
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            background: rgba(255, 255, 255, 0.04);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.35rem;
+            flex-shrink: 0;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        }
+        .module-header-text {
+            flex: 1;
+            min-width: 0;
+        }
+        .module-title {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #fff;
+            margin-bottom: 6px;
+            line-height: 1.35;
+        }
+        .module-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .weight-pill {
+            font-size: 0.7rem;
+            font-weight: 700;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(50, 108, 229, 0.18);
+            border: 1px solid rgba(96, 165, 250, 0.35);
+            color: #93c5fd;
+        }
+        .count-pill {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 3px 8px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid var(--border);
+            color: var(--text-muted);
+        }
+
+        .topic-list-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .topic-row {
+            background: rgba(255, 255, 255, 0.025);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: 10px;
+            padding: 10px 14px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .topic-row:hover {
+            background: rgba(50, 108, 229, 0.12);
+            border-color: rgba(96, 165, 250, 0.4);
+            transform: translateX(4px);
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+        }
+        .topic-row-left {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+            flex: 1;
+        }
+        .topic-index-badge {
+            width: 22px;
+            height: 22px;
+            border-radius: 6px;
+            background: rgba(255, 255, 255, 0.06);
+            color: var(--text-muted);
+            font-size: 0.68rem;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            transition: all 0.2s;
+        }
+        .topic-row:hover .topic-index-badge {
+            background: var(--k8s-blue);
+            color: #fff;
+        }
+        .topic-name {
+            font-size: 0.84rem;
+            font-weight: 600;
+            color: #e2e8f0;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            transition: color 0.2s;
+        }
+        .topic-row:hover .topic-name {
+            color: #fff;
+        }
+        .topic-row-right {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+        .tag-pill {
+            font-size: 0.64rem;
+            font-weight: 700;
+            font-family: 'Fira Code', monospace;
+            padding: 2px 6px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+        }
+        .tag-pill.cli { background: rgba(16, 185, 129, 0.12); color: #86efac; border: 1px solid rgba(16, 185, 129, 0.3); }
+        .tag-pill.yaml { background: rgba(168, 85, 247, 0.12); color: #d8b4fe; border: 1px solid rgba(168, 85, 247, 0.3); }
+        .topic-chevron {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: bold;
+            transition: transform 0.2s, color 0.2s;
+            margin-left: 2px;
+        }
+        .topic-row:hover .topic-chevron {
+            color: var(--k8s-light);
+            transform: translateX(2px);
+        }
         /* --- 3. INTERACTIVE MINI-GAME --- */
         .game-container {
             background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
@@ -499,11 +756,16 @@
             .btn-sim { padding: 9px 12px; min-height: 40px; font-size: 0.76rem; }
             .console-logs { padding: 10px; height: 220px; font-size: 0.72rem; }
 
-            .syllabus-grid { grid-template-columns: 1fr; gap: 12px; }
-            .module-card { padding: 14px; border-radius: 12px; }
-            .module-title { font-size: 0.98rem; margin-bottom: 10px; }
-            .topic-list { gap: 6px; }
-            .chip { padding: 7px 10px; font-size: 0.74rem; min-height: 36px; }
+            .syllabus-toolbar { flex-direction: column; align-items: stretch; gap: 10px; margin-bottom: 16px; }
+            .domain-filters { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; gap: 6px; }
+            .domain-filter-btn { white-space: nowrap; flex-shrink: 0; padding: 6px 10px; font-size: 0.74rem; border-radius: 8px; }
+            .syllabus-search-wrap { max-width: 100%; min-width: 100%; }
+            .syllabus-search-input { font-size: 16px !important; padding: 8px 32px 8px 30px; }
+            .syllabus-grid { grid-template-columns: 1fr; gap: 14px; }
+            .module-card { padding: 16px 14px; border-radius: 14px; }
+            .module-title { font-size: 0.98rem; }
+            .topic-row { padding: 9px 12px; gap: 8px; }
+            .topic-name { font-size: 0.8rem; }
 
             /* Zero-scroll single screen Quiz HUD on Phone */
             .game-container { padding: 14px 12px; border-radius: 14px; }
@@ -634,8 +896,26 @@
         <!-- SECTION 2: EXHAUSTIVE CKA SYLLABUS -->
         <div class="section-title">
             <span>2. Complete CKA Syllabus Masterclass (Exam Ready)</span>
-            <span class="helper-text">👆 Click any detailed subtopic chip below for step-by-step masterclass, underlying logic & YAML / CLI commands</span>
+            <span class="helper-text">👆 Click any subtopic for deep-dive architecture, underlying logic & copy-ready YAML / CLI manifests</span>
         </div>
+
+        <!-- SYLLABUS TOOLBAR & DOMAIN FILTERS -->
+        <div class="syllabus-toolbar">
+            <div class="domain-filters" id="domain-filters">
+                <button class="domain-filter-btn active" onclick="filterDomain('all')">All Domains <span>(28)</span></button>
+                <button class="domain-filter-btn" onclick="filterDomain(0)">🏗️ Architecture <span>25%</span></button>
+                <button class="domain-filter-btn" onclick="filterDomain(1)">📦 Workloads <span>15%</span></button>
+                <button class="domain-filter-btn" onclick="filterDomain(2)">🌐 Networking <span>20%</span></button>
+                <button class="domain-filter-btn" onclick="filterDomain(3)">💾 Storage <span>10%</span></button>
+                <button class="domain-filter-btn" onclick="filterDomain(4)">🛠️ Troubleshooting <span>30%</span></button>
+            </div>
+            <div class="syllabus-search-wrap">
+                <span class="search-icon">🔍</span>
+                <input type="text" id="syllabus-search-input" class="syllabus-search-input" placeholder="Search subtopic (e.g. drain, etcd, netpol)..." oninput="handleSyllabusSearch(this.value)">
+                <button class="search-clear-btn" id="search-clear-btn" onclick="clearSyllabusSearch()" style="display:none;">✕</button>
+            </div>
+        </div>
+
         <div class="syllabus-grid" id="syllabus-grid"></div>
 
         <br><br><br>
@@ -1227,6 +1507,9 @@
         const syllabus = [
             {
                 mod: "1. Cluster Architecture, Installation & Upgrades",
+                icon: "🏗️",
+                weight: "25%",
+                color: "#a855f7",
                 data: [
                     { 
                         t: "Kubeadm Cluster Init & Join", 
@@ -1280,6 +1563,9 @@
             },
             {
                 mod: "2. Workloads & Scheduling",
+                icon: "📦",
+                weight: "15%",
+                color: "#3b82f6",
                 data: [
                     { 
                         t: "Deployments & Rollouts", 
@@ -1349,6 +1635,9 @@
             },
             {
                 mod: "3. Services & Networking",
+                icon: "🌐",
+                weight: "20%",
+                color: "#06b6d4",
                 data: [
                     { 
                         t: "ClusterIP & NodePort", 
@@ -1394,6 +1683,9 @@
             },
             {
                 mod: "4. Storage Configuration",
+                icon: "💾",
+                weight: "10%",
+                color: "#10b981",
                 data: [
                     { 
                         t: "Ephemeral Volumes (emptyDir, hostPath)", 
@@ -1431,6 +1723,9 @@
             },
             {
                 mod: "5. Troubleshooting & Maintenance",
+                icon: "🛠️",
+                weight: "30%",
+                color: "#f43f5e",
                 data: [
                     { 
                         t: "Node Maintenance (Cordon & Drain)", 
@@ -1476,19 +1771,113 @@
             }
         ];
 
-        // Render Syllabus
-        const grid = document.getElementById('syllabus-grid');
-        syllabus.forEach((s, modIdx) => {
-            const chips = s.data.map((item, topicIdx) => `
-                <span class="chip" onclick="openTopicModal(${modIdx}, ${topicIdx})">${item.t}</span>
-            `).join('');
-            grid.innerHTML += `
-                <div class="module-card">
-                    <div class="module-title">${s.mod}</div>
-                    <div class="topic-list">${chips}</div>
-                </div>
-            `;
-        });
+        // Filter and Render Syllabus Masterclass
+        let activeDomainFilter = 'all';
+        let currentSyllabusSearch = '';
+
+        function renderSyllabus() {
+            const grid = document.getElementById('syllabus-grid');
+            if (!grid) return;
+            grid.innerHTML = '';
+
+            const query = currentSyllabusSearch.trim().toLowerCase();
+            let totalRendered = 0;
+
+            syllabus.forEach((s, modIdx) => {
+                // Domain filter condition
+                if (activeDomainFilter !== 'all' && activeDomainFilter !== modIdx) {
+                    return;
+                }
+
+                // Subtopic search filter condition
+                const matchingTopics = s.data.map((item, topicIdx) => ({ item, topicIdx })).filter(({ item }) => {
+                    if (!query) return true;
+                    return item.t.toLowerCase().includes(query) ||
+                           (item.overview && item.overview.toLowerCase().includes(query)) ||
+                           (item.cli && item.cli.toLowerCase().includes(query));
+                });
+
+                if (query && matchingTopics.length === 0) {
+                    return;
+                }
+
+                totalRendered += matchingTopics.length;
+
+                const topicsHtml = matchingTopics.map(({ item, topicIdx }, listIdx) => {
+                    const numStr = (listIdx + 1) < 10 ? `0${listIdx + 1}` : `${listIdx + 1}`;
+                    return `
+                        <div class="topic-row" onclick="openTopicModal(${modIdx}, ${topicIdx})">
+                            <div class="topic-row-left">
+                                <span class="topic-index-badge">${numStr}</span>
+                                <span class="topic-name">${escapeHtml(item.t)}</span>
+                            </div>
+                            <div class="topic-row-right">
+                                <span class="tag-pill cli">CLI</span>
+                                <span class="tag-pill yaml">YAML</span>
+                                <span class="topic-chevron">›</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                grid.innerHTML += `
+                    <div class="module-card" style="--card-accent: ${s.color};">
+                        <div class="module-card-header">
+                            <div class="module-icon-box" style="border-color: ${s.color}40; background: ${s.color}15;">
+                                <span>${s.icon}</span>
+                            </div>
+                            <div class="module-header-text">
+                                <div class="module-title">${escapeHtml(s.mod)}</div>
+                                <div class="module-badges">
+                                    <span class="weight-pill" style="border-color: ${s.color}50; color: ${s.color}; background: ${s.color}15;">${s.weight} Weight</span>
+                                    <span class="count-pill">${matchingTopics.length} ${matchingTopics.length === 1 ? 'Topic' : 'Topics'}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="topic-list-group">
+                            ${topicsHtml}
+                        </div>
+                    </div>
+                `;
+            });
+
+            if (totalRendered === 0) {
+                grid.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 40px 20px; background: var(--surface); border: 1px solid var(--border); border-radius: 16px;">
+                        <div style="font-size: 2.2rem; margin-bottom: 8px;">🔍</div>
+                        <div style="font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 6px;">No matching subtopics found</div>
+                        <div style="color: var(--text-muted); font-size: 0.84rem;">No subtopic matched "${escapeHtml(currentSyllabusSearch)}". Try searching for "drain", "etcd", "rbac", or "ingress".</div>
+                        <button onclick="clearSyllabusSearch()" style="margin-top: 14px; background: var(--k8s-blue); color: #fff; border: none; padding: 8px 18px; border-radius: 8px; font-weight: 600; font-size: 0.82rem; cursor: pointer;">Clear Search</button>
+                    </div>
+                `;
+            }
+        }
+
+        function filterDomain(domainIdx) {
+            activeDomainFilter = domainIdx;
+            document.querySelectorAll('.domain-filter-btn').forEach((btn, idx) => {
+                if (domainIdx === 'all' && idx === 0) btn.classList.add('active');
+                else if (domainIdx === (idx - 1)) btn.classList.add('active');
+                else btn.classList.remove('active');
+            });
+            renderSyllabus();
+        }
+
+        function handleSyllabusSearch(val) {
+            currentSyllabusSearch = val;
+            const clearBtn = document.getElementById('search-clear-btn');
+            if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+            renderSyllabus();
+        }
+
+        function clearSyllabusSearch() {
+            const input = document.getElementById('syllabus-search-input');
+            if (input) input.value = '';
+            handleSyllabusSearch('');
+        }
+
+        // Initial render on page load
+        renderSyllabus();
 
         // ==========================================
         // MINI-GAME LOGIC

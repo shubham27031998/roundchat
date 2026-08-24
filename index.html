@@ -139,11 +139,21 @@
         .game-feedback.success { background: rgba(34, 197, 94, 0.15); border: 1px solid var(--accent-green); color: #86efac; }
         .game-feedback.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: #fca5a5; }
 
+        .game-hint-box { margin-top: 12px; padding: 10px 14px; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--accent-orange); border-radius: 8px; color: #fde68a; font-size: 0.82rem; display: none; animation: fadeUp 0.25s forwards; }
+        .game-hint-box.show { display: flex; align-items: center; gap: 8px; }
+
         .game-start-screen { text-align: center; padding: 40px 20px; }
         .game-start-screen h3 { font-size: 1.8rem; margin-bottom: 10px; color: #fff; }
-        .game-start-screen p { color: var(--text-muted); margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; }
-        .btn-primary-game { background: var(--k8s-blue); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.2s; box-shadow: 0 4px 15px var(--glow); }
-        .btn-primary-game:hover { background: #2563eb; transform: scale(1.05); }
+        .game-start-screen p { color: var(--text-muted); margin-bottom: 25px; max-width: 650px; margin-left: auto; margin-right: auto; line-height: 1.6; }
+        .btn-primary-game { background: var(--k8s-blue); color: #fff; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 0.95rem; transition: 0.2s; box-shadow: 0 4px 15px var(--glow); display: inline-flex; align-items: center; gap: 8px; }
+        .btn-primary-game:hover { transform: scale(1.04); box-shadow: 0 6px 20px rgba(50, 108, 229, 0.6); }
+
+        .btn-game-hint { background: rgba(245, 158, 11, 0.18); border: 1px solid var(--accent-orange); color: #fde68a; padding: 4px 10px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-game-hint:hover:not(:disabled) { background: var(--accent-orange); color: #000; }
+        .btn-game-hint:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .ai-mode-tag { font-size: 0.72rem; padding: 3px 8px; border-radius: 6px; background: rgba(124, 58, 237, 0.25); border: 1px solid var(--accent-purple); color: #d8b4fe; font-family: 'Fira Code', monospace; }
+        .game-report-box { background: rgba(24, 24, 27, 0.7); border: 1px solid var(--border); border-radius: 12px; padding: 18px; margin-top: 20px; text-align: left; line-height: 1.7; font-size: 0.88rem; display: none; animation: fadeUp 0.3s forwards; }
 
         /* --- ENHANCED ANIMATED STACKED MODAL --- */
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.25s ease-in-out; }
@@ -176,6 +186,100 @@
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- K8S AI COPILOT FLOATING DRAWER & WIDGET --- */
+        .ai-fab {
+            position: fixed; bottom: 25px; right: 25px; z-index: 999;
+            background: linear-gradient(135deg, #2563eb, #7c3aed);
+            color: #fff; border: 1px solid rgba(255,255,255,0.25);
+            padding: 12px 20px; border-radius: 50px; cursor: pointer;
+            display: flex; align-items: center; gap: 10px; font-weight: 700;
+            font-size: 0.92rem; box-shadow: 0 8px 30px rgba(50, 108, 229, 0.5);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .ai-fab:hover { transform: translateY(-3px) scale(1.04); box-shadow: 0 12px 40px rgba(124, 58, 237, 0.6); }
+        .ai-pulse-dot { width: 9px; height: 9px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 10px #22c55e; animation: pulseDot 2s infinite; }
+        .ai-pulse-dot.standby { background: #f59e0b; box-shadow: 0 0 10px #f59e0b; }
+        @keyframes pulseDot { 0%, 100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.4); opacity: 0.6; } }
+
+        .ai-drawer {
+            position: fixed; bottom: 85px; right: 25px; width: 450px; max-width: calc(100vw - 30px);
+            height: 620px; max-height: calc(100vh - 110px); z-index: 1000;
+            background: rgba(13, 17, 23, 0.97); backdrop-filter: blur(20px);
+            border: 1px solid rgba(50, 108, 229, 0.35); border-radius: 18px;
+            display: flex; flex-direction: column; box-shadow: 0 25px 70px rgba(0,0,0,0.85);
+            transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1); overflow: hidden;
+        }
+        .ai-drawer.open { transform: translateY(0) scale(1); opacity: 1; pointer-events: all; }
+
+        .ai-header {
+            padding: 14px 18px; background: rgba(24, 24, 27, 0.85); border-bottom: 1px solid var(--border);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .ai-title-wrap { display: flex; align-items: center; gap: 10px; }
+        .ai-title { font-size: 0.95rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 6px; }
+        .ai-status-tag { font-size: 0.7rem; padding: 3px 8px; border-radius: 12px; background: rgba(34, 197, 94, 0.15); border: 1px solid var(--accent-green); color: #86efac; font-family: 'Fira Code', monospace; display: flex; align-items: center; gap: 5px; cursor: pointer; }
+        .ai-status-tag.standby { background: rgba(245, 158, 11, 0.15); border-color: var(--accent-orange); color: #fde68a; }
+        .ai-actions { display: flex; align-items: center; gap: 6px; }
+        .ai-icon-btn { background: transparent; border: 1px solid transparent; color: var(--text-muted); padding: 5px 8px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; transition: 0.2s; }
+        .ai-icon-btn:hover { color: #fff; background: rgba(255,255,255,0.08); border-color: var(--border); }
+
+        .ai-chat-body { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 14px; }
+        
+        .ai-welcome-card { background: rgba(24, 24, 27, 0.6); border: 1px dashed rgba(50, 108, 229, 0.4); border-radius: 12px; padding: 14px; }
+        .ai-welcome-card h4 { font-size: 0.88rem; color: var(--k8s-light); margin-bottom: 6px; display: flex; align-items: center; gap: 6px; }
+        .ai-welcome-card p { font-size: 0.8rem; color: var(--text-muted); line-height: 1.5; margin-bottom: 10px; }
+        
+        .ai-prompts-grid { display: flex; flex-direction: column; gap: 6px; }
+        .ai-prompt-chip { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 7px 10px; border-radius: 6px; font-size: 0.75rem; color: var(--text-main); cursor: pointer; text-align: left; transition: 0.2s; display: flex; align-items: center; gap: 6px; }
+        .ai-prompt-chip:hover { border-color: var(--k8s-blue); background: rgba(50, 108, 229, 0.15); color: #fff; }
+
+        .ai-msg { display: flex; flex-direction: column; gap: 4px; max-width: 90%; animation: fadeUp 0.2s forwards; }
+        .ai-msg.user { align-self: flex-end; }
+        .ai-msg.bot { align-self: flex-start; max-width: 96%; }
+        .ai-bubble { padding: 10px 14px; border-radius: 12px; font-size: 0.82rem; line-height: 1.6; }
+        .ai-msg.user .ai-bubble { background: linear-gradient(135deg, #1d4ed8, #2563eb); color: #fff; border-bottom-right-radius: 2px; }
+        .ai-msg.bot .ai-bubble { background: #18181b; border: 1px solid var(--border); color: var(--text-main); border-bottom-left-radius: 2px; }
+        
+        .ai-msg pre { background: #000; padding: 12px 14px; border-radius: 8px; border: 1px solid #27272a; margin: 8px 0; overflow-x: auto; position: relative; font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--accent-green); line-height: 1.5; }
+        .ai-msg code:not(pre code) { background: rgba(255,255,255,0.08); padding: 2px 6px; border-radius: 4px; font-family: 'Fira Code', monospace; font-size: 0.75rem; color: var(--k8s-light); }
+        .ai-copy-btn { position: absolute; top: 6px; right: 6px; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.15); color: var(--text-muted); font-size: 0.65rem; padding: 3px 7px; border-radius: 4px; cursor: pointer; transition: 0.2s; font-family: 'Fira Code', monospace; }
+        .ai-copy-btn:hover { color: #fff; background: rgba(255,255,255,0.25); }
+
+        .ai-typing { display: flex; align-items: center; gap: 4px; padding: 8px 12px; }
+        .ai-typing-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--k8s-light); animation: aiTyping 1.4s infinite ease-in-out; }
+        .ai-typing-dot:nth-child(1) { animation-delay: 0s; }
+        .ai-typing-dot:nth-child(2) { animation-delay: 0.2s; }
+        .ai-typing-dot:nth-child(3) { animation-delay: 0.4s; }
+        @keyframes aiTyping { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-4px); opacity: 1; } }
+
+        .ai-footer { padding: 12px 14px; background: rgba(24, 24, 27, 0.85); border-top: 1px solid var(--border); display: flex; flex-direction: column; gap: 8px; }
+        .ai-input-wrap { display: flex; gap: 8px; align-items: flex-end; }
+        .ai-input { flex: 1; background: #000; border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; color: #fff; font-size: 0.82rem; resize: none; max-height: 100px; min-height: 38px; outline: none; font-family: 'Plus Jakarta Sans', sans-serif; }
+        .ai-input:focus { border-color: var(--k8s-blue); }
+        .ai-send-btn { background: var(--k8s-blue); border: none; color: #fff; padding: 10px 14px; border-radius: 8px; cursor: pointer; font-weight: 700; font-size: 0.85rem; transition: 0.2s; }
+        .ai-send-btn:hover:not(:disabled) { background: #2563eb; transform: translateY(-1px); }
+        .ai-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+        .btn-ask-ai { background: linear-gradient(135deg, #1e40af, #6d28d9); border: 1px solid rgba(255,255,255,0.2); color: #fff; padding: 6px 14px; border-radius: 6px; cursor: pointer; font-size: 0.78rem; font-weight: 700; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; }
+        .btn-ask-ai:hover { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(109, 40, 217, 0.5); }
+        
+        .btn-ai-game { background: rgba(50, 108, 229, 0.2); border: 1px solid var(--k8s-blue); color: #93c5fd; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.76rem; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; margin-top: 6px; }
+        .btn-ai-game:hover { background: var(--k8s-blue); color: #fff; }
+
+        /* API Key Settings Modal */
+        #ai-settings-modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1100; display: none; justify-content: center; align-items: center; padding: 20px; }
+        #ai-settings-modal.show { display: flex; }
+        .ai-settings-card { background: var(--bg); border: 1px solid var(--border); border-radius: 16px; width: 100%; max-width: 520px; padding: 25px; box-shadow: 0 20px 50px rgba(0,0,0,0.9); }
+        .ai-settings-card h3 { color: var(--k8s-light); font-size: 1.25rem; margin-bottom: 12px; display: flex; align-items: center; gap: 8px; }
+        .ai-settings-card p { color: var(--text-muted); font-size: 0.85rem; line-height: 1.6; margin-bottom: 15px; }
+        .ai-settings-input { width: 100%; background: #000; border: 1px solid var(--border); padding: 10px 12px; border-radius: 8px; color: #fff; font-family: 'Fira Code', monospace; font-size: 0.85rem; outline: none; margin-bottom: 15px; }
+        .ai-settings-input:focus { border-color: var(--k8s-blue); }
+        .ai-settings-actions { display: flex; justify-content: flex-end; gap: 10px; }
+        .ai-settings-btn { padding: 8px 16px; border-radius: 6px; font-size: 0.85rem; font-weight: 600; cursor: pointer; border: none; }
+        .ai-settings-btn.primary { background: var(--k8s-blue); color: #fff; }
+        .ai-settings-btn.secondary { background: var(--surface); color: var(--text-muted); border: 1px solid var(--border); }
     </style>
 </head>
 <body>
@@ -271,23 +375,34 @@
         <div class="game-container" id="game-container">
             <div class="game-start-screen" id="game-start-screen">
                 <h3>⚡ Ready to Test Your CKA Skills?</h3>
-                <p>You will face randomized cluster emergency scenarios. Select the correct CLI command or YAML solution before time runs out to score points and maintain your streak!</p>
-                <button class="btn-primary-game" onclick="startGame()">Start Chaos Rescue Game</button>
+                <p>Face real-world Kubernetes emergencies! Choose standard exam scenarios or let **Gemini AI** dynamically create unique, randomized production chaos incidents on the fly!</p>
+                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+                    <button class="btn-primary-game" onclick="startGame('classic')">
+                        <span>⚡</span> Classic 5-Question Challenge
+                    </button>
+                    <button class="btn-primary-game" style="background: linear-gradient(135deg, #7c3aed, #2563eb);" onclick="startGame('ai_infinite')">
+                        <span>🤖</span> Infinite AI Chaos Mode
+                    </button>
+                </div>
             </div>
 
             <div id="game-play-area" style="display: none;">
                 <div class="game-top-bar">
                     <div class="game-stats">
-                        <div class="game-stat-badge">Question: <span id="q-num">1</span>/5</div>
+                        <div class="game-stat-badge">Incident: <span id="q-num">1</span> <span class="ai-mode-tag" id="game-mode-tag">Classic</span></div>
                         <div class="game-stat-badge">Score: <span id="score-val">0</span></div>
                         <div class="game-stat-badge">Streak: 🔥 <span id="streak-val">0</span></div>
                     </div>
-                    <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 AI Hint (-5s)</button>
+                        <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
+                    </div>
                 </div>
 
                 <div class="scenario-box">
                     <div class="scenario-title" id="sc-title">Scenario Title</div>
                     <div id="sc-desc" style="color: var(--text-muted);">Scenario description goes here...</div>
+                    <div class="game-hint-box" id="game-hint-box"></div>
                 </div>
 
                 <div class="options-grid" id="options-grid">
@@ -305,10 +420,82 @@
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="m-title">Title</h2>
-                <button class="close-btn" onclick="closeModal()">✕</button>
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <button class="btn-ask-ai" onclick="askAiAboutCurrentModal()">✨ Ask AI Mentor</button>
+                    <button class="close-btn" onclick="closeModal()">✕</button>
+                </div>
             </div>
             <div class="modal-body" id="modal-body-content">
                 <!-- Stacked content populated dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- FLOATING AI COPILOT BUTTON -->
+    <div class="ai-fab" id="ai-fab-btn" onclick="toggleAiDrawer()">
+        <span class="ai-pulse-dot" id="ai-fab-dot"></span>
+        <span>☸️ K8s AI Copilot</span>
+    </div>
+
+    <!-- AI COPILOT DRAWER -->
+    <div class="ai-drawer" id="ai-drawer">
+        <div class="ai-header">
+            <div class="ai-title-wrap">
+                <div class="ai-title">☸️ K8s AI Copilot</div>
+                <div class="ai-status-tag" id="ai-status-badge" onclick="openAiSettings()">
+                    <span class="ai-pulse-dot" style="width:6px; height:6px;"></span>
+                    <span id="ai-status-text">Checking AI...</span>
+                </div>
+            </div>
+            <div class="ai-actions">
+                <button class="ai-icon-btn" onclick="clearAiChat()" title="Clear Chat">🗑️</button>
+                <button class="ai-icon-btn" onclick="openAiSettings()" title="AI API Settings">⚙️</button>
+                <button class="ai-icon-btn" onclick="toggleAiDrawer()" title="Close Drawer">✕</button>
+            </div>
+        </div>
+
+        <div class="ai-chat-body" id="ai-chat-feed">
+            <div class="ai-welcome-card" id="ai-welcome-box">
+                <h4>✨ Welcome to Roundchat K8s Copilot</h4>
+                <p>Ask anything about Kubernetes architecture, generate verified CKA YAML manifests, debug incident errors, or ask for exam speed tricks!</p>
+                <div class="ai-prompts-grid">
+                    <div class="ai-prompt-chip" onclick="quickAsk('Generate a Production Deployment with 3 replicas, resource limits, and an HTTP liveness probe.')">
+                        <span>🚀</span> Generate Production Deployment YAML
+                    </div>
+                    <div class="ai-prompt-chip" onclick="quickAsk('My pod is stuck in CrashLoopBackOff. How do I systematically troubleshoot and resolve it step-by-step?')">
+                        <span>🔍</span> Troubleshoot CrashLoopBackOff
+                    </div>
+                    <div class="ai-prompt-chip" onclick="quickAsk('Explain the exact step-by-step commands to safely backup and restore etcd on a kubeadm cluster for CKA.')">
+                        <span>💾</span> ETCD Backup & Restore Masterclass
+                    </div>
+                    <div class="ai-prompt-chip" onclick="quickAsk('Create a NetworkPolicy that isolates backend pods and only allows ingress traffic from frontend pods on port 6379.')">
+                        <span>🛡️</span> Generate Secure NetworkPolicy
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="ai-footer">
+            <div class="ai-input-wrap">
+                <textarea class="ai-input" id="ai-user-input" placeholder="Ask K8s Copilot or request YAML..." rows="1" onkeydown="handleAiInputKey(event)"></textarea>
+                <button class="ai-send-btn" id="ai-send-btn" onclick="submitAiMessage()">Send</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- API KEY / BACKEND SETTINGS MODAL -->
+    <div id="ai-settings-modal" onclick="if(event.target===this) closeAiSettings()">
+        <div class="ai-settings-card">
+            <h3>⚙️ K8s AI Copilot Settings</h3>
+            <p>The AI Copilot connects to Google Gemini via the secure backend proxy (<code>/api/chat</code>). If you are running on static hosting without a backend (e.g. GitHub Pages), you can also enter your own Google AI Studio API key below (saved locally in your browser):</p>
+            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 6px;">Gemini API Key (Optional Client Fallback):</label>
+            <input type="password" class="ai-settings-input" id="client-gemini-key" placeholder="AIzaSy...">
+            <div style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 20px;">
+                💡 Get a free API key at <a href="https://aistudio.google.com/" target="_blank" style="color: var(--k8s-light); text-decoration: underline;">Google AI Studio</a>.
+            </div>
+            <div class="ai-settings-actions">
+                <button class="ai-settings-btn secondary" onclick="closeAiSettings()">Cancel</button>
+                <button class="ai-settings-btn primary" onclick="saveAiSettings()">Save Settings</button>
             </div>
         </div>
     </div>
@@ -552,11 +739,19 @@
             cri: { title: "Container Runtime (CRI)", desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.", code: "# Inspect containers with crictl CLI (on worker nodes):\ncrictl ps\ncrictl pods" }
         };
 
+        let currentActiveContext = null;
+
         function inspectComp(key) {
             setActive(`c-${key}`);
             const data = inspectors[key];
             if(data) {
-                document.getElementById('m-title').innerText = data.title;
+                currentActiveContext = {
+                    title: data.title,
+                    desc: data.desc,
+                    code: data.code,
+                    type: "architecture_component"
+                };
+                document.getElementById('m-title').innerHTML = `<span>⚙️</span> ${data.title}`;
                 document.getElementById('modal-body-content').innerHTML = `
                     <div class="modal-section">
                         <div class="pane-heading">Architecture Role & Responsibilities</div>
@@ -894,48 +1089,108 @@
         let timer = 20;
         let timerInterval = null;
         let gameActive = false;
+        let gameMode = 'classic'; // 'classic' | 'ai_infinite'
+        let activeScenario = null;
+        let gameAnswersHistory = [];
 
-        function startGame() {
+        function startGame(mode = 'classic') {
+            gameMode = mode;
             document.getElementById('game-start-screen').style.display = 'none';
             document.getElementById('game-play-area').style.display = 'block';
+            document.getElementById('game-mode-tag').innerText = mode === 'ai_infinite' ? '🤖 Infinite AI' : '⚡ Classic (5)';
             currentGameIdx = 0;
             score = 0;
             streak = 0;
+            gameAnswersHistory = [];
             loadQuestion();
         }
 
-        function loadQuestion() {
-            if(currentGameIdx >= gameQuestions.length) {
+        async function fetchAiScenario() {
+            try {
+                if (aiMode === "proxy") {
+                    const res = await fetch('/api/game/scenario', { method: 'POST' });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.scenario && data.scenario.title) return data.scenario;
+                    }
+                } else if (aiMode === "direct") {
+                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+                    const prompt = 'Generate a realistic CKA Kubernetes cluster incident challenge. Return ONLY a valid JSON object without markdown fences with keys: title (string), desc (string with error logs), options (array of 4 distinct solutions), correct (integer 0-3), explanation (string).';
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                        if (raw.startsWith('```json')) raw = raw.substring(7);
+                        if (raw.startsWith('```')) raw = raw.substring(3);
+                        if (raw.endsWith('```')) raw = raw.substring(0, raw.length - 3);
+                        return JSON.parse(raw.trim());
+                    }
+                }
+            } catch (err) {
+                console.warn("AI Scenario generation fallback to preset:", err);
+            }
+            // Fallback to rotating curated questions
+            const fallbackIdx = currentGameIdx % gameQuestions.length;
+            return gameQuestions[fallbackIdx];
+        }
+
+        async function loadQuestion() {
+            if (gameMode === 'classic' && currentGameIdx >= gameQuestions.length) {
                 endGame();
                 return;
             }
+
+            clearInterval(timerInterval);
+            gameActive = false;
+
+            const scTitle = document.getElementById('sc-title');
+            const scDesc = document.getElementById('sc-desc');
+            const optsGrid = document.getElementById('options-grid');
+            const feedbackEl = document.getElementById('game-feedback');
+            const hintBox = document.getElementById('game-hint-box');
+            const hintBtn = document.getElementById('btn-game-hint');
+
+            hintBox.className = 'game-hint-box';
+            hintBox.style.display = 'none';
+            hintBox.innerHTML = '';
+            hintBtn.disabled = false;
+            hintBtn.innerText = '💡 AI Hint (-5s)';
+            feedbackEl.className = 'game-feedback';
+            feedbackEl.style.display = 'none';
+
+            if (gameMode === 'ai_infinite') {
+                scTitle.innerHTML = `<span>⏳</span> Generating AI Chaos Incident #${currentGameIdx + 1}...`;
+                scDesc.innerText = 'Consulting Gemini AI cluster orchestrator for a fresh production outage...';
+                optsGrid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding: 25px; color: var(--text-muted); font-family: \'Fira Code\'; font-size: 0.85rem;"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Gemini is crafting an active incident...</div>';
+                activeScenario = await fetchAiScenario();
+            } else {
+                activeScenario = gameQuestions[currentGameIdx];
+            }
+
             gameActive = true;
             timer = 20;
             document.getElementById('timer-val').innerText = timer;
             document.getElementById('q-num').innerText = currentGameIdx + 1;
             document.getElementById('score-val').innerText = score;
             document.getElementById('streak-val').innerText = streak;
-            
-            const q = gameQuestions[currentGameIdx];
-            document.getElementById('sc-title').innerHTML = `<span>🚨</span> Incident #${currentGameIdx + 1}: ${q.title}`;
-            document.getElementById('sc-desc').innerText = q.desc;
 
-            const feedbackEl = document.getElementById('game-feedback');
-            feedbackEl.className = 'game-feedback';
-            feedbackEl.style.display = 'none';
+            scTitle.innerHTML = `<span>🚨</span> Incident #${currentGameIdx + 1}: ${activeScenario.title}`;
+            scDesc.innerText = activeScenario.desc;
 
-            const optsGrid = document.getElementById('options-grid');
             optsGrid.innerHTML = '';
-
-            q.options.forEach((opt, idx) => {
+            activeScenario.options.forEach((opt, idx) => {
                 const btn = document.createElement('button');
                 btn.className = 'opt-btn';
-                btn.innerHTML = `<span>${opt}</span>`;
+                btn.innerHTML = `<span>${escapeHtml(opt)}</span>`;
                 btn.onclick = () => checkAnswer(idx);
                 optsGrid.appendChild(btn);
             });
 
-            clearInterval(timerInterval);
             timerInterval = setInterval(() => {
                 timer--;
                 document.getElementById('timer-val').innerText = timer;
@@ -946,12 +1201,68 @@
             }, 1000);
         }
 
+        async function requestAiGameHint() {
+            if (!gameActive || !activeScenario) return;
+            const hintBtn = document.getElementById('btn-game-hint');
+            const hintBox = document.getElementById('game-hint-box');
+            
+            // Deduct 5 seconds penalty
+            timer = Math.max(1, timer - 5);
+            document.getElementById('timer-val').innerText = timer;
+            hintBtn.disabled = true;
+            hintBtn.innerText = '⌛ Thinking...';
+
+            try {
+                let hintText = '';
+                if (aiMode === "proxy") {
+                    const res = await fetch('/api/game/hint', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            title: activeScenario.title,
+                            desc: activeScenario.desc,
+                            options: activeScenario.options
+                        })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        hintText = data.hint;
+                    }
+                } else if (aiMode === "direct") {
+                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+                    const prompt = `Give ONE short clever hint (maximum 1 sentence) for Kubernetes incident '${activeScenario.title}: ${activeScenario.desc}' without giving the exact answer away.`;
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
+                    });
+                    if (res.ok) {
+                        const data = await res.json();
+                        hintText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
+                    }
+                }
+
+                if (!hintText) {
+                    hintText = "Look closely at the command flags, namespace requirements, and manifest target fields.";
+                }
+
+                hintBox.className = 'game-hint-box show';
+                hintBox.innerHTML = `<span>💡 <strong>AI Clue:</strong> ${escapeHtml(hintText)}</span>`;
+                hintBtn.innerText = '💡 Clue Active';
+            } catch (err) {
+                hintBox.className = 'game-hint-box show';
+                hintBox.innerHTML = `<span>💡 <strong>AI Clue:</strong> Inspect the root cause carefully before executing destructive commands.</span>`;
+                hintBtn.innerText = '💡 Clue Active';
+            }
+        }
+
         function checkAnswer(selectedIdx) {
-            if(!gameActive) return;
+            if(!gameActive || !activeScenario) return;
             gameActive = false;
             clearInterval(timerInterval);
 
-            const q = gameQuestions[currentGameIdx];
+            const q = activeScenario;
             const buttons = document.querySelectorAll('.opt-btn');
             const feedbackEl = document.getElementById('game-feedback');
 
@@ -961,33 +1272,43 @@
                 else if(idx === selectedIdx) b.classList.add('wrong');
             });
 
-            if(selectedIdx === q.correct) {
+            const isCorrect = (selectedIdx === q.correct);
+            gameAnswersHistory.push({
+                title: q.title,
+                passed: isCorrect,
+                selectedOption: q.options[selectedIdx],
+                correctOption: q.options[q.correct]
+            });
+
+            if(isCorrect) {
                 score += 100 + (timer * 5);
                 streak++;
                 feedbackEl.className = 'game-feedback show success';
-                feedbackEl.innerHTML = `<strong>✔ Correct Rescue!</strong> ${q.explanation}`;
+                feedbackEl.innerHTML = `<div><strong>✔ Correct Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Explain Deep Root Cause with AI</button>`;
             } else {
                 streak = 0;
                 feedbackEl.className = 'game-feedback show error';
-                feedbackEl.innerHTML = `<strong>✖ Failed Rescue!</strong> ${q.explanation}`;
+                feedbackEl.innerHTML = `<div><strong>✖ Failed Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Ask AI Why This Failed & How to Fix</button>`;
             }
 
             document.getElementById('score-val').innerText = score;
             document.getElementById('streak-val').innerText = streak;
 
             setTimeout(() => {
-                currentGameIdx++;
-                loadQuestion();
-            }, 3500);
+                if(!aiDrawerOpen) {
+                    currentGameIdx++;
+                    loadQuestion();
+                }
+            }, 4500);
         }
 
         function handleTimeout() {
-            if(!gameActive) return;
+            if(!gameActive || !activeScenario) return;
             gameActive = false;
             streak = 0;
             document.getElementById('streak-val').innerText = streak;
 
-            const q = gameQuestions[currentGameIdx];
+            const q = activeScenario;
             const buttons = document.querySelectorAll('.opt-btn');
             const feedbackEl = document.getElementById('game-feedback');
 
@@ -996,13 +1317,29 @@
                 if(idx === q.correct) b.classList.add('correct');
             });
 
+            gameAnswersHistory.push({
+                title: q.title,
+                passed: false,
+                selectedOption: "Timeout",
+                correctOption: q.options[q.correct]
+            });
+
             feedbackEl.className = 'game-feedback show error';
-            feedbackEl.innerHTML = `<strong>⏱️ Time Expired!</strong> ${q.explanation}`;
+            feedbackEl.innerHTML = `<div><strong>⏱️ Time Expired!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Explain Incident Details with AI</button>`;
 
             setTimeout(() => {
-                currentGameIdx++;
-                loadQuestion();
-            }, 3500);
+                if(!aiDrawerOpen) {
+                    currentGameIdx++;
+                    loadQuestion();
+                }
+            }, 4500);
+        }
+
+        function askAiAboutActiveIncident() {
+            if (!activeScenario) return;
+            openAiDrawer();
+            const prompt = `In the Kubernetes emergency incident "${activeScenario.title}: ${activeScenario.desc}", explain why the correct resolution is "${activeScenario.options[activeScenario.correct]}". What low-level system, kubelet, or controller loop mechanism causes this, and how should an engineer inspect it in production?`;
+            submitAiMessage(prompt, `Scenario: ${activeScenario.desc}\nCorrect Solution: ${activeScenario.options[activeScenario.correct]}\nReasoning: ${activeScenario.explanation}`);
         }
 
         function endGame() {
@@ -1011,16 +1348,72 @@
                 <div class="game-start-screen" style="display:block;">
                     <h3>🎉 Mission Complete! Chaos Resolved!</h3>
                     <p>Final Score: <strong>${score}</strong> | Max Streak: 🔥 <strong>${streak}</strong></p>
-                    <p style="color: var(--text-muted); margin-bottom: 20px;">You are well on your way to mastering Kubernetes and acing your CKA certification exam!</p>
-                    <button class="btn-primary-game" onclick="location.reload()">Play Again</button>
+                    <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
+                        <button class="btn-primary-game" onclick="location.reload()">Play Again</button>
+                        <button class="btn-primary-game" style="background: linear-gradient(135deg, #7c3aed, #2563eb);" onclick="generateAiExamReport()">🤖 Generate AI CKA Readiness Report</button>
+                    </div>
+                    <div class="game-report-box" id="game-report-box"></div>
                 </div>
             `;
+        }
+
+        async function generateAiExamReport() {
+            const reportBox = document.getElementById('game-report-box');
+            if(!reportBox) return;
+            reportBox.style.display = 'block';
+            reportBox.innerHTML = '<div style="text-align:center; padding:15px; color:var(--text-muted);"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Gemini AI is analyzing your performance and building a tailored CKA roadmap...</div>';
+
+            const summaryData = gameAnswersHistory.map((a, i) => `Incident ${i+1} (${a.title}): ${a.passed ? 'PASSED' : 'FAILED'} (Selected: ${a.selectedOption} | Correct: ${a.correctOption})`).join('\n');
+            const prompt = `Analyze this Kubernetes administrator challenge session (Score: ${score}, Streak: ${streak}). Provide a structured, encouraging CKA Exam Readiness Report in Markdown with:\n1. 🎯 Overall Exam Readiness Score (%)\n2. ⚡ Strengths identified\n3. ⚠️ Key Areas to Review\n4. 🚀 Top 3 Exam Day Action Tips.`;
+
+            try {
+                let reportMarkdown = '';
+                if (aiMode === "proxy") {
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ message: prompt, context: summaryData, topic: "CKA Exam Performance Review" })
+                    });
+                    if(res.ok) {
+                        const data = await res.json();
+                        reportMarkdown = data.reply;
+                    }
+                } else if (aiMode === "direct") {
+                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ contents: [{ parts: [{ text: `${prompt}\n\n[Session Data:\n${summaryData}\n]` }] }] })
+                    });
+                    if(res.ok) {
+                        const data = await res.json();
+                        reportMarkdown = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
+                    }
+                }
+
+                if (!reportMarkdown) {
+                    reportMarkdown = `### 🎯 CKA Exam Readiness: ${(score > 300) ? '85% (High)' : '70% (Solid)'}\n\n**Strengths**: Good grasp of fundamental CLI workflows.\n**Areas to Review**: Pay close attention to multi-container patterns, etcd recovery, and node drain procedures.`;
+                }
+
+                reportBox.innerHTML = renderMarkdown(reportMarkdown);
+            } catch (err) {
+                reportBox.innerHTML = `<div style="color:#ef4444;">Unable to generate AI report: ${err.message}</div>`;
+            }
         }
 
         const modal = document.getElementById('modal');
 
         function openTopicModal(modIdx, topicIdx) {
             const item = syllabus[modIdx].data[topicIdx];
+            currentActiveContext = {
+                title: item.t,
+                desc: item.overview,
+                code: item.code,
+                tips: item.tips,
+                type: "syllabus_topic"
+            };
+
             document.getElementById('m-title').innerHTML = `<span>⚡</span> ${item.t}`;
 
             const workflowHtml = item.workflow.map(step => `
@@ -1060,6 +1453,318 @@
             setTimeout(() => modal.style.display = 'none', 200);
             document.body.style.overflow = 'auto';
         }
+
+        // ==========================================
+        // 4. K8S AI COPILOT CLIENT ENGINE
+        // ==========================================
+        let aiDrawerOpen = false;
+        let aiIsLoading = false;
+        let aiMode = "proxy"; // 'proxy' | 'direct' | 'standby'
+
+        function toggleAiDrawer() {
+            aiDrawerOpen = !aiDrawerOpen;
+            const drawer = document.getElementById('ai-drawer');
+            if(aiDrawerOpen) {
+                drawer.classList.add('open');
+                document.getElementById('ai-user-input').focus();
+            } else {
+                drawer.classList.remove('open');
+            }
+        }
+
+        function openAiDrawer() {
+            aiDrawerOpen = true;
+            document.getElementById('ai-drawer').classList.add('open');
+            document.getElementById('ai-user-input').focus();
+        }
+
+        function openAiSettings() {
+            const savedKey = localStorage.getItem('roundchat_gemini_key') || '';
+            document.getElementById('client-gemini-key').value = savedKey;
+            document.getElementById('ai-settings-modal').classList.add('show');
+        }
+
+        function closeAiSettings() {
+            document.getElementById('ai-settings-modal').classList.remove('show');
+        }
+
+        function saveAiSettings() {
+            const key = document.getElementById('client-gemini-key').value.trim();
+            if(key) {
+                localStorage.setItem('roundchat_gemini_key', key);
+            } else {
+                localStorage.removeItem('roundchat_gemini_key');
+            }
+            closeAiSettings();
+            checkAiHealth();
+        }
+
+        async function checkAiHealth() {
+            const statusBadge = document.getElementById('ai-status-badge');
+            const statusText = document.getElementById('ai-status-text');
+            const fabDot = document.getElementById('ai-fab-dot');
+
+            try {
+                const res = await fetch('/api/health', { method: 'GET' });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.has_api_key) {
+                        aiMode = "proxy";
+                        statusBadge.className = "ai-status-tag";
+                        statusText.innerText = "Gemini Proxy (Active)";
+                        fabDot.className = "ai-pulse-dot";
+                        return;
+                    }
+                }
+            } catch (err) {
+                // Backend proxy not reachable (static host)
+            }
+
+            const localKey = localStorage.getItem('roundchat_gemini_key');
+            if (localKey && localKey.length > 10) {
+                aiMode = "direct";
+                statusBadge.className = "ai-status-tag";
+                statusText.innerText = "Direct API Key";
+                fabDot.className = "ai-pulse-dot";
+            } else {
+                aiMode = "standby";
+                statusBadge.className = "ai-status-tag standby";
+                statusText.innerText = "Setup API Key";
+                fabDot.className = "ai-pulse-dot standby";
+            }
+        }
+
+        function handleAiInputKey(e) {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                submitAiMessage();
+            }
+        }
+
+        function quickAsk(text) {
+            submitAiMessage(text);
+        }
+
+        function askAiAboutCurrentModal() {
+            if (!currentActiveContext) return;
+            openAiDrawer();
+            const prompt = `Explain "${currentActiveContext.title}" in deep detail for the CKA exam. What are the key architectural mechanisms, production failure modes, and best practices?`;
+            submitAiMessage(prompt, currentActiveContext.desc + "\n" + (currentActiveContext.code || ''));
+        }
+
+        function askAiAboutGameIncident(qIdx) {
+            const q = gameQuestions[qIdx];
+            if (!q) return;
+            openAiDrawer();
+            const prompt = `In the Kubernetes incident scenario "${q.title}: ${q.desc}", explain why the correct action is "${q.options[q.correct]}". What low-level system or controller mechanism causes this, and how should an administrator inspect and verify the fix?`;
+            submitAiMessage(prompt, `Scenario: ${q.desc}\nCorrect Fix: ${q.options[q.correct]}\nExplanation: ${q.explanation}`);
+        }
+
+        function clearAiChat() {
+            const feed = document.getElementById('ai-chat-feed');
+            feed.innerHTML = `
+                <div class="ai-welcome-card" id="ai-welcome-box">
+                    <h4>✨ Welcome to Roundchat K8s Copilot</h4>
+                    <p>Ask anything about Kubernetes architecture, generate verified CKA YAML manifests, debug incident errors, or ask for exam speed tricks!</p>
+                    <div class="ai-prompts-grid">
+                        <div class="ai-prompt-chip" onclick="quickAsk('Generate a Production Deployment with 3 replicas, resource limits, and an HTTP liveness probe.')">
+                            <span>🚀</span> Generate Production Deployment YAML
+                        </div>
+                        <div class="ai-prompt-chip" onclick="quickAsk('My pod is stuck in CrashLoopBackOff. How do I systematically troubleshoot and resolve it step-by-step?')">
+                            <span>🔍</span> Troubleshoot CrashLoopBackOff
+                        </div>
+                        <div class="ai-prompt-chip" onclick="quickAsk('Explain the exact step-by-step commands to safely backup and restore etcd on a kubeadm cluster for CKA.')">
+                            <span>💾</span> ETCD Backup & Restore Masterclass
+                        </div>
+                        <div class="ai-prompt-chip" onclick="quickAsk('Create a NetworkPolicy that isolates backend pods and only allows ingress traffic from frontend pods on port 6379.')">
+                            <span>🛡️</span> Generate Secure NetworkPolicy
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function escapeHtml(text) {
+            const map = { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#039;' };
+            return text.replace(/[&<>"']/g, m => map[m]);
+        }
+
+        function renderMarkdown(raw) {
+            if (!raw) return '';
+            
+            // 1. Extract and format multi-line code blocks ```lang ... ```
+            let text = raw;
+            const codeBlocks = [];
+            text = text.replace(/```([a-zA-Z0-9_\-]+)?\n([\s\S]*?)```/g, (match, lang, code) => {
+                const id = codeBlocks.length;
+                const language = lang ? lang.toUpperCase() : 'YAML/CLI';
+                const escapedCode = escapeHtml(code.trim());
+                codeBlocks.push(`
+                    <pre><span class="code-label">${language}</span><button class="ai-copy-btn" onclick="copyCodeSnippet(this)">📋 Copy</button><code>${escapedCode}</code></pre>
+                `);
+                return `__CODE_BLOCK_${id}__`;
+            });
+
+            // 2. Escape general HTML
+            text = escapeHtml(text);
+
+            // 3. Inline code `code`
+            text = text.replace(/`([^`]+)`/g, '<code>$1</code>');
+
+            // 4. Bold **text**
+            text = text.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+            // 5. Bullet list items
+            text = text.replace(/^[*-]\s+(.+)$/gm, '• $1<br>');
+
+            // 6. Numbered items
+            text = text.replace(/^(\d+)\.\s+(.+)$/gm, '<strong>$1.</strong> $2<br>');
+
+            // 7. Line breaks
+            text = text.replace(/\n\n/g, '<br><br>').replace(/\n/g, '<br>');
+
+            // 8. Restore code blocks
+            text = text.replace(/__CODE_BLOCK_(\d+)__/g, (match, id) => codeBlocks[parseInt(id)]);
+
+            return text;
+        }
+
+        function copyCodeSnippet(btn) {
+            const codeEl = btn.parentElement.querySelector('code');
+            if (codeEl) {
+                navigator.clipboard.writeText(codeEl.innerText).then(() => {
+                    const original = btn.innerText;
+                    btn.innerText = '✓ Copied!';
+                    btn.style.color = '#86efac';
+                    setTimeout(() => {
+                        btn.innerText = original;
+                        btn.style.color = '';
+                    }, 2000);
+                });
+            }
+        }
+
+        function appendMessage(role, content) {
+            const welcomeBox = document.getElementById('ai-welcome-box');
+            if(welcomeBox) welcomeBox.style.display = 'none';
+
+            const feed = document.getElementById('ai-chat-feed');
+            const msgEl = document.createElement('div');
+            msgEl.className = `ai-msg ${role}`;
+            
+            const formattedContent = role === 'bot' ? renderMarkdown(content) : escapeHtml(content).replace(/\n/g, '<br>');
+            msgEl.innerHTML = `<div class="ai-bubble">${formattedContent}</div>`;
+            
+            feed.appendChild(msgEl);
+            feed.scrollTop = feed.scrollHeight;
+            return msgEl;
+        }
+
+        function showTypingIndicator() {
+            const feed = document.getElementById('ai-chat-feed');
+            const typingEl = document.createElement('div');
+            typingEl.id = 'ai-typing-indicator';
+            typingEl.className = 'ai-msg bot';
+            typingEl.innerHTML = `
+                <div class="ai-bubble">
+                    <div class="ai-typing">
+                        <span class="ai-typing-dot"></span>
+                        <span class="ai-typing-dot"></span>
+                        <span class="ai-typing-dot"></span>
+                    </div>
+                </div>
+            `;
+            feed.appendChild(typingEl);
+            feed.scrollTop = feed.scrollHeight;
+        }
+
+        function removeTypingIndicator() {
+            const typingEl = document.getElementById('ai-typing-indicator');
+            if (typingEl) typingEl.remove();
+        }
+
+        async function submitAiMessage(overrideText, contextData = null) {
+            if (aiIsLoading) return;
+
+            const inputEl = document.getElementById('ai-user-input');
+            const userText = (overrideText || inputEl.value).trim();
+            if (!userText) return;
+
+            if (!overrideText) inputEl.value = '';
+
+            appendMessage('user', userText);
+            showTypingIndicator();
+            aiIsLoading = true;
+            document.getElementById('ai-send-btn').disabled = true;
+
+            try {
+                let aiReply = '';
+
+                if (aiMode === "proxy") {
+                    // 1. Try Backend Proxy
+                    const res = await fetch('/api/chat', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            message: userText,
+                            context: contextData,
+                            topic: currentActiveContext ? currentActiveContext.title : null
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.detail || errData.error || `Server responded with ${res.status}`);
+                    }
+                    const data = await res.json();
+                    aiReply = data.reply;
+
+                } else if (aiMode === "direct") {
+                    // 2. Direct Client-Side Gemini API
+                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
+                    
+                    const systemPrompt = "You are Roundchat K8s & CKA AI Copilot, an expert Kubernetes Architect and CKA exam mentor. Provide accurate YAML, CLI commands, and root cause debugging guides in GitHub-flavored Markdown.";
+                    const fullPrompt = `${systemPrompt}\n\n${contextData ? `[Context: ${contextData}]\n\n` : ''}${userText}`;
+
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: fullPrompt }] }]
+                        })
+                    });
+
+                    if (!res.ok) {
+                        const errData = await res.json().catch(() => ({}));
+                        throw new Error(errData.error?.message || `Google API error (${res.status})`);
+                    }
+
+                    const data = await res.json();
+                    aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+
+                } else {
+                    // Standby Mode - No Backend and No API key entered
+                    aiReply = `⚠️ **Gemini AI is not connected yet.**\n\nTo activate your K8s AI Copilot:\n1. **Option A (Local Backend)**: Run \`python server.py\` with your \`GEMINI_API_KEY\` in \`.env\`.\n2. **Option B (Direct Client Key)**: Click the **⚙️ Settings icon** at top right of this drawer and paste your Gemini API Key from [Google AI Studio](https://aistudio.google.com/).`;
+                }
+
+                removeTypingIndicator();
+                appendMessage('bot', aiReply);
+
+            } catch (error) {
+                console.error("AI Error:", error);
+                removeTypingIndicator();
+                appendMessage('bot', `❌ **Error contacting Gemini AI:**\n${error.message}\n\n*Tip: Check if your backend server is running or configure your API Key in ⚙️ Settings.*`);
+            } finally {
+                aiIsLoading = false;
+                document.getElementById('ai-send-btn').disabled = false;
+            }
+        }
+
+        // Initialize AI check on page load
+        window.addEventListener('DOMContentLoaded', () => {
+            checkAiHealth();
+        });
     </script>
 </body>
 </html>

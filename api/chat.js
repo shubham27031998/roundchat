@@ -1,7 +1,7 @@
 import { GoogleGenAI } from '@google/genai';
 
 const SYSTEM_INSTRUCTION = `
-You are the Roundchat K8s & CKA AI Copilot — an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor.
+You are sahaAI — an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor.
 
 Your purpose is to provide clear, accurate, high-utility, and actionable Kubernetes assistance:
 1. When asked for YAML, provide clean, production-ready manifests with syntax explanations and best practices.
@@ -27,7 +27,7 @@ export default async function handler(req, res) {
       status: 'healthy',
       has_api_key: Boolean(apiKey && apiKey.length > 5),
       model: 'gemini-3.7-flash',
-      service: 'Roundchat K8s AI Copilot (Vercel Serverless)'
+      service: 'sahaAI (Vercel Serverless)'
     });
   }
 

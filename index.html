@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kubernetes & CKA Deep-Dive Masterclass Hub</title>
     <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;600&family=Plus+Jakarta+Sans:wght@300;500;700;800&display=swap" rel="stylesheet">
+    <script src="config.js"></script>
     <style>
         :root {
             --bg: #09090b; --surface: #18181b; --border: #27272a;
@@ -392,6 +393,7 @@
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px;">
                         <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 Hint (-5s)</button>
+                        <button class="btn-game-end" id="btn-game-end" onclick="endGame()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 5px 12px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px;">⏹️ End Game</button>
                         <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
                     </div>
                 </div>
@@ -418,7 +420,7 @@
             <div class="modal-header">
                 <h2 id="m-title">Title</h2>
                 <div style="display: flex; align-items: center; gap: 12px;">
-                    <button class="btn-ask-ai" onclick="askAiAboutCurrentModal()">✨ Ask AI Mentor</button>
+                    <button class="btn-ask-ai" onclick="askAiAboutCurrentModal()">✨ Ask sahaAI</button>
                     <button class="close-btn" onclick="closeModal()">✕</button>
                 </div>
             </div>
@@ -428,32 +430,32 @@
         </div>
     </div>
 
-    <!-- FLOATING AI COPILOT BUTTON -->
+    <!-- FLOATING SAHAAI BUTTON -->
     <div class="ai-fab" id="ai-fab-btn" onclick="toggleAiDrawer()">
         <span class="ai-pulse-dot" id="ai-fab-dot"></span>
-        <span>☸️ K8s AI Copilot</span>
+        <span>☸️ sahaAI</span>
     </div>
 
-    <!-- AI COPILOT DRAWER -->
+    <!-- SAHAAI DRAWER -->
     <div class="ai-drawer" id="ai-drawer">
         <div class="ai-header">
             <div class="ai-title-wrap">
-                <div class="ai-title">☸️ K8s AI Copilot</div>
+                <div class="ai-title">☸️ sahaAI</div>
                 <div class="ai-status-tag" id="ai-status-badge" onclick="openAiSettings()">
                     <span class="ai-pulse-dot" style="width:6px; height:6px;"></span>
-                    <span id="ai-status-text">Checking AI...</span>
+                    <span id="ai-status-text">sahaAI (Active)</span>
                 </div>
             </div>
             <div class="ai-actions">
                 <button class="ai-icon-btn" onclick="clearAiChat()" title="Clear Chat">🗑️</button>
-                <button class="ai-icon-btn" onclick="openAiSettings()" title="AI API Settings">⚙️</button>
+                <button class="ai-icon-btn" onclick="openAiSettings()" title="AI Settings">⚙️</button>
                 <button class="ai-icon-btn" onclick="toggleAiDrawer()" title="Close Drawer">✕</button>
             </div>
         </div>
 
         <div class="ai-chat-body" id="ai-chat-feed">
             <div class="ai-welcome-card" id="ai-welcome-box">
-                <h4>✨ Welcome to Roundchat K8s Copilot</h4>
+                <h4>✨ Welcome to sahaAI Copilot</h4>
                 <p>Ask anything about Kubernetes architecture, generate verified CKA YAML manifests, debug incident errors, or ask for exam speed tricks!</p>
                 <div class="ai-prompts-grid">
                     <div class="ai-prompt-chip" onclick="quickAsk('Generate a Production Deployment with 3 replicas, resource limits, and an HTTP liveness probe.')">
@@ -474,7 +476,7 @@
 
         <div class="ai-footer">
             <div class="ai-input-wrap">
-                <textarea class="ai-input" id="ai-user-input" placeholder="Ask K8s Copilot or request YAML..." rows="1" onkeydown="handleAiInputKey(event)"></textarea>
+                <textarea class="ai-input" id="ai-user-input" placeholder="Ask sahaAI or request YAML..." rows="1" onkeydown="handleAiInputKey(event)"></textarea>
                 <button class="ai-send-btn" id="ai-send-btn" onclick="submitAiMessage()">Send</button>
             </div>
         </div>
@@ -483,12 +485,12 @@
     <!-- API KEY / BACKEND SETTINGS MODAL -->
     <div id="ai-settings-modal" onclick="if(event.target===this) closeAiSettings()">
         <div class="ai-settings-card">
-            <h3>⚙️ K8s AI Copilot Settings</h3>
-            <p>The AI Copilot connects to Google Gemini via the secure backend proxy (<code>/api/chat</code>). If you are running on static hosting without a backend (e.g. GitHub Pages), you can also enter your own Google AI Studio API key below (saved locally in your browser):</p>
-            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 6px;">Gemini API Key (Optional Client Fallback):</label>
+            <h3>⚙️ sahaAI Settings</h3>
+            <p>sahaAI is pre-configured and active! You can also provide an alternative Google AI Studio key if desired:</p>
+            <label style="font-size: 0.8rem; color: var(--text-muted); font-weight: 600; display: block; margin-bottom: 6px;">Gemini API Key:</label>
             <input type="password" class="ai-settings-input" id="client-gemini-key" placeholder="AIzaSy...">
             <div style="font-size: 0.76rem; color: var(--text-muted); margin-bottom: 20px;">
-                💡 Get a free API key at <a href="https://aistudio.google.com/" target="_blank" style="color: var(--k8s-light); text-decoration: underline;">Google AI Studio</a>.
+                💡 Get a key at <a href="https://aistudio.google.com/" target="_blank" style="color: var(--k8s-light); text-decoration: underline;">Google AI Studio</a>.
             </div>
             <div class="ai-settings-actions">
                 <button class="ai-settings-btn secondary" onclick="closeAiSettings()">Cancel</button>
@@ -727,13 +729,48 @@
         }
 
         const inspectors = {
-            api: { title: "kube-apiserver", desc: "The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-apiserver.yaml\n\n# Check logs via CLI:\nkubectl logs -n kube-system kube-apiserver-controlplane" },
-            etcd: { title: "etcd", desc: "Consistent and highly-available key-value store holding all cluster state data. Vital for disaster recovery and CKA backup exam tasks.", code: "# ETCD Snapshot Backup Command (CLI):\nETCDCTL_API=3 etcdctl snapshot save /backup/snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
-            sched: { title: "kube-scheduler", desc: "Watches for newly created pods without a node assigned, evaluates hardware specs, taints, tolerations, and affinity rules to bind the best node.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-scheduler.yaml" },
-            ctrl: { title: "kube-controller-manager", desc: "Runs background reconciliation control loops (Node Controller, ReplicaSet Controller, Endpoint Controller) to match actual state with desired state.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-controller-manager.yaml" },
-            kubelet: { title: "kubelet", desc: "The primary node agent running on every worker node. Ensures containers specified in pod specs are running and healthy.", code: "# Check kubelet status (CLI):\nsystemctl status kubelet\njournalctl -u kubelet -e" },
-            proxy: { title: "kube-proxy", desc: "Maintains network rules on worker nodes. Implements Kubernetes Service abstraction by managing iptables or IPVS rules for packet forwarding.", code: "# Check daemonset logs via CLI:\nkubectl logs -n kube-system -l k8s-app=kube-proxy" },
-            cri: { title: "Container Runtime (CRI)", desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.", code: "# Inspect containers with crictl CLI (on worker nodes):\ncrictl ps\ncrictl pods" }
+            api: { 
+                title: "kube-apiserver", 
+                desc: "The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.",
+                cli: "# Check apiserver logs (CLI):\nkubectl logs -n kube-system kube-apiserver-controlplane\n\n# Health endpoints check:\nkubectl get --raw='/readyz?verbose'",
+                yaml: "# Static Manifest: /etc/kubernetes/manifests/kube-apiserver.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: kube-apiserver\n  namespace: kube-system\nspec:\n  containers:\n  - name: kube-apiserver\n    image: registry.k8s.io/kube-apiserver:v1.28.0\n    command:\n    - kube-apiserver\n    - --advertise-address=192.168.1.10\n    - --etcd-servers=https://127.0.0.1:2379"
+            },
+            etcd: { 
+                title: "etcd", 
+                desc: "Consistent and highly-available key-value store holding all cluster state data. Vital for disaster recovery and CKA backup exam tasks.",
+                cli: "# ETCD Snapshot Backup Command (CLI):\nETCDCTL_API=3 etcdctl snapshot save /backup/snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# ETCD Restore Command (CLI):\nETCDCTL_API=3 etcdctl snapshot restore /backup/snapshot.db \\\n  --data-dir=/var/lib/etcd-restored",
+                yaml: "# Static Manifest: /etc/kubernetes/manifests/etcd.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: etcd\n  namespace: kube-system\nspec:\n  containers:\n  - name: etcd\n    image: registry.k8s.io/etcd:3.5.9-0\n    command:\n    - etcd\n    - --data-dir=/var/lib/etcd\n    - --listen-client-urls=https://127.0.0.1:2379"
+            },
+            sched: { 
+                title: "kube-scheduler", 
+                desc: "Watches for newly created pods without a node assigned, evaluates hardware specs, taints, tolerations, and affinity rules to bind the best node.",
+                cli: "# Check scheduler logs via CLI:\nkubectl logs -n kube-system kube-scheduler-controlplane",
+                yaml: "# Static Manifest: /etc/kubernetes/manifests/kube-scheduler.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: kube-scheduler\n  namespace: kube-system\nspec:\n  containers:\n  - name: kube-scheduler\n    image: registry.k8s.io/kube-scheduler:v1.28.0\n    command:\n    - kube-scheduler\n    - --leader-elect=true"
+            },
+            ctrl: { 
+                title: "kube-controller-manager", 
+                desc: "Runs background reconciliation control loops (Node Controller, ReplicaSet Controller, Endpoint Controller) to match actual state with desired state.",
+                cli: "# Check controller manager logs via CLI:\nkubectl logs -n kube-system kube-controller-manager-controlplane",
+                yaml: "# Static Manifest: /etc/kubernetes/manifests/kube-controller-manager.yaml\napiVersion: v1\nkind: Pod\nmetadata:\n  name: kube-controller-manager\n  namespace: kube-system\nspec:\n  containers:\n  - name: kube-controller-manager\n    image: registry.k8s.io/kube-controller-manager:v1.28.0\n    command:\n    - kube-controller-manager\n    - --bind-address=127.0.0.1"
+            },
+            kubelet: { 
+                title: "kubelet", 
+                desc: "The primary node agent running on every worker node. Ensures containers specified in pod specs are running and healthy.",
+                cli: "# Check kubelet service status (CLI):\nsystemctl status kubelet\njournalctl -u kubelet -e --no-pager",
+                yaml: "# Kubelet Configuration: /var/lib/kubelet/config.yaml\napiVersion: kubelet.config.k8s.io/v1beta1\nkind: KubeletConfiguration\nstaticPodPath: /etc/kubernetes/manifests\ncgroupDriver: systemd\nclusterDNS:\n- 10.96.0.10"
+            },
+            proxy: { 
+                title: "kube-proxy", 
+                desc: "Maintains network rules on worker nodes. Implements Kubernetes Service abstraction by managing iptables or IPVS rules for packet forwarding.",
+                cli: "# Check kube-proxy logs via CLI:\nkubectl logs -n kube-system -l k8s-app=kube-proxy",
+                yaml: "# kube-proxy ConfigMap Specification\napiVersion: kubeproxy.config.k8s.io/v1alpha1\nkind: KubeProxyConfiguration\nmode: \"iptables\"\nclusterCIDR: \"10.244.0.0/16\""
+            },
+            cri: { 
+                title: "Container Runtime (CRI)", 
+                desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.",
+                cli: "# Inspect containers with crictl (CLI on worker nodes):\ncrictl ps\ncrictl pods\ncrictl logs <container-id>",
+                yaml: "# containerd config: /etc/containerd/config.toml\n[plugins.\"io.containerd.grpc.v1.cri\".containerd.runtimes.runc.options]\n  SystemdCgroup = true"
+            }
         };
 
         let currentActiveContext = null;
@@ -745,7 +782,8 @@
                 currentActiveContext = {
                     title: data.title,
                     desc: data.desc,
-                    code: data.code,
+                    cli: data.cli,
+                    yaml: data.yaml,
                     type: "architecture_component"
                 };
                 document.getElementById('m-title').innerHTML = `<span>⚙️</span> ${data.title}`;
@@ -763,8 +801,18 @@
                         <div class="pane-text">Always check log files under <code>/var/log/</code> or via journalctl if this control plane component fails.</div>
                     </div>
                     <div class="modal-section">
-                        <div class="pane-heading">YAML & CLI Commands</div>
-                        <div class="code-box"><span class="code-label">Commands</span>${data.code}</div>
+                        <div class="pane-heading" style="color:#86efac;">🛠️ Imperative CLI Commands</div>
+                        <div class="code-box" style="color:#86efac; border-color: rgba(34, 197, 94, 0.3);">
+                            <button class="ai-copy-btn" onclick="copyCodeText(this)">Copy CLI</button>
+                            <span class="code-label">CLI</span>${escapeHtml(data.cli)}
+                        </div>
+                    </div>
+                    <div class="modal-section">
+                        <div class="pane-heading" style="color:#93c5fd;">📄 Declarative YAML Manifest</div>
+                        <div class="code-box" style="color:#93c5fd; border-color: rgba(50, 108, 229, 0.3);">
+                            <button class="ai-copy-btn" onclick="copyCodeText(this)">Copy YAML</button>
+                            <span class="code-label">YAML</span>${escapeHtml(data.yaml)}
+                        </div>
                     </div>
                 `;
                 modal.style.display = 'flex';
@@ -785,42 +833,48 @@
                         overview: "Bootstrapping a Kubernetes cluster requires initializing the control plane node with appropriate pod network cidrs and generating secure authentication tokens for worker node onboarding.",
                         workflow: ["kubeadm init parses preflight checks and downloads static manifests.", "Generates TLS certificates under /etc/kubernetes/pki.", "Outputs exact 'kubeadm join' token commands for worker nodes."],
                         tips: ["Always record the generated join command token and CA cert hash securely during practice setups.", "Ensure swap is disabled on all nodes prior to running kubeadm init."],
-                        code: "# Initialize Control Plane (CLI):\nkubeadm init --pod-network-cidr=10.244.0.0/16\n\n# Join Worker Node (CLI):\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" 
+                        cli: "# Initialize Control Plane:\nkubeadm init --pod-network-cidr=10.244.0.0/16\n\n# Join Worker Node:\nkubeadm join 192.168.1.10:6443 --token <token> --discovery-token-ca-cert-hash sha256:<hash>",
+                        yaml: "# Kubeadm Init Configuration (kubeadm-config.yaml):\napiVersion: kubeadm.k8s.io/v1beta3\nkind: InitConfiguration\nlocalAPIEndpoint:\n  advertiseAddress: \"192.168.1.10\"\n  bindPort: 6443\n---\napiVersion: kubeadm.k8s.io/v1beta3\nkind: ClusterConfiguration\nkubernetesVersion: \"v1.28.0\"\nnetworking:\n  podSubnet: \"10.244.0.0/16\""
                     },
                     { 
                         t: "Cluster Upgrades (Kubeadm)", 
                         overview: "Upgrading a Kubernetes cluster involves updating the control plane components first, followed by upgrading worker node packages and restarting local kubelet services version-by-version.",
                         workflow: ["Drain the target node to safely evict running pods.", "Upgrade kubeadm package to target minor version.", "Apply upgrade plan and refresh kubelet configuration."],
                         tips: ["Never skip minor versions when upgrading (e.g., upgrade 1.27 to 1.28, not directly to 1.29).", "Always verify node status using kubectl get nodes after uncordoning."],
-                        code: "# CLI Commands:\nkubectl drain controlplane --ignore-daemonsets\napt-get update && apt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" 
+                        cli: "# Upgrade Control Plane Node:\nkubectl drain controlplane --ignore-daemonsets\napt-get update && apt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade plan\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00 kubectl=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane",
+                        yaml: "# Upgrade Apply Configuration Spec:\napiVersion: kubeadm.k8s.io/v1beta3\nkind: UpgradeConfiguration\napply:\n  kubernetesVersion: \"v1.28.0\"\n  allowExperimentalUpgrades: false"
                     },
                     { 
                         t: "ETCD Backup & Restore", 
                         overview: "etcd stores the complete state of your Kubernetes cluster. Taking point-in-time snapshots and knowing how to restore them is critical for disaster recovery tasks in production and exams.",
                         workflow: ["Connect to etcd container/endpoint using client certificates.", "Trigger snapshot save to target backup directory.", "Restore snapshot into a new data directory during recovery."],
                         tips: ["Always pass the endpoint, cacert, cert, and key parameters correctly to etcdctl.", "Remember to prefix commands with ETCDCTL_API=3."],
-                        code: "# ETCD Backup CLI:\nETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snap.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# ETCD Restore CLI:\nETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db \\\n  --data-dir=/var/lib/etcd-restored" 
+                        cli: "# ETCD Snapshot Save (Backup):\nETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snap.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# ETCD Snapshot Restore:\nETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db \\\n  --data-dir=/var/lib/etcd-restored",
+                        yaml: "# Update /etc/kubernetes/manifests/etcd.yaml volumes hostPath:\nvolumes:\n- name: etcd-data\n  hostPath:\n    path: /var/lib/etcd-restored\n    type: DirectoryOrCreate"
                     },
                     { 
                         t: "Static Pods", 
                         overview: "Static pods are managed directly by the kubelet daemon on a specific node, without the API server observing or scheduling them. They are defined by YAML files placed in the manifest directory.",
                         workflow: ["Kubelet watches /etc/kubernetes/manifests folder.", "Detects YAML changes and creates/deletes mirror pods in the API server.", "Runs independently of cluster scheduler."],
                         tips: ["Static pod names automatically append the node hostname as a suffix.", "To edit a static pod, modify the source YAML file on disk rather than kubectl edit."],
-                        code: "# Static pod path specified in kubelet config file:\nstaticPodPath: /etc/kubernetes/manifests\n\n# View static pods via CLI:\nkubectl get pods -n kube-system" 
+                        cli: "# Check static pods running on node:\nkubectl get pods -n kube-system\n\n# Locate staticPodPath in kubelet config:\ngrep -i \"staticPodPath\" /var/lib/kubelet/config.yaml",
+                        yaml: "# Place in /etc/kubernetes/manifests/my-static-web.yaml:\napiVersion: v1\nkind: Pod\nmetadata:\n  name: my-static-web\n  namespace: default\nspec:\n  containers:\n  - name: nginx\n    image: nginx:alpine\n    ports:\n    - containerPort: 80"
                     },
                     { 
                         t: "RBAC (Roles & RoleBindings)", 
                         overview: "Role-Based Access Control regulates access to cluster resources based on the roles of individual users or service accounts within namespaces or cluster-wide.",
                         workflow: ["Create a Role defining verbs (get, list, create) and apiGroups/resources.", "Bind the Role to a user or service account using a RoleBinding.", "API server authorizes requests based on matched bindings."],
                         tips: ["Use 'kubectl create role --help' and 'kubectl create rolebinding --help' to generate imperative exam commands quickly."],
-                        code: "# CLI Commands:\nkubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" 
+                        cli: "# Imperative Role & RoleBinding Creation:\nkubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer\n\n# Test permissions with auth can-i:\nkubectl auth can-i get pods --as=developer",
+                        yaml: "apiVersion: rbac.authorization.k8s.io/v1\nkind: Role\nmetadata:\n  namespace: default\n  name: pod-reader\nrules:\n- apiGroups: [\"\"]\n  resources: [\"pods\"]\n  verbs: [\"get\", \"watch\", \"list\"]\n---\napiVersion: rbac.authorization.k8s.io/v1\nkind: RoleBinding\nmetadata:\n  name: read-pods\n  namespace: default\nsubjects:\n- kind: User\n  name: developer\n  apiGroup: rbac.authorization.k8s.io\nroleRef:\n  kind: Role\n  name: pod-reader\n  apiGroup: rbac.authorization.k8s.io"
                     },
                     { 
                         t: "Service Accounts", 
                         overview: "Service accounts provide an identity for processes running in a Pod, allowing them to authenticate securely against the Kubernetes API server without using user credentials.",
                         workflow: ["Create a dedicated service account object in the namespace.", "Reference the service account name inside your Pod or Deployment specification.", "API server automatically injects token secrets into the container."],
                         tips: ["Set automountServiceAccountToken: false in pod specs if the application does not require API access."],
-                        code: "# CLI & YAML Spec:\nkubectl create serviceaccount custom-sa\n\n# Inside Pod Spec:\nspec:\n  serviceAccountName: custom-sa" 
+                        cli: "# Create ServiceAccount and generate temporary Token:\nkubectl create serviceaccount build-robot\nkubectl create token build-robot",
+                        yaml: "apiVersion: v1\nkind: ServiceAccount\nmetadata:\n  name: build-robot\n  namespace: default\n---\napiVersion: v1\nkind: Pod\nmetadata:\n  name: build-pod\nspec:\n  serviceAccountName: build-robot\n  containers:\n  - name: app\n    image: busybox\n    command: [\"sleep\", \"3600\"]"
                     }
                 ]
             },
@@ -832,56 +886,64 @@
                         overview: "Deployments provide declarative updates for Pods and ReplicaSets, enabling zero-downtime rolling updates, scaling, and instant rollbacks to previous stable versions.",
                         workflow: ["ReplicaSet controller maintains desired pod count.", "Rolling update strategy terminates old pods gradually while spinning up new ones.", "Rollout history tracks previous revisions."],
                         tips: ["Always use --record or check rollout history when updating deployment images during exam tasks."],
-                        code: "# CLI Commands:\nkubectl create deploy web --image=nginx --replicas=3\nkubectl set image deployment/web nginx=nginx:1.25\nkubectl rollout history deployment/web\nkubectl rollout undo deployment/web" 
+                        cli: "# Imperative Deployment & Rollout Commands:\nkubectl create deploy web --image=nginx:1.24 --replicas=3\nkubectl set image deployment/web nginx=nginx:1.25 --record\nkubectl rollout status deployment/web\nkubectl rollout history deployment/web\nkubectl rollout undo deployment/web --to-revision=1",
+                        yaml: "apiVersion: apps/v1\nkind: Deployment\nmetadata:\n  name: web\n  labels:\n    app: web\nspec:\n  replicas: 3\n  selector:\n    matchLabels:\n      app: web\n  strategy:\n    type: RollingUpdate\n    rollingUpdate:\n      maxSurge: 1\n      maxUnavailable: 0\n  template:\n    metadata:\n      labels:\n        app: web\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:1.25\n        ports:\n        - containerPort: 80"
                     },
                     { 
                         t: "StatefulSets", 
                         overview: "StatefulSets manage deployment and scaling of stateful applications, providing guarantees about ordering and uniqueness of identity and persistent storage bindings.",
                         workflow: ["Assigns sticky, sequential identifiers (pod-0, pod-1).", "Pairs each pod with a corresponding PersistentVolumeClaim template.", "Ensures ordered, graceful deployment and scaling."],
                         tips: ["StatefulSets require a headless service (clusterIP: None) defined for network identity routing."],
-                        code: "apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: web-stateful\nspec:\n  serviceName: \"nginx\"\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template: ... " 
+                        cli: "# Inspect and Scale StatefulSet:\nkubectl get statefulset\nkubectl scale statefulset web-stateful --replicas=5",
+                        yaml: "apiVersion: v1\nkind: Service\nmetadata:\n  name: nginx-headless\nspec:\n  clusterIP: None\n  selector:\n    app: nginx\n  ports:\n  - port: 80\n    name: web\n---\napiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: web-stateful\nspec:\n  serviceName: \"nginx-headless\"\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template:\n    metadata:\n      labels:\n        app: nginx\n    spec:\n      containers:\n      - name: nginx\n        image: nginx:alpine\n  volumeClaimTemplates:\n  - metadata:\n      name: data\n    spec:\n      accessModes: [\"ReadWriteOnce\"]\n      resources:\n        requests:\n          storage: 1Gi"
                     },
                     { 
                         t: "DaemonSets", 
                         overview: "A DaemonSet ensures that all (or some) Node instances run a copy of a Pod, making them ideal for running cluster storage daemons, log collectors, or node monitoring agents.",
                         workflow: ["DaemonSet controller inspects cluster node list.", "Automatically schedules a pod onto newly added worker nodes.", "Bypasses standard scheduler logic."],
                         tips: ["To quickly create a DaemonSet from scratch, generate a deployment YAML and change kind to DaemonSet."],
-                        code: "# YAML Generation via CLI:\nkubectl create deployment ds-test --image=nginx --dry-run=client -o yaml > ds.yaml\n# Change kind: Deployment to DaemonSet and remove 'replicas'." 
+                        cli: "# Generate template and inspect DaemonSets:\nkubectl create deployment ds-gen --image=fluentd --dry-run=client -o yaml > ds.yaml\nkubectl get daemonset -A",
+                        yaml: "apiVersion: apps/v1\nkind: DaemonSet\nmetadata:\n  name: node-collector\n  namespace: kube-system\nspec:\n  selector:\n    matchLabels:\n      name: node-collector\n  template:\n    metadata:\n      labels:\n        name: node-collector\n    spec:\n      containers:\n      - name: fluentd\n        image: fluent/fluentd:v1.16"
                     },
                     { 
                         t: "Jobs & CronJobs", 
                         overview: "Jobs create one or more pods and ensure that a specified number of them successfully terminate, while CronJobs schedule batch jobs on a recurring time-based cron schedule.",
                         workflow: ["CronJob controller spawns Job objects at specified timestamps.", "Job controller creates pod and monitors exit codes.", "Job completes successfully upon process exit code 0."],
                         tips: ["Always test your cron schedule expression carefully (minute hour day month day-of-week)."],
-                        code: "# CLI Command:\nkubectl create cronjob my-job --image=busybox --schedule=\"*/1 * * * *\" -- /bin/sh -c \"echo Hello CKA\"" 
+                        cli: "# Imperative Job & CronJob Commands:\nkubectl create job batch-calc --image=busybox -- /bin/sh -c \"echo 2+2=4\"\nkubectl create cronjob nightly-backup --image=busybox --schedule=\"0 2 * * *\" -- /bin/sh -c \"echo Backup Done\"",
+                        yaml: "apiVersion: batch/v1\nkind: CronJob\nmetadata:\n  name: nightly-backup\nspec:\n  schedule: \"0 2 * * *\"\n  jobTemplate:\n    spec:\n      template:\n        spec:\n          containers:\n          - name: backup\n            image: busybox\n            command: [\"/bin/sh\", \"-c\", \"echo Backup Done\"]\n          restartPolicy: OnFailure"
                     },
                     { 
                         t: "Taints & Tolerations", 
                         overview: "Taints allow a node to repel a set of pods unless those pods have matching tolerations, enabling dedicated node allocation for specific workloads.",
                         workflow: ["Apply taint with effect (NoSchedule, PreferNoSchedule, NoExecute) on node.", "Add matching toleration key/value pair in Pod spec.", "Scheduler allows pod placement."],
                         tips: ["Control plane nodes come tainted with node-role.kubernetes.io/control-plane:NoSchedule by default."],
-                        code: "# CLI & YAML Spec:\nkubectl taint node worker-1 app=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" 
+                        cli: "# Apply & Remove Node Taints:\nkubectl taint nodes worker-01 app=gpu:NoSchedule\nkubectl taint nodes worker-01 app=gpu:NoSchedule-",
+                        yaml: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: gpu-pod\nspec:\n  tolerations:\n  - key: \"app\"\n    operator: \"Equal\"\n    value: \"gpu\"\n    effect: \"NoSchedule\"\n  containers:\n  - name: cuda-runner\n    image: nvidia/cuda:11.0-base"
                     },
                     { 
                         t: "Node Affinity & Anti-Affinity", 
                         overview: "Node affinity constrains which nodes your pod can be scheduled on based on node labels, offering powerful rule expressions (required vs preferred).",
                         workflow: ["Label nodes with custom key-value metadata.", "Configure nodeAffinity expressions inside Pod spec template.", "Scheduler evaluates match expressions during pod placement."],
                         tips: ["Use requiredDuringSchedulingIgnoredDuringExecution for strict mandatory placement rules."],
-                        code: "# YAML Spec:\naffinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" 
+                        cli: "# Label Node for Affinity Matching:\nkubectl label nodes worker-01 disktype=ssd",
+                        yaml: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: affinity-pod\nspec:\n  affinity:\n    nodeAffinity:\n      requiredDuringSchedulingIgnoredDuringExecution:\n        nodeSelectorTerms:\n        - matchExpressions:\n          - key: disktype\n            operator: In\n            values: [\"ssd\"]\n  containers:\n  - name: db\n    image: redis:alpine"
                     },
                     { 
                         t: "Resource Quotas & Limits", 
                         overview: "Resource Quotas restrict aggregate resource consumption (CPU, memory, storage) per namespace, preventing single teams from starving cluster hardware capacity.",
                         workflow: ["Define ResourceQuota object in target namespace.", "API server validates incoming pod resource requests against namespace quotas.", "Rejects creation if limits are exceeded."],
                         tips: ["Combine with LimitRanges to automatically inject default container memory and CPU limits."],
-                        code: "# YAML Manifest:\napiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: ns-quota\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" 
+                        cli: "# Create ResourceQuota and describe usage:\nkubectl create quota dev-quota --hard=cpu=2,memory=2Gi,pods=10 -n dev\nkubectl describe quota dev-quota -n dev",
+                        yaml: "apiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: dev-quota\n  namespace: dev\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi\n    pods: \"10\""
                     },
                     { 
                         t: "Manual Scheduling", 
                         overview: "Bypass the kube-scheduler entirely by assigning a pod directly to a specific worker node name during creation.",
                         workflow: ["Set nodeName field directly inside pod spec template.", "Kubelet on specified node detects pod and runs containers immediately."],
                         tips: ["Useful for quick debugging or isolated container testing during troubleshooting tasks."],
-                        code: "# YAML Spec:\napiVersion: v1\nkind: Pod\nmetadata:\n  name: manual-pod\nspec:\n  nodeName: worker-01\n  containers:\n  - name: nginx\n    image: nginx" 
+                        cli: "# Check nodes and verify scheduled pod:\nkubectl get nodes -o wide\nkubectl get pod manual-pod -o wide",
+                        yaml: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: manual-pod\nspec:\n  nodeName: worker-01\n  containers:\n  - name: nginx\n    image: nginx:alpine"
                     }
                 ]
             },
@@ -893,35 +955,40 @@
                         overview: "Services provide stable networking abstractions for backend pods. ClusterIP exposes pods internally, while NodePort opens a static port across all worker nodes for external access.",
                         workflow: ["kube-proxy programs iptables or IPVS routing rules.", "Traffic hitting Service IP or NodePort is load-balanced across matching pod endpoints."],
                         tips: ["Use kubectl expose to quickly generate service objects without writing YAML from scratch."],
-                        code: "# CLI Commands:\nkubectl expose pod web --port=80 --target-port=8080 --type=NodePort --name=web-np" 
+                        cli: "# Expose pod as ClusterIP and NodePort:\nkubectl expose pod web --port=80 --target-port=8080 --name=web-svc\nkubectl expose pod web --port=80 --target-port=8080 --type=NodePort --name=web-np",
+                        yaml: "apiVersion: v1\nkind: Service\nmetadata:\n  name: web-np\nspec:\n  type: NodePort\n  selector:\n    app: web\n  ports:\n  - port: 80\n    targetPort: 8080\n    nodePort: 30080"
                     },
                     { 
                         t: "Ingress Controllers & Rules", 
                         overview: "Ingress manages external HTTP/S access to cluster services, providing load balancing, SSL termination, and name-based virtual hosting.",
                         workflow: ["Ingress Controller (e.g., NGINX Ingress) watches Ingress resource rules.", "Routes inbound HTTP requests directly to backend services based on URL paths or hostnames."],
                         tips: ["Ensure you create the appropriate IngressClass resource if required by your cluster setup."],
-                        code: "# YAML Manifest:\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: main-ingress\nspec:\n  rules:\n  - host: app.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" 
+                        cli: "# Imperative Ingress creation:\nkubectl create ingress web-ing --rule=\"shop.local/api*=api-service:8080\"",
+                        yaml: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: web-ing\nspec:\n  rules:\n  - host: shop.local\n    http:\n      paths:\n      - path: /api\n        pathType: Prefix\n        backend:\n          service:\n            name: api-service\n            port:\n              number: 8080"
                     },
                     { 
                         t: "Network Policies", 
                         overview: "NetworkPolicies act as firewalls at the IP/port level, isolating pod traffic and controlling inbound (ingress) and outbound (egress) communication.",
                         workflow: ["CNI plugins (like Calico) enforce network policy rules.", "Evaluates pod label selectors to permit or drop packet streams."],
                         tips: ["Remember that by default, pods are non-isolated (all traffic allowed). Applying a network policy makes them isolated."],
-                        code: "# YAML Manifest:\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-isolation\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" 
+                        cli: "# Inspect and describe network policies:\nkubectl get netpol -A\nkubectl describe netpol db-firewall",
+                        yaml: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-firewall\nspec:\n  podSelector:\n    matchLabels:\n      role: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          role: backend\n    ports:\n    - protocol: TCP\n      port: 5432"
                     },
                     { 
                         t: "CoreDNS Troubleshooting", 
                         overview: "CoreDNS is the standard cluster DNS server. Troubleshooting DNS issues involves checking CoreDNS pods, service endpoints, and kube-dns configurations.",
                         workflow: ["CoreDNS resolves service names to internal cluster IPs.", "Pods query CoreDNS via cluster IP specified in resolv.conf."],
                         tips: ["Test DNS resolution quickly inside the cluster using an ephemeral busybox pod with nslookup."],
-                        code: "# CLI Commands:\nkubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod> -- nslookup kubernetes.default" 
+                        cli: "# Test DNS resolution with temporary pod:\nkubectl run test-dns --image=busybox:1.28 --rm -it --restart=Never -- nslookup kubernetes.default",
+                        yaml: "# CoreDNS ConfigMap (/etc/coredns/Corefile):\napiVersion: v1\nkind: ConfigMap\nmetadata:\n  name: coredns\n  namespace: kube-system\ndata:\n  Corefile: |\n    .:53 {\n        errors\n        health\n        kubernetes cluster.local in-addr.arpa ip6.arpa {\n           pods insecure\n           fallthrough in-addr.arpa ip6.arpa\n        }\n        forward . /etc/resolv.conf\n        cache 30\n    }"
                     },
                     { 
                         t: "CNI Plugins", 
                         overview: "Container Network Interface (CNI) plugins provide networking connectivity between pods across different worker nodes.",
                         workflow: ["Kubelet reads CNI configuration from /etc/cni/net.d/ upon startup.", "Allocates IP addresses to pods and configures routing tables."],
                         tips: ["Check CNI binary and configuration file paths if newly created pods remain in ContainerCreating state."],
-                        code: "# Check CNI configuration path (CLI):\nls -l /etc/cni/net.d/" 
+                        cli: "# Check CNI plugin configuration directory:\nls -la /etc/cni/net.d/\nkubectl get pods -n kube-system -l k8s-app=calico-node",
+                        yaml: "# Sample CNI Configuration (/etc/cni/net.d/10-flannel.conflist):\n{\n  \"name\": \"cbr0\",\n  \"cniVersion\": \"0.3.1\",\n  \"plugins\": [\n    {\n      \"type\": \"flannel\",\n      \"delegate\": {\n        \"hairpinMode\": true,\n        \"isDefaultGateway\": true\n      }\n    }\n  ]\n}"
                     }
                 ]
             },
@@ -933,28 +1000,32 @@
                         overview: "Ephemeral volumes provide temporary storage scoped to the pod lifecycle (emptyDir) or mount host filesystem directories directly into containers (hostPath).",
                         workflow: ["emptyDir creates temporary scratch space on node disk during pod lifetime.", "hostPath mounts existing node files directly into container mount paths."],
                         tips: ["emptyDir data is deleted permanently when the pod is removed from the node."],
-                        code: "# YAML Spec:\nvolumes:\n- name: cache\n  emptyDir: {}\n- name: host-logs\n  hostPath:\n    path: /var/log" 
+                        cli: "# Check mounted volumes in pod:\nkubectl get pod cache-pod -o jsonpath='{.spec.volumes}'",
+                        yaml: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: cache-pod\nspec:\n  containers:\n  - name: app\n    image: nginx\n    volumeMounts:\n    - name: cache-vol\n      mountPath: /tmp/cache\n  volumes:\n  - name: cache-vol\n    emptyDir: {}"
                     },
                     { 
                         t: "PersistentVolumes (PV)", 
                         overview: "A PersistentVolume is a cluster-wide piece of storage provisioned by an administrator that exists independently of any individual pod lifecycle.",
                         workflow: ["Administrator provisions PV backed by NFS, AWS EBS, or local disk.", "Registers PV object into API server."],
                         tips: ["Pay close attention to access modes (ReadWriteOnce, ReadWriteMany) when matching storage claims."],
-                        code: "# YAML Manifest:\napiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 2Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" 
+                        cli: "# List and describe PersistentVolumes:\nkubectl get pv\nkubectl describe pv pv-data",
+                        yaml: "apiVersion: v1\nkind: PersistentVolume\nmetadata:\n  name: pv-data\nspec:\n  capacity:\n    storage: 5Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /data/db\n  storageClassName: manual"
                     },
                     { 
                         t: "PersistentVolumeClaims (PVC)", 
                         overview: "A PersistentVolumeClaim is a user's request for storage resources matching specific capacity and access mode requirements.",
                         workflow: ["User creates PVC object.", "Cluster controller matches PVC with an available PV fulfilling capacity and access mode requirements."],
                         tips: ["Pods consume PersistentVolumes by referencing the PVC name inside their volume specifications."],
-                        code: "# YAML Manifest:\napiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 2Gi" 
+                        cli: "# Inspect PersistentVolumeClaims:\nkubectl get pvc\nkubectl describe pvc my-claim",
+                        yaml: "apiVersion: v1\nkind: PersistentVolumeClaim\nmetadata:\n  name: my-claim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  storageClassName: manual\n  resources:\n    requests:\n      storage: 5Gi"
                     },
                     { 
                         t: "StorageClasses", 
                         overview: "StorageClasses enable dynamic provisioning of PersistentVolumes on-demand, eliminating the need for administrators to pre-provision storage manually.",
                         workflow: ["User requests storage via PVC specifying a StorageClass name.", "Provisioner plugin automatically creates backing storage volume and corresponding PV."],
                         tips: ["Check available storage provisioners in your cluster using kubectl get sc."],
-                        code: "# YAML Manifest:\napiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-storage\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" 
+                        cli: "# List StorageClasses:\nkubectl get storageclass\nkubectl get sc",
+                        yaml: "apiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-ssd\nprovisioner: kubernetes.io/no-provisioner\nvolumeBindingMode: WaitForFirstConsumer"
                     }
                 ]
             },
@@ -966,35 +1037,40 @@
                         overview: "Safely isolate worker nodes for maintenance or upgrades by marking them unschedulable (cordon) and gracefully evicting running workloads (drain).",
                         workflow: ["Cordon prevents new pod scheduling on node.", "Drain evicts existing pods and respects pod disruption budgets."],
                         tips: ["Always add --ignore-daemonsets when draining nodes in practice exams, otherwise daemonset pods will block the command."],
-                        code: "# CLI Commands:\nkubectl cordon worker-1\nkubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data\nkubectl uncordon worker-1" 
+                        cli: "# Safely Cordon & Drain Worker Node:\nkubectl cordon worker-01\nkubectl drain worker-01 --ignore-daemonsets --delete-emptydir-data --force\n\n# Uncordon after maintenance:\nkubectl uncordon worker-01",
+                        yaml: "# PodDisruptionBudget to protect replicas during drain:\napiVersion: policy/v1\nkind: PodDisruptionBudget\nmetadata:\n  name: web-pdb\nspec:\n  minAvailable: 2\n  selector:\n    matchLabels:\n      app: web"
                     },
                     { 
                         t: "Pod Troubleshooting (CrashLoopBackOff)", 
                         overview: "Diagnose application startup failures, incorrect command arguments, missing configuration maps, and OOMKilled container states.",
                         workflow: ["Inspect pod description for exit codes and error reasons.", "Review previous container logs for application exceptions."],
                         tips: ["Use --previous flag with kubectl logs to inspect logs of crashed container instances."],
-                        code: "# CLI Diagnostic Commands:\nkubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous\nkubectl get events --sort-by='.metadata.creationTimestamp'" 
+                        cli: "# Diagnostic commands for failed pods:\nkubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous\nkubectl get events --sort-by='.metadata.creationTimestamp'",
+                        yaml: "# Liveness and Readiness Probe Debug Spec:\nspec:\n  containers:\n  - name: app\n    image: myapp:v1\n    livenessProbe:\n      httpGet:\n        path: /healthz\n        port: 8080\n      initialDelaySeconds: 15\n      periodSeconds: 10"
                     },
                     { 
                         t: "Control Plane Troubleshooting", 
                         overview: "Diagnose and repair failed control plane components (API server, etcd, scheduler) running as static pods or systemd services.",
                         workflow: ["Inspect static manifests under /etc/kubernetes/manifests/.", "Check container runtime logs using crictl."],
                         tips: ["If kubelet is stopped or failed, check its status using systemctl status kubelet."],
-                        code: "# CLI & File Diagnostic Commands:\ncd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>\njournalctl -u kubelet -e" 
+                        cli: "# Systemd & CRI Inspection Commands:\nsystemctl status kubelet\njournalctl -u kubelet -e --no-pager\ncrictl ps\ncrictl logs <container-id>",
+                        yaml: "# Inspect Static Pod Manifest (/etc/kubernetes/manifests/kube-apiserver.yaml):\nspec:\n  containers:\n  - name: kube-apiserver\n    image: registry.k8s.io/kube-apiserver:v1.28.0\n    command:\n    - kube-apiserver\n    - --advertise-address=192.168.1.10"
                     },
                     { 
                         t: "Network & DNS Debugging", 
                         overview: "Test inter-pod connectivity, service routing, and DNS lookups using temporary debug containers or network diagnostic tools.",
                         workflow: ["Deploy ephemeral debug containers into target pods to inspect network interfaces and routing tables."],
                         tips: ["kubectl debug is a powerful built-in tool for troubleshooting running pods without restarting them."],
-                        code: "# CLI Commands:\nkubectl debug pod/web -it --image=busybox -- sh\nnslookup kubernetes.default" 
+                        cli: "# Launch ephemeral debug session:\nkubectl debug pod/web-app -it --image=nicolaka/netshoot -- /bin/bash\n\n# Test service port connectivity:\nnc -zvw3 backend-svc 8080",
+                        yaml: "# Temporary Network Diagnostic Pod Manifest:\napiVersion: v1\nkind: Pod\nmetadata:\n  name: net-debug\nspec:\n  containers:\n  - name: netshoot\n    image: nicolaka/netshoot\n    command: [\"sleep\", \"3600\"]"
                     },
                     { 
                         t: "Certificate Expiration Checks", 
                         overview: "Verify TLS certificate expiration dates for clusters managed by kubeadm to prevent sudden control plane outages.",
                         workflow: ["Kubeadm inspects PKI certificate files located under /etc/kubernetes/pki/ and reports remaining validity duration."],
                         tips: ["Renew certificates manually using 'kubeadm certs renew all' if needed."],
-                        code: "# CLI Command:\nkubeadm certs check-expiration" 
+                        cli: "# Check and renew TLS certificates:\nkubeadm certs check-expiration\nkubeadm certs renew all\nsystemctl restart kubelet",
+                        yaml: "# Expected Certificate Output Locations:\n# /etc/kubernetes/pki/apiserver.crt\n# /etc/kubernetes/pki/apiserver-etcd-client.crt\n# /etc/kubernetes/pki/front-proxy-client.crt"
                     }
                 ]
             }
@@ -1091,6 +1167,13 @@
         let gameAnswersHistory = [];
         let usedIncidentTitles = new Set();
         let apiBaseUrl = "";
+
+        // Client-side API key configuration helper (loaded from config.js or localStorage)
+        function getEffectiveGeminiKey() {
+            return (window.ROUNDCHAT_CONFIG && window.ROUNDCHAT_CONFIG.GEMINI_API_KEY) || 
+                   localStorage.getItem('roundchat_gemini_key') || 
+                   "";
+        }
 
         // Auto-detect backend proxy URL (supports direct port 8000, relative /api, or Live Server)
         async function getWorkingApiUrl(endpoint) {
@@ -1243,8 +1326,8 @@
                     }
                 }
 
-                // 2. Try Direct Gemini API if user has custom key
-                const apiKey = localStorage.getItem('roundchat_gemini_key');
+                // 2. Try Direct Gemini API using pre-configured key
+                const apiKey = getEffectiveGeminiKey();
                 if (apiKey && apiKey.length > 10) {
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
                     const domains = [
@@ -1399,8 +1482,8 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                         const data = await res.json();
                         hintText = data.hint;
                     }
-                } else if (aiMode === "direct") {
-                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                } else {
+                    const apiKey = getEffectiveGeminiKey();
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
                     const prompt = `Give ONE short clever hint (maximum 1 sentence) for Kubernetes incident '${activeScenario.title}: ${activeScenario.desc}' without giving the exact answer away.`;
                     const res = await fetch(endpoint, {
@@ -1550,8 +1633,8 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                         const data = await res.json();
                         reportMarkdown = data.reply;
                     }
-                } else if (aiMode === "direct") {
-                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                } else {
+                    const apiKey = getEffectiveGeminiKey();
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
                     const res = await fetch(endpoint, {
                         method: 'POST',
@@ -1574,6 +1657,28 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             }
         }
 
+        function copyCodeText(btn) {
+            const parentBox = btn.closest('.code-box');
+            if (!parentBox) return;
+            // Extract code text without the button and label headers
+            const clone = parentBox.cloneNode(true);
+            clone.querySelectorAll('button, .code-label').forEach(el => el.remove());
+            const textToCopy = clone.innerText.trim();
+            
+            navigator.clipboard.writeText(textToCopy).then(() => {
+                const originalText = btn.innerText;
+                btn.innerText = '✔ Copied!';
+                btn.style.color = '#86efac';
+                setTimeout(() => {
+                    btn.innerText = originalText;
+                    btn.style.color = '';
+                }, 1500);
+            }).catch(() => {
+                btn.innerText = 'Copied!';
+                setTimeout(() => { btn.innerText = 'Copy'; }, 1500);
+            });
+        }
+
         const modal = document.getElementById('modal');
 
         function openTopicModal(modIdx, topicIdx) {
@@ -1581,37 +1686,48 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             currentActiveContext = {
                 title: item.t,
                 desc: item.overview,
-                code: item.code,
+                cli: item.cli,
+                yaml: item.yaml,
                 tips: item.tips,
                 type: "syllabus_topic"
             };
 
-            document.getElementById('m-title').innerHTML = `<span>⚡</span> ${item.t}`;
+            document.getElementById('m-title').innerHTML = `<span>⚡</span> ${escapeHtml(item.t)}`;
 
             const workflowHtml = item.workflow.map(step => `
-                <div class="bullet-item"><span>→</span> ${step}</div>
+                <div class="bullet-item"><span>→</span> ${escapeHtml(step)}</div>
             `).join('');
 
             const tipsHtml = item.tips.map(tip => `
-                <div class="bullet-item"><span>💡</span> ${tip}</div>
+                <div class="bullet-item"><span>💡</span> ${escapeHtml(tip)}</div>
             `).join('');
 
             document.getElementById('modal-body-content').innerHTML = `
                 <div class="modal-section">
                     <div class="pane-heading">Core Overview</div>
-                    <div class="pane-text">${item.overview}</div>
+                    <div class="pane-text">${escapeHtml(item.overview)}</div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading">Underlying Logic</div>
+                    <div class="pane-heading">Underlying Logic & Workflow</div>
                     <div class="bullet-box">${workflowHtml}</div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading">Exam Pro-Tips</div>
+                    <div class="pane-heading">CKA Exam Pro-Tips</div>
                     <div class="bullet-box">${tipsHtml}</div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading">YAML & CLI Commands</div>
-                    <div class="code-box"><span class="code-label">YAML / CLI</span>${item.code}</div>
+                    <div class="pane-heading" style="color:#86efac;">🛠️ Imperative CLI Commands</div>
+                    <div class="code-box" style="color:#86efac; border-color: rgba(34, 197, 94, 0.35);">
+                        <button class="ai-copy-btn" onclick="copyCodeText(this)">Copy CLI</button>
+                        <span class="code-label">CLI</span>${escapeHtml(item.cli)}
+                    </div>
+                </div>
+                <div class="modal-section">
+                    <div class="pane-heading" style="color:#93c5fd;">📄 Declarative YAML Manifest</div>
+                    <div class="code-box" style="color:#93c5fd; border-color: rgba(50, 108, 229, 0.35);">
+                        <button class="ai-copy-btn" onclick="copyCodeText(this)">Copy YAML</button>
+                        <span class="code-label">YAML</span>${escapeHtml(item.yaml)}
+                    </div>
                 </div>
             `;
 
@@ -1627,11 +1743,11 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
         }
 
         // ==========================================
-        // 4. K8S AI COPILOT CLIENT ENGINE
+        // 4. SAHAAI CLIENT ENGINE
         // ==========================================
         let aiDrawerOpen = false;
         let aiIsLoading = false;
-        let aiMode = "proxy"; // 'proxy' | 'direct' | 'standby'
+        let aiMode = "direct"; // 'proxy' | 'direct'
 
         function toggleAiDrawer() {
             aiDrawerOpen = !aiDrawerOpen;
@@ -1683,27 +1799,19 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                     if (data.has_api_key) {
                         aiMode = "proxy";
                         statusBadge.className = "ai-status-tag";
-                        statusText.innerText = "Gemini Proxy (Active)";
+                        statusText.innerText = "sahaAI (Active)";
                         fabDot.className = "ai-pulse-dot";
                         return;
                     }
                 }
             } catch (err) {
-                // Backend proxy not reachable (static host)
+                // Backend proxy not reachable (running on static host or direct file)
             }
 
-            const localKey = localStorage.getItem('roundchat_gemini_key');
-            if (localKey && localKey.length > 10) {
-                aiMode = "direct";
-                statusBadge.className = "ai-status-tag";
-                statusText.innerText = "Direct API Key";
-                fabDot.className = "ai-pulse-dot";
-            } else {
-                aiMode = "standby";
-                statusBadge.className = "ai-status-tag standby";
-                statusText.innerText = "Setup API Key";
-                fabDot.className = "ai-pulse-dot standby";
-            }
+            aiMode = "direct";
+            statusBadge.className = "ai-status-tag";
+            statusText.innerText = "sahaAI (Active)";
+            fabDot.className = "ai-pulse-dot";
         }
 
         function handleAiInputKey(e) {
@@ -1721,7 +1829,8 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             if (!currentActiveContext) return;
             openAiDrawer();
             const prompt = `Explain "${currentActiveContext.title}" in deep detail for the CKA exam. What are the key architectural mechanisms, production failure modes, and best practices?`;
-            submitAiMessage(prompt, currentActiveContext.desc + "\n" + (currentActiveContext.code || ''));
+            const fullContext = `${currentActiveContext.desc || ''}\n\nCLI Commands:\n${currentActiveContext.cli || ''}\n\nYAML Spec:\n${currentActiveContext.yaml || ''}`;
+            submitAiMessage(prompt, fullContext);
         }
 
         function askAiAboutGameIncident(qIdx) {
@@ -1736,7 +1845,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             const feed = document.getElementById('ai-chat-feed');
             feed.innerHTML = `
                 <div class="ai-welcome-card" id="ai-welcome-box">
-                    <h4>✨ Welcome to Roundchat K8s Copilot</h4>
+                    <h4>✨ Welcome to sahaAI Copilot</h4>
                     <p>Ask anything about Kubernetes architecture, generate verified CKA YAML manifests, debug incident errors, or ask for exam speed tricks!</p>
                     <div class="ai-prompts-grid">
                         <div class="ai-prompt-chip" onclick="quickAsk('Generate a Production Deployment with 3 replicas, resource limits, and an HTTP liveness probe.')">
@@ -1871,32 +1980,39 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
             try {
                 let aiReply = '';
+                let proxySucceeded = false;
 
+                // 1. Try Backend Proxy if available
                 if (aiMode === "proxy") {
-                    // 1. Try Backend Proxy
-                    const res = await fetch('/api/chat', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({
-                            message: userText,
-                            context: contextData,
-                            topic: currentActiveContext ? currentActiveContext.title : null
-                        })
-                    });
-
-                    if (!res.ok) {
-                        const errData = await res.json().catch(() => ({}));
-                        throw new Error(errData.detail || errData.error || `Server responded with ${res.status}`);
+                    try {
+                        const activeUrl = await getWorkingApiUrl('/api/chat');
+                        if (activeUrl) {
+                            const res = await fetch(activeUrl, {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({
+                                    message: userText,
+                                    context: contextData,
+                                    topic: currentActiveContext ? currentActiveContext.title : null
+                                })
+                            });
+                            if (res.ok) {
+                                const data = await res.json();
+                                aiReply = data.reply;
+                                proxySucceeded = true;
+                            }
+                        }
+                    } catch (e) {
+                        // Fallback to direct client API call
                     }
-                    const data = await res.json();
-                    aiReply = data.reply;
+                }
 
-                } else if (aiMode === "direct") {
-                    // 2. Direct Client-Side Gemini API
-                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                // 2. Direct Client-Side Gemini Call with preconfigured fallback
+                if (!proxySucceeded) {
+                    const apiKey = getEffectiveGeminiKey();
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
                     
-                    const systemPrompt = "You are Roundchat K8s & CKA AI Copilot, an expert Kubernetes Architect and CKA exam mentor. Provide accurate YAML, CLI commands, and root cause debugging guides in GitHub-flavored Markdown.";
+                    const systemPrompt = "You are sahaAI, an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor. Provide accurate YAML manifests, CLI commands, and root cause debugging guides in GitHub-flavored Markdown.";
                     const fullPrompt = `${systemPrompt}\n\n${contextData ? `[Context: ${contextData}]\n\n` : ''}${userText}`;
 
                     const res = await fetch(endpoint, {
@@ -1914,19 +2030,15 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
                     const data = await res.json();
                     aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
-
-                } else {
-                    // Standby Mode - No Backend and No API key entered
-                    aiReply = `⚠️ **Gemini AI is not connected yet.**\n\nTo activate your K8s AI Copilot:\n1. **Option A (Local Backend)**: Run \`python server.py\` with your \`GEMINI_API_KEY\` in \`.env\`.\n2. **Option B (Direct Client Key)**: Click the **⚙️ Settings icon** at top right of this drawer and paste your Gemini API Key from [Google AI Studio](https://aistudio.google.com/).`;
                 }
 
                 removeTypingIndicator();
                 appendMessage('bot', aiReply);
 
             } catch (error) {
-                console.error("AI Error:", error);
+                console.error("sahaAI Error:", error);
                 removeTypingIndicator();
-                appendMessage('bot', `❌ **Error contacting Gemini AI:**\n${error.message}\n\n*Tip: Check if your backend server is running or configure your API Key in ⚙️ Settings.*`);
+                appendMessage('bot', `❌ **Error communicating with sahaAI:**\n${error.message}\n\n*Tip: Check network connectivity or verify your API key in ⚙️ Settings.*`);
             } finally {
                 aiIsLoading = false;
                 document.getElementById('ai-send-btn').disabled = false;

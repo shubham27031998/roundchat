@@ -12,7 +12,7 @@ from typing import Optional, List, Dict
 # Load environment variables
 load_dotenv()
 
-app = FastAPI(title="Roundchat K8s AI Copilot API")
+app = FastAPI(title="sahaAI - Kubernetes Architect API")
 
 # Enable CORS for local development and remote origins
 app.add_middleware(
@@ -34,7 +34,7 @@ class ChatRequest(BaseModel):
     history: Optional[List[Dict[str, str]]] = None
 
 SYSTEM_INSTRUCTION = """
-You are the Roundchat K8s & CKA AI Copilot — an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor.
+You are sahaAI — an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor.
 
 Your purpose is to provide clear, accurate, high-utility, and actionable Kubernetes assistance:
 1. When asked for YAML, provide clean, production-ready manifests with syntax explanations and best practices (labels, resource limits, readiness/liveness probes, security contexts).
@@ -63,7 +63,7 @@ async def health():
         "status": "healthy",
         "has_api_key": has_key,
         "model": "gemini-2.5-flash",
-        "service": "Roundchat K8s AI Copilot"
+        "service": "sahaAI"
     }
 
 @app.post("/api/chat")

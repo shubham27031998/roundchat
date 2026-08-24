@@ -69,13 +69,50 @@
 
         .container { max-width: 1440px; margin: 0 auto; padding: 40px 24px; }
         
-        .section-title { 
-            font-size: 1.5rem; font-weight: 700; margin-bottom: 22px; 
-            display: flex; align-items: center; justify-content: space-between; 
-            border-left: 4px solid var(--k8s-blue); padding-left: 16px; 
-            color: #fff; letter-spacing: -0.3px;
+        /* Professional Section Header Design System */
+        .section-header-block {
+            margin-bottom: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 8px;
         }
-        .helper-text { font-size: 0.84rem; color: var(--text-muted); font-weight: normal; }
+        .section-badge-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 4px 12px;
+            border-radius: 20px;
+            background: rgba(50, 108, 229, 0.12);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: #93c5fd;
+        }
+        .section-badge-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #60a5fa;
+            box-shadow: 0 0 8px #60a5fa;
+        }
+        .section-heading {
+            font-size: 1.6rem;
+            font-weight: 800;
+            color: #fff;
+            letter-spacing: -0.5px;
+            margin: 0;
+            line-height: 1.25;
+        }
+        .section-subheading {
+            font-size: 0.88rem;
+            color: var(--text-muted);
+            margin: 0;
+            max-width: 780px;
+            line-height: 1.6;
+        }
 
         /* --- 1. ARCHITECTURE SIMULATOR --- */
         .arch-simulator {
@@ -746,8 +783,9 @@
             header p { font-size: 0.84rem; line-height: 1.5; }
 
             .container { padding: 14px 10px; }
-            .section-title { font-size: 1.1rem; flex-direction: column; align-items: flex-start; gap: 4px; padding-left: 10px; margin-bottom: 14px; }
-            .helper-text { font-size: 0.74rem; }
+            .section-header-block { margin-bottom: 18px; gap: 6px; }
+            .section-heading { font-size: 1.28rem; }
+            .section-subheading { font-size: 0.8rem; line-height: 1.5; }
 
             .arch-simulator { padding: 12px; border-radius: 14px; gap: 14px; }
             .console-panel { border-radius: 12px; }
@@ -830,10 +868,14 @@
 
     <div class="container">
         
-        <!-- SECTION 1: ARCHITECTURE HUB -->
-        <div class="section-title">
-            <span>1. Cluster Architecture Hub</span>
-            <span class="helper-text">💡 Click any component box on the canvas to inspect details</span>
+        <!-- SECTION 1: ARCHITECTURE VISUALIZER -->
+        <div class="section-header-block">
+            <div class="section-badge-pill">
+                <span class="section-badge-dot"></span>
+                <span>INTERACTIVE TOPOLOGY</span>
+            </div>
+            <h2 class="section-heading">Control Plane & Worker Architecture Visualizer</h2>
+            <p class="section-subheading">Step through live API server reconciliation loops, scheduler bindings, and container lifecycle events in real time. Click any component box to inspect its internal logic.</p>
         </div>
 
         <div class="arch-simulator">
@@ -878,12 +920,12 @@
                     </div>
                 </div>
                 <div class="sim-controls">
-                    <button class="btn-sim green" onclick="runWorkflow(runCreate)">▶ 1. Create Pod <span>kubectl run</span></button>
-                    <button class="btn-sim red" onclick="runWorkflow(runDelete)">▶ 2. Delete Pod <span>kubectl delete</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runCrash)">▶ 3. Self-Healing Crash <span>ReplicaSet Loop</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runDrain)">▶ 4. Node Drain <span>kubectl drain</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runProxy)">▶ 5. Service Routing <span>ClusterIP / Proxy</span></button>
-                    <button class="btn-sim red" style="background:#451a03; border-color:#d97706; color:#fde68a;" onclick="stopCurrentSimulation()">■ Stop Simulation <span>Halt & Reset</span></button>
+                    <button class="btn-sim green" onclick="runWorkflow(runCreate)">▶ Pod Scheduling Lifecycle <span>kubectl run</span></button>
+                    <button class="btn-sim red" onclick="runWorkflow(runDelete)">▶ Graceful Pod Eviction <span>kubectl delete</span></button>
+                    <button class="btn-sim" onclick="runWorkflow(runCrash)">▶ Self-Healing CrashLoop <span>ReplicaSet Loop</span></button>
+                    <button class="btn-sim" onclick="runWorkflow(runDrain)">▶ Safe Node Drain <span>kubectl drain</span></button>
+                    <button class="btn-sim" onclick="runWorkflow(runProxy)">▶ Service Proxy Routing <span>ClusterIP / Proxy</span></button>
+                    <button class="btn-sim red" style="background:#451a03; border-color:#d97706; color:#fde68a;" onclick="stopCurrentSimulation()">■ Reset Simulation <span>Halt & Clear</span></button>
                 </div>
                 <div class="console-logs" id="logs">
                     <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect its architecture.</div>
@@ -894,9 +936,13 @@
         <br><br><br>
 
         <!-- SECTION 2: EXHAUSTIVE CKA SYLLABUS -->
-        <div class="section-title">
-            <span>2. Complete CKA Syllabus Masterclass (Exam Ready)</span>
-            <span class="helper-text">👆 Click any subtopic for deep-dive architecture, underlying logic & copy-ready YAML / CLI manifests</span>
+        <div class="section-header-block">
+            <div class="section-badge-pill">
+                <span class="section-badge-dot" style="background: var(--accent-purple); box-shadow: 0 0 8px var(--accent-purple);"></span>
+                <span>CURRICULUM & KNOWLEDGE MATRIX</span>
+            </div>
+            <h2 class="section-heading">Certified Kubernetes Administrator Masterclass</h2>
+            <p class="section-subheading">In-depth architectural guides, underlying Linux & controller logic, and production-ready declarative YAML manifests & imperative CLI commands.</p>
         </div>
 
         <!-- SYLLABUS TOOLBAR & DOMAIN FILTERS -->
@@ -920,10 +966,14 @@
 
         <br><br><br>
 
-        <!-- SECTION 3: INTERACTIVE MINI-GAME -->
-        <div class="section-title">
-            <span>3. CKA Chaos Rescue: Quick-Fire Exam Challenge</span>
-            <span class="helper-text">🎮 Solve real-time cluster failures under pressure to test your knowledge</span>
+        <!-- SECTION 3: INTERACTIVE DRILLS -->
+        <div class="section-header-block">
+            <div class="section-badge-pill">
+                <span class="section-badge-dot" style="background: var(--accent-orange); box-shadow: 0 0 8px var(--accent-orange);"></span>
+                <span>PRODUCTION INCIDENT SIMULATOR</span>
+            </div>
+            <h2 class="section-heading">Chaos Rescue: Live Cluster Outage Drills</h2>
+            <p class="section-subheading">Face dynamic, randomized real-world Kubernetes emergencies. Diagnose underlying root causes and execute surgical fixes against the countdown clock.</p>
         </div>
 
         <div class="game-container" id="game-container">
@@ -1506,7 +1556,7 @@
         // ==========================================
         const syllabus = [
             {
-                mod: "1. Cluster Architecture, Installation & Upgrades",
+                mod: "Cluster Architecture, Installation & Upgrades",
                 icon: "🏗️",
                 weight: "25%",
                 color: "#a855f7",
@@ -1562,7 +1612,7 @@
                 ]
             },
             {
-                mod: "2. Workloads & Scheduling",
+                mod: "Workloads & Scheduling Engine",
                 icon: "📦",
                 weight: "15%",
                 color: "#3b82f6",
@@ -1634,7 +1684,7 @@
                 ]
             },
             {
-                mod: "3. Services & Networking",
+                mod: "Services, Ingress & Networking",
                 icon: "🌐",
                 weight: "20%",
                 color: "#06b6d4",
@@ -1682,7 +1732,7 @@
                 ]
             },
             {
-                mod: "4. Storage Configuration",
+                mod: "Storage & Persistent Volumes",
                 icon: "💾",
                 weight: "10%",
                 color: "#10b981",
@@ -1722,7 +1772,7 @@
                 ]
             },
             {
-                mod: "5. Troubleshooting & Maintenance",
+                mod: "Troubleshooting & Cluster Diagnostics",
                 icon: "🛠️",
                 weight: "30%",
                 color: "#f43f5e",

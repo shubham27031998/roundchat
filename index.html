@@ -872,43 +872,78 @@
 
         @media (max-width: 768px) {
             body { padding-bottom: 90px; }
-            header { padding: 24px 14px 20px; }
-            header h1 { font-size: 1.5rem; gap: 8px; flex-direction: column; }
+            header { padding: 24px 14px 18px; }
+            header h1 { font-size: 1.45rem; gap: 8px; flex-direction: column; }
             .k8s-logo { width: 34px; height: 34px; }
-            header p { font-size: 0.84rem; line-height: 1.5; }
+            header p { font-size: 0.82rem; line-height: 1.5; }
 
-            .container { padding: 14px 10px; }
-            .platform-nav-bar { flex-direction: column; gap: 4px; padding: 4px; margin-bottom: 18px; }
-            .nav-tab-btn { width: 100%; padding: 8px 12px; font-size: 0.8rem; justify-content: space-between; }
+            .container { padding: 12px 10px; }
+
+            /* Top Segmented Nav on Mobile */
+            .platform-nav-bar {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 5px;
+                padding: 4px;
+                margin: 0 auto 16px auto;
+                background: #080d1a;
+                border: 1px solid #1e293b;
+                border-radius: 12px;
+                position: sticky;
+                top: 8px;
+                z-index: 100;
+                backdrop-filter: blur(16px);
+                box-shadow: 0 4px 18px rgba(0,0,0,0.5);
+            }
+            .nav-tab-btn {
+                width: 100%;
+                padding: 8px 4px;
+                font-size: 0.73rem;
+                font-weight: 700;
+                border-radius: 8px;
+                flex-direction: column;
+                gap: 2px;
+                text-align: center;
+                border: 1px solid transparent;
+            }
+            .nav-tab-btn span.tab-badge-pill { display: none; }
+            .nav-tab-btn.active {
+                background: #2563eb;
+                border-color: #3b82f6;
+                color: #ffffff;
+                box-shadow: 0 2px 8px rgba(37, 99, 235, 0.4);
+            }
             
-            .section-header { margin-bottom: 18px; }
-            .section-title { font-size: 1.25rem; }
-            .section-desc { font-size: 0.82rem; }
+            .section-header { margin-bottom: 16px; }
+            .section-title { font-size: 1.2rem; }
+            .section-desc { font-size: 0.8rem; }
 
-            .arch-simulator { padding: 12px; border-radius: 14px; gap: 14px; }
+            /* Architecture Visualizer on Mobile */
+            .arch-simulator { padding: 10px; border-radius: 14px; gap: 12px; }
+            .arch-canvas-container { border-radius: 10px; }
             .console-panel { border-radius: 12px; }
             .console-header { padding: 10px 12px; font-size: 0.82rem; }
             .sim-controls { padding: 8px; gap: 6px; }
             .btn-sim { padding: 9px 12px; min-height: 40px; font-size: 0.76rem; }
-            .console-logs { padding: 10px; height: 220px; font-size: 0.72rem; }
+            .console-logs { padding: 10px; height: 200px; font-size: 0.72rem; }
 
-            .curriculum-toolbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; }
+            /* Curriculum Toolbar & Domain Accordions on Mobile */
+            .curriculum-toolbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 10px; }
             .domain-tabs {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 6px;
                 width: 100%;
-                overflow-x: visible;
-                padding-bottom: 0;
             }
             .domain-tab-btn {
                 width: 100%;
                 justify-content: space-between;
-                padding: 7px 10px;
+                padding: 8px 10px;
                 font-size: 0.74rem;
-                white-space: normal;
-                text-align: left;
+                border-radius: 8px;
                 box-sizing: border-box;
+                background: #0f172a;
+                border: 1px solid #1e293b;
             }
             .domain-tab-btn:first-child {
                 grid-column: 1 / -1;
@@ -917,16 +952,48 @@
                 font-weight: 700;
             }
             .toolbar-right-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
-            .domain-select-dropdown { width: 100%; font-size: 16px !important; }
-            .btn-toggle-expand { width: 100%; text-align: center; }
+            .domain-select-dropdown { width: 100%; font-size: 16px !important; padding: 9px 12px; border-radius: 8px; }
+            .btn-toggle-expand { width: 100%; text-align: center; padding: 8px 12px; border-radius: 8px; }
             .curriculum-search-wrap { max-width: 100%; min-width: 100%; width: 100%; box-sizing: border-box; }
             .curriculum-search-input { font-size: 16px !important; padding: 9px 30px 9px 30px; width: 100%; box-sizing: border-box; }
-            .curriculum-content-body { padding: 14px 10px; gap: 14px; }
-            .domain-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
-            .domain-banner-right { width: 100%; justify-content: space-between; }
-            .domain-content-wrap { padding: 14px 10px; }
-            .topic-matrix-grid { grid-template-columns: 1fr; gap: 10px; }
-            .topic-card { padding: 14px 14px; width: 100%; box-sizing: border-box; }
+            .curriculum-content-body { padding: 12px 8px; gap: 12px; }
+
+            /* Domain Accordion Card on Mobile */
+            .domain-block {
+                background: #090e1c;
+                border: 1px solid #1e293b;
+                border-radius: 12px;
+                margin-bottom: 10px;
+                overflow: hidden;
+            }
+            .domain-banner {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 8px;
+                padding: 12px 14px;
+                background: #0d1527;
+                border-bottom: 1px solid #1e293b;
+            }
+            .domain-block.collapsed .domain-banner { border-bottom: none; }
+            .domain-banner-left { gap: 10px; }
+            .domain-banner-title { font-size: 0.94rem; font-weight: 700; color: #f1f5f9; }
+            .domain-banner-right { width: 100%; display: flex; align-items: center; justify-content: space-between; gap: 6px; }
+            .domain-content-wrap { padding: 12px 10px; background: #060913; }
+            
+            /* Topic Card on Mobile */
+            .topic-matrix-grid { grid-template-columns: 1fr; gap: 8px; }
+            .topic-card {
+                padding: 14px 12px;
+                width: 100%;
+                box-sizing: border-box;
+                background: #0f172a;
+                border: 1px solid #1e293b;
+                border-left: 3px solid #3b82f6;
+                border-radius: 8px;
+                margin-bottom: 4px;
+            }
+            .topic-card-title { font-size: 0.95rem; font-weight: 700; color: #f8fafc; }
+            .topic-card-desc { font-size: 0.82rem; line-height: 1.45; color: #94a3b8; }
 
             /* Zero-scroll single screen Quiz HUD on Phone */
             .game-container { padding: 14px 12px; border-radius: 14px; }
@@ -995,60 +1062,19 @@
 
         <!-- PLATFORM TOP-LEVEL NAVIGATION BAR -->
         <nav class="platform-nav-bar">
-            <button class="nav-tab-btn active" id="tab-btn-curriculum" onclick="switchMainTab('curriculum')">
-                <span>📚</span> CKA Curriculum Hub <span class="tab-badge-pill">28 Topics</span>
-            </button>
-            <button class="nav-tab-btn" id="tab-btn-topology" onclick="switchMainTab('topology')">
+            <button class="nav-tab-btn active" id="tab-btn-topology" onclick="switchMainTab('topology')">
                 <span>🗺️</span> Architecture Visualizer <span class="tab-badge-pill">Interactive</span>
+            </button>
+            <button class="nav-tab-btn" id="tab-btn-curriculum" onclick="switchMainTab('curriculum')">
+                <span>📚</span> CKA Curriculum Hub <span class="tab-badge-pill">28 Topics</span>
             </button>
             <button class="nav-tab-btn" id="tab-btn-drills" onclick="switchMainTab('drills')">
                 <span>🚨</span> Incident Chaos Drills <span class="tab-badge-pill">Timed Rescue</span>
             </button>
         </nav>
         
-        <!-- VIEW 1: CKA CURRICULUM & MANIFESTS HUB (Default Active) -->
-        <div id="section-curriculum" class="platform-section-view active">
-            <div class="section-header">
-                <div class="section-eyebrow">Exam Curriculum Matrix</div>
-                <h2 class="section-title">CKA Domain Knowledge, Architecture & Manifests</h2>
-                <p class="section-desc">Exhaustive subtopics covering core controller loops, Linux primitives, copy-ready declarative YAML specs & imperative CLI commands.</p>
-            </div>
-
-            <div class="curriculum-hub">
-                <div class="curriculum-toolbar">
-                    <div class="domain-tabs" id="domain-filters">
-                        <button class="domain-tab-btn active" onclick="filterDomain('all')">All Domains <span class="tab-weight">28 Topics</span></button>
-                        <button class="domain-tab-btn" onclick="filterDomain(0)">🏗️ Architecture <span class="tab-weight">25%</span></button>
-                        <button class="domain-tab-btn" onclick="filterDomain(1)">📦 Workloads <span class="tab-weight">15%</span></button>
-                        <button class="domain-tab-btn" onclick="filterDomain(2)">🌐 Networking <span class="tab-weight">20%</span></button>
-                        <button class="domain-tab-btn" onclick="filterDomain(3)">💾 Storage <span class="tab-weight">10%</span></button>
-                        <button class="domain-tab-btn" onclick="filterDomain(4)">🛠️ Troubleshooting <span class="tab-weight">30%</span></button>
-                    </div>
-                    
-                    <div class="toolbar-right-controls">
-                        <select class="domain-select-dropdown" id="domain-select-dropdown" onchange="filterDomain(this.value)">
-                            <option value="all">📂 Jump to Domain (All 28 Topics)</option>
-                            <option value="0">🏗️ 1. Cluster Architecture (25%)</option>
-                            <option value="1">📦 2. Workloads & Scheduling (15%)</option>
-                            <option value="2">🌐 3. Services & Networking (20%)</option>
-                            <option value="3">💾 4. Storage Configuration (10%)</option>
-                            <option value="4">🛠️ 5. Troubleshooting & Maintenance (30%)</option>
-                        </select>
-                        <button class="btn-toggle-expand" id="btn-toggle-expand" onclick="toggleAllAccordions()">⤢ Collapse All</button>
-                        <div class="curriculum-search-wrap">
-                            <span class="search-icon">🔍</span>
-                            <input type="text" id="syllabus-search-input" class="curriculum-search-input" placeholder="Search topics, CLI, YAML..." oninput="handleSyllabusSearch(this.value)">
-                            <button class="search-clear-btn" id="search-clear-btn" onclick="clearSyllabusSearch()" style="display:none;">✕</button>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="curriculum-content-body" id="syllabus-grid"></div>
-            </div>
-        </div>
-
-        <!-- VIEW 2: ARCHITECTURE TOPOLOGY SIMULATOR -->
-        <div id="section-topology" class="platform-section-view">
+        <!-- VIEW 1: ARCHITECTURE TOPOLOGY SIMULATOR (Default Active) -->
+        <div id="section-topology" class="platform-section-view active">
             <div class="section-header">
                 <div class="section-eyebrow">Cluster Topology</div>
                 <h2 class="section-title">Control Plane & Node Architecture Visualizer</h2>
@@ -1108,6 +1134,47 @@
                         <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect its architecture.</div>
                     </div>
                 </div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: CKA CURRICULUM & MANIFESTS HUB -->
+        <div id="section-curriculum" class="platform-section-view">
+            <div class="section-header">
+                <div class="section-eyebrow">Exam Curriculum Matrix</div>
+                <h2 class="section-title">CKA Domain Knowledge, Architecture & Manifests</h2>
+                <p class="section-desc">Exhaustive subtopics covering core controller loops, Linux primitives, copy-ready declarative YAML specs & imperative CLI commands.</p>
+            </div>
+
+            <div class="curriculum-hub">
+                <div class="curriculum-toolbar">
+                    <div class="domain-tabs" id="domain-filters">
+                        <button class="domain-tab-btn active" onclick="filterDomain('all')">All Domains <span class="tab-weight">28 Topics</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(0)">🏗️ Architecture <span class="tab-weight">25%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(1)">📦 Workloads <span class="tab-weight">15%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(2)">🌐 Networking <span class="tab-weight">20%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(3)">💾 Storage <span class="tab-weight">10%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(4)">🛠️ Troubleshooting <span class="tab-weight">30%</span></button>
+                    </div>
+                    
+                    <div class="toolbar-right-controls">
+                        <select class="domain-select-dropdown" id="domain-select-dropdown" onchange="filterDomain(this.value)">
+                            <option value="all">📂 Jump to Domain (All 28 Topics)</option>
+                            <option value="0">🏗️ 1. Cluster Architecture (25%)</option>
+                            <option value="1">📦 2. Workloads & Scheduling (15%)</option>
+                            <option value="2">🌐 3. Services & Networking (20%)</option>
+                            <option value="3">💾 4. Storage Configuration (10%)</option>
+                            <option value="4">🛠️ 5. Troubleshooting & Maintenance (30%)</option>
+                        </select>
+                        <button class="btn-toggle-expand" id="btn-toggle-expand" onclick="toggleAllAccordions()">⤢ Expand All</button>
+                        <div class="curriculum-search-wrap">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="syllabus-search-input" class="curriculum-search-input" placeholder="Search topics, CLI, YAML..." oninput="handleSyllabusSearch(this.value)">
+                            <button class="search-clear-btn" id="search-clear-btn" onclick="clearSyllabusSearch()" style="display:none;">✕</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="curriculum-content-body" id="syllabus-grid"></div>
             </div>
         </div>
 
@@ -1295,14 +1362,19 @@
             const container = document.getElementById('canvas-container');
             const canvas = document.getElementById('canvas');
             if (!container || !canvas) return;
-            const containerWidth = container.clientWidth;
+            let containerWidth = container.clientWidth;
+            if (!containerWidth && container.parentElement) {
+                containerWidth = container.parentElement.clientWidth;
+            }
+            if (!containerWidth || containerWidth < 50) return;
+
             const baseWidth = 760;
             const baseHeight = 570;
-            const scale = Math.min(1, containerWidth / baseWidth);
+            const scale = Math.min(1, Math.max(0.35, containerWidth / baseWidth));
             canvas.style.transform = `scale(${scale})`;
             canvas.style.transformOrigin = 'top left';
-            container.style.height = `${baseHeight * scale}px`;
-            drawLines();
+            container.style.height = `${Math.round(baseHeight * scale)}px`;
+            requestAnimationFrame(drawLines);
         }
 
         function getCenter(id) {
@@ -1332,8 +1404,15 @@
             });
         }
         window.addEventListener('resize', updateCanvasScale);
-        window.addEventListener('DOMContentLoaded', updateCanvasScale);
-        setTimeout(updateCanvasScale, 100);
+        window.addEventListener('DOMContentLoaded', () => {
+            updateCanvasScale();
+            setTimeout(updateCanvasScale, 80);
+            setTimeout(updateCanvasScale, 250);
+        });
+        window.addEventListener('load', () => {
+            updateCanvasScale();
+            setTimeout(updateCanvasScale, 100);
+        });
 
         function log(msg, type='', stepNum = null) {
             const div = document.createElement('div');
@@ -1976,12 +2055,26 @@
             if (targetBtn) targetBtn.classList.add('active');
 
             if (tabName === 'topology') {
-                setTimeout(updateLinePositions, 60);
+                requestAnimationFrame(() => {
+                    updateCanvasScale();
+                    drawLines();
+                });
+                setTimeout(() => {
+                    updateCanvasScale();
+                    drawLines();
+                }, 60);
+                setTimeout(() => {
+                    updateCanvasScale();
+                    drawLines();
+                }, 200);
             }
         }
 
-        // Domain Accordion state tracker
+        // Domain Accordion state tracker - Collapsed by default
         const domainCollapseState = {}; // modIdx -> boolean (true if collapsed)
+        syllabus.forEach((_, modIdx) => {
+            domainCollapseState[modIdx] = true;
+        });
 
         function toggleDomainAccordion(modIdx) {
             domainCollapseState[modIdx] = !domainCollapseState[modIdx];
@@ -1995,7 +2088,7 @@
             }
         }
 
-        let allAccordionsExpanded = true;
+        let allAccordionsExpanded = false;
         function toggleAllAccordions() {
             allAccordionsExpanded = !allAccordionsExpanded;
             syllabus.forEach((_, modIdx) => {

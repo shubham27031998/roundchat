@@ -459,6 +459,102 @@
         .ai-settings-btn { padding: 9px 18px; border-radius: 8px; font-size: 0.86rem; font-weight: 600; cursor: pointer; border: none; }
         .ai-settings-btn.primary { background: var(--k8s-blue); color: #fff; }
         .ai-settings-btn.secondary { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border); }
+
+        /* --- MOBILE & RESPONSIVE DESIGN SYSTEM --- */
+        .canvas-mobile-hint {
+            display: none;
+            padding: 8px 14px;
+            background: rgba(50, 108, 229, 0.14);
+            border: 1px solid rgba(96, 165, 250, 0.3);
+            border-radius: 8px;
+            font-size: 0.76rem;
+            color: #93c5fd;
+            font-weight: 600;
+            text-align: center;
+            margin-bottom: 12px;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
+        }
+        .arch-canvas-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            border-radius: 14px;
+            position: relative;
+        }
+
+        @media (max-width: 1080px) {
+            .arch-simulator { grid-template-columns: 1fr; }
+            .canvas-mobile-hint { display: block; }
+            .arch-canvas { min-width: 760px; height: 570px; }
+        }
+
+        @media (max-width: 768px) {
+            body { padding-bottom: 90px; }
+            header { padding: 32px 16px 24px; }
+            header h1 { font-size: 1.65rem; gap: 10px; flex-direction: column; }
+            .k8s-logo { width: 38px; height: 38px; }
+            header p { font-size: 0.88rem; line-height: 1.55; }
+
+            .container { padding: 18px 12px; }
+            .section-title { font-size: 1.15rem; flex-direction: column; align-items: flex-start; gap: 6px; padding-left: 12px; margin-bottom: 16px; }
+            .helper-text { font-size: 0.76rem; }
+
+            .arch-simulator { padding: 14px; border-radius: 14px; gap: 16px; }
+            .console-panel { border-radius: 12px; }
+            .console-header { padding: 12px 14px; font-size: 0.86rem; }
+            .sim-controls { padding: 10px; gap: 6px; }
+            .btn-sim { padding: 10px 12px; min-height: 44px; font-size: 0.78rem; }
+            .console-logs { padding: 12px; height: 260px; font-size: 0.74rem; }
+
+            .syllabus-grid { grid-template-columns: 1fr; gap: 14px; }
+            .module-card { padding: 16px; border-radius: 14px; }
+            .module-title { font-size: 1.02rem; margin-bottom: 12px; }
+            .topic-list { gap: 6px; }
+            .chip { padding: 8px 12px; font-size: 0.76rem; min-height: 38px; }
+
+            .game-container { padding: 16px 12px; border-radius: 14px; }
+            .game-top-bar { flex-direction: column; align-items: stretch; gap: 10px; padding-bottom: 12px; margin-bottom: 16px; }
+            .game-stats { width: 100%; justify-content: space-between; gap: 6px; }
+            .game-stat-badge { padding: 6px 8px; font-size: 0.74rem; text-align: center; flex: 1; }
+            .scenario-box { padding: 14px 12px; margin-bottom: 14px; font-size: 0.86rem; }
+            .scenario-title { font-size: 0.98rem; }
+            .options-grid { grid-template-columns: 1fr; gap: 8px; }
+            .opt-btn { padding: 12px 14px; font-size: 0.78rem; min-height: 48px; }
+
+            /* Modal Bottom Sheet on Mobile */
+            #modal { padding: 0; align-items: flex-end; }
+            .modal-content { width: 100%; max-width: 100%; max-height: 88vh; border-radius: 20px 20px 0 0; border-bottom: none; }
+            .modal-header { padding: 14px 16px; }
+            .modal-header h2 { font-size: 1.05rem; }
+            .modal-body { padding: 16px; gap: 14px; }
+            .modal-section { padding: 14px; border-radius: 10px; }
+            .pane-heading { font-size: 0.92rem; }
+            .pane-text { font-size: 0.84rem; }
+            .code-pre { padding: 12px; font-size: 0.74rem; }
+            .code-box-header { padding: 6px 12px; }
+
+            /* sahaAI Copilot Full Mobile Drawer */
+            .ai-fab { bottom: 16px; right: 16px; padding: 10px 16px; font-size: 0.86rem; z-index: 1000; }
+            .ai-drawer {
+                position: fixed; inset: 0; width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh;
+                border-radius: 0; bottom: 0; right: 0; border: none; z-index: 1200;
+            }
+            .ai-header { padding: 14px 16px; }
+            .ai-chat-body { padding: 14px; gap: 12px; }
+            .ai-bubble { padding: 10px 14px; font-size: 0.82rem; }
+            .ai-input { font-size: 16px !important; min-height: 44px; }
+            .ai-send-btn { padding: 10px 16px; min-height: 44px; }
+
+            .ai-settings-card { padding: 20px 16px; border-radius: 14px; }
+            .ai-settings-input { font-size: 16px !important; }
+        }
+
+        @media (max-width: 480px) {
+            header h1 { font-size: 1.45rem; }
+            .k8s-logo { width: 32px; height: 32px; }
+            .btn-ask-ai { font-size: 0.74rem; padding: 6px 10px; }
+            .btn-primary-game { width: 100%; justify-content: center; }
+        }
     </style>
 </head>
 <body>
@@ -482,29 +578,36 @@
         </div>
 
         <div class="arch-simulator">
-            <div class="arch-canvas" id="canvas">
-                <svg id="svg-lines">
-                    <line id="line-user-api" class="net-line" />
-                    <line id="line-api-etcd" class="net-line" />
-                    <line id="line-api-sched" class="net-line" />
-                    <line id="line-api-ctrl" class="net-line" />
-                    <line id="line-api-kubelet" class="net-line" />
-                    <line id="line-kubelet-cri" class="net-line" />
-                    <line id="line-proxy-app" class="net-line" />
-                </svg>
+            <div style="display: flex; flex-direction: column; width: 100%; min-width: 0;">
+                <div class="canvas-mobile-hint">
+                    <span>↔️ Swipe / scroll horizontally to explore cluster topology</span>
+                </div>
+                <div class="arch-canvas-wrapper" id="canvas-wrapper">
+                    <div class="arch-canvas" id="canvas">
+                        <svg id="svg-lines">
+                            <line id="line-user-api" class="net-line" />
+                            <line id="line-api-etcd" class="net-line" />
+                            <line id="line-api-sched" class="net-line" />
+                            <line id="line-api-ctrl" class="net-line" />
+                            <line id="line-api-kubelet" class="net-line" />
+                            <line id="line-kubelet-cri" class="net-line" />
+                            <line id="line-proxy-app" class="net-line" />
+                        </svg>
 
-                <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
-                <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
-                
-                <div id="user-icon">Kube<br>Ctl</div>
-                
-                <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
-                <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
-                <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
-                <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
-                <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
-                <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
-                <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
+                        <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
+                        <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
+                        
+                        <div id="user-icon">Kube<br>Ctl</div>
+                        
+                        <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
+                        <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
+                        <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
+                        <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
+                        <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
+                        <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
+                        <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
+                    </div>
+                </div>
             </div>
 
             <!-- Simulation Console Panel -->

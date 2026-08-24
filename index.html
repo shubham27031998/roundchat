@@ -95,29 +95,29 @@
         .log-entry.danger { color: var(--accent-red); font-weight: bold; }
 
         /* --- SYLLABUS GRID --- */
-        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
-        .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: all 0.3s; }
-        .module-card:hover { border-color: var(--k8s-blue); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
-        .module-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
+        .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 20px; }
+        .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 22px; transition: all 0.3s; }
+        .module-card:hover { border-color: var(--k8s-blue); transform: translateY(-3px); box-shadow: 0 10px 25px rgba(0,0,0,0.4); }
+        .module-title { font-size: 1.15rem; font-weight: 700; color: #fff; margin-bottom: 14px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .topic-list { display: flex; flex-wrap: wrap; gap: 6px; }
         
         /* Clickable Chips */
         .chip { 
-            background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 5px 12px; 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 6px 12px; 
             border-radius: 6px; font-size: 0.78rem; color: var(--text-muted); transition: all 0.2s; cursor: pointer;
-            display: inline-flex; align-items: center; gap: 5px;
+            display: inline-flex; align-items: center; gap: 6px; font-weight: 500;
         }
         .chip::after { content: '›'; font-weight: bold; color: var(--k8s-light); opacity: 0; transition: 0.2s; }
         .chip:hover { background: rgba(50, 108, 229, 0.15); border-color: var(--k8s-light); color: #fff; transform: translateY(-1px); }
         .chip:hover::after { opacity: 1; }
 
         /* Modal */
-        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: 0.2s; }
+        #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: 0.2s; }
         #modal.show { display: flex; opacity: 1; }
-        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 850px; max-height: 85vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.2s; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
+        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 900px; max-height: 88vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.2s; box-shadow: 0 25px 60px rgba(0,0,0,0.9); }
         #modal.show .modal-content { transform: scale(1); }
-        .modal-header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-radius: 12px 12px 0 0; }
-        .modal-header h2 { font-size: 1.3rem; color: var(--k8s-light); display: flex; align-items: center; gap: 10px; }
+        .modal-header { padding: 18px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-radius: 12px 12px 0 0; }
+        .modal-header h2 { font-size: 1.35rem; color: var(--k8s-light); display: flex; align-items: center; gap: 10px; }
         .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         .close-btn:hover { color: #ef4444; }
         .modal-body { padding: 25px; overflow-y: auto; display: grid; gap: 20px; }
@@ -139,14 +139,13 @@
             <svg class="k8s-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="#326CE5"/><circle cx="50" cy="50" r="20" fill="white"/>
             </svg>
-            CKA Visual Learning Hub
+            CKA Last-Minute Exam Masterclass
         </h1>
-        <p>Master Kubernetes Architecture and CKA concepts with readable, slow-motion simulations and interactive subtopic study guides.</p>
+        <p>Comprehensive, easy-to-understand study guide with exact syntax, commands, and YAML files for every CKA topic.</p>
     </header>
 
     <div class="container">
         
-        <!-- SECTION 1: ARCHITECTURE HUB -->
         <div class="section-title">
             <span>1. Cluster Architecture Hub</span>
             <span class="helper-text">💡 Click any component box on the canvas to inspect details</span>
@@ -178,7 +177,6 @@
                 <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
             </div>
 
-            <!-- Simulation Console Panel -->
             <div class="console-panel">
                 <div class="console-header">
                     <span>Simulation Engine</span>
@@ -207,16 +205,14 @@
 
         <br><br><br>
 
-        <!-- SECTION 2: ULTIMATE CKA SYLLABUS -->
         <div class="section-title">
             <span>2. Complete CKA Syllabus Masterclass (Exam Ready)</span>
-            <span class="helper-text">👆 Click any subtopic chip below for deep dive & exam commands</span>
+            <span class="helper-text">👆 Click any detailed subtopic chip below for instant syntax & exam commands</span>
         </div>
         <div class="syllabus-grid" id="syllabus-grid"></div>
 
     </div>
 
-    <!-- MODAL -->
     <div id="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
@@ -567,55 +563,60 @@
 
 
         // ==========================================
-        // 3. ULTIMATE CKA SYLLABUS DATA (INDIVIDUAL TOPICS)
+        // 3. EXHAUSTIVE CKA SYLLABUS DATA (COMPLETE EXAM TOPICS)
         // ==========================================
         const syllabus = [
             {
-                mod: "Cluster Architecture, Installation & Upgrades",
+                mod: "1. Cluster Architecture, Installation & Upgrades",
                 data: [
-                    { t: "Kubeadm", d: "Provisioning clusters, bootstrapping nodes with token generation, and cluster configuration using kubeadm.", c: "kubeadm init --pod-network-cidr=10.244.0.0/16\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" },
-                    { t: "Upgrades", d: "Step-by-step upgrade procedure for control plane nodes first, followed by worker node upgrades.", c: "kubectl drain controlplane --ignore-daemonsets\napt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
-                    { t: "ETCD Backup", d: "Taking point-in-time snapshots and restoring state during cluster emergencies using etcdctl.", c: "ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
-                    { t: "Static Pods", d: "Pods managed directly by the kubelet daemon on a specific node, without the API server observing them directly.", c: "# Configured via staticPodPath in kubelet service config:\nstaticPodPath: /etc/kubernetes/manifests" },
-                    { t: "RBAC", d: "Managing fine-grained permissions using Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" }
+                    { t: "Kubeadm Cluster Init & Join", d: "Bootstrap a Kubernetes cluster control plane and join worker nodes using secure tokens and ca certificate hashes.", c: "# Initialize Control Plane:\nkubeadm init --pod-network-cidr=10.244.0.0/16\n\n# Join Worker Node:\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" },
+                    { t: "Cluster Upgrades (Kubeadm)", d: "Perform safe rolling upgrades of Kubernetes control plane and worker nodes following version increments.", c: "kubectl drain controlplane --ignore-daemonsets\napt-get update && apt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
+                    { t: "ETCD Backup & Restore", d: "Take point-in-time database snapshots and restore cluster state during disaster recovery scenarios.", c: "# Backup:\nETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snap.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# Restore:\nETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db \\\n  --data-dir=/var/lib/etcd-restored" },
+                    { t: "Static Pods", d: "Pods managed directly by the local kubelet daemon on control-plane nodes without API server scheduling.", c: "# Static pod path specified in /var/lib/kubelet/config.yaml:\nstaticPodPath: /etc/kubernetes/manifests\n\n# View static pods:\nkubectl get pods -n kube-system" },
+                    { t: "RBAC (Roles & RoleBindings)", d: "Grant or restrict user/service account permissions securely inside specific namespaces or cluster-wide.", c: "# Create Role:\nkubectl create role pod-reader --verb=get,list,watch --resource=pods\n\n# Create RoleBinding:\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" },
+                    { t: "Service Accounts", d: "Identity objects assigned to pods so they can authenticate securely against the Kubernetes API server.", c: "kubectl create serviceaccount custom-sa\n# Inside Pod Spec:\nspec:\n  serviceAccountName: custom-sa" }
                 ]
             },
             {
-                mod: "Workloads & Scheduling",
+                mod: "2. Workloads & Scheduling",
                 data: [
-                    { t: "Deployments", d: "Declarative application deployments supporting zero-downtime rolling updates and instant rollbacks.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
-                    { t: "DaemonSets", d: "Ensures all (or some) Nodes run a copy of a Pod, perfect for log collectors or node monitoring agents.", c: "kubectl create deployment --dry-run=client -o yaml > daemonset.yaml\n# Change kind from Deployment to DaemonSet and remove replicas." },
-                    { t: "Taints/Tolerations", d: "Node taints repel unauthorized pods unless matching tolerations are defined in the pod specifications.", c: "kubectl taint node worker-1 workload=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"workload\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" },
-                    { t: "Affinity", d: "Advanced scheduling constraints using node or pod labels to attract or repel pod placement.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: topology.kubernetes.io/zone\n          operator: In\n          values: [zone-a]" },
-                    { t: "Resource Quotas", d: "Limits aggregate resource consumption (CPU, memory, storage) per namespace.", c: "apiVersion: v1\nkind: ResourceQuota\nmetadata: \n  name: mem-cpu-quota\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" }
+                    { t: "Deployments & Rollouts", d: "Manage stateless applications with declarative scaling, rolling updates, rollbacks, and pause commands.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl set image deployment/web nginx=nginx:1.25\nkubectl rollout history deployment/web\nkubectl rollout undo deployment/web" },
+                    { t: "StatefulSets", d: "Manage stateful applications requiring unique network identifiers, stable persistent storage, and ordered deployment.", c: "apiVersion: apps/v1\nkind: StatefulSet\nmetadata:\n  name: web-stateful\nspec:\n  serviceName: \"nginx\"\n  replicas: 3\n  selector:\n    matchLabels:\n      app: nginx\n  template: ... " },
+                    { t: "DaemonSets", d: "Ensure all or selected worker nodes run a single copy of a pod (e.g., logging agents, storage daemons).", c: "kubectl create deployment --dry-run=client -o yaml > ds.yaml\n# Change kind: Deployment to DaemonSet and remove 'replicas'." },
+                    { t: "Jobs & CronJobs", d: "Execute batch tasks that run to completion once, or schedule them periodically using cron syntax.", c: "kubectl create cronjob my-job --image=busybox --schedule=\"*/1 * * * *\" -- /bin/sh -c \"echo Hello CKA\"" },
+                    { t: "Taints & Tolerations", d: "Prevent pods from scheduling onto nodes unless the pods explicitly tolerate node taints.", c: "kubectl taint node worker-1 app=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" },
+                    { t: "Node Affinity & Anti-Affinity", d: "Attract or repel pod placement across nodes based on node labels and expressions.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" },
+                    { t: "Resource Quotas & Limits", d: "Enforce aggregate resource limits per namespace and default container limits via LimitRanges.", c: "apiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: ns-quota\nspec:\n- hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" },
+                    { t: "Manual Scheduling", d: "Bypass the scheduler entirely by assigning a pod directly to a specific node via nodeName.", c: "spec:\n  nodeName: worker-01" }
                 ]
             },
             {
-                mod: "Services & Networking",
+                mod: "3. Services & Networking",
                 data: [
-                    { t: "ClusterIP", d: "Exposes the Service on an internal cluster IP. Accessible only from within the cluster network.", c: "kubectl expose pod web --port=80 --target-port=8080 --name=my-svc" },
-                    { t: "NodePort", d: "Exposes the Service on each Node’s IP at a static port (30000-32767).", c: "kubectl expose deployment web --type=NodePort --port=80 --name=nodeport-svc" },
-                    { t: "Ingress", d: "Layer 7 HTTP/S routing directing traffic to internal services based on hostname or URL path.", c: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: app-ingress\nspec:\n  rules:\n  - host: myapp.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" },
-                    { t: "Network Policies", d: "Pod-level firewalls isolating inbound and outbound traffic using label selectors.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-policy\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" },
-                    { t: "CoreDNS", d: "Internal cluster DNS providing name resolution for services and pods across the cluster.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod-name> -- nslookup kubernetes.default" }
+                    { t: "ClusterIP & NodePort", d: "Expose applications internally via ClusterIP or externally across all nodes via static NodePort ports.", c: "kubectl expose pod web --port=80 --target-port=8080 --type=NodePort --name=web-np" },
+                    { t: "Ingress Controllers & Rules", d: "Route Layer 7 HTTP/S traffic to multiple backend services based on hostname or URL path.", c: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: main-ingress\nspec:\n  rules:\n  - host: app.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" },
+                    { t: "Network Policies", d: "Isolate pod traffic at the IP layer using fine-grained ingress and egress rules.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-isolation\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" },
+                    { t: "CoreDNS Troubleshooting", d: "Diagnose and fix internal DNS resolution errors for cluster services and external lookups.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod> -- nslookup kubernetes.default" },
+                    { t: "CNI Plugins", d: "Understand container network interface configuration paths (e.g., Calico, Flannel) under /etc/cni/net.d/." },
                 ]
             },
             {
-                mod: "Storage Configuration",
+                mod: "4. Storage Configuration",
                 data: [
-                    { t: "Volumes", d: "Ephemeral storage mechanisms like emptyDir and hostPath for container file sharing or temporary caching.", c: "volumes:\n- name: cache-volume\n  emptyDir: {}" },
-                    { t: "PV", d: "PersistentVolume (PV) is a piece of storage in the cluster provisioned by an administrator or dynamically via StorageClasses.", c: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 1Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /tmp/data" },
-                    { t: "PVC", d: "PersistentVolumeClaim is a request for storage by a user, matching access modes and resource sizing.", c: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 1Gi" },
-                    { t: "StorageClasses", d: "Defines parameters and provisioners used to dynamically provision PersistentVolumes upon user requests.", c: "apiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-disk\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" }
+                    { t: "Ephemeral Volumes (emptyDir, hostPath)", d: "Temporary storage scoped to pod lifecycle or mounting host filesystem paths directly into containers.", c: "volumes:\n- name: cache\n  emptyDir: {}\n- name: host-logs\n  hostPath:\n    path: /var/log" },
+                    { t: "PersistentVolumes (PV)", d: "Cluster-wide storage resources provisioned by administrators independent of pod lifecycles.", c: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 2Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" },
+                    { t: "PersistentVolumeClaims (PVC)", d: "User requests for storage resources matching capacity and access mode specifications.", c: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 2Gi" },
+                    { t: "StorageClasses", d: "Dynamic storage provisioning mechanism allowing automatic creation of PVs on demand.", c: "apiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-storage\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" }
                 ]
             },
             {
-                mod: "Troubleshooting & Debugging",
+                mod: "5. Troubleshooting & Maintenance",
                 data: [
-                    { t: "Pod Logs", d: "Diagnosing application-level errors, crashes, and startup exceptions inside running containers.", c: "kubectl logs <pod-name> -n <namespace>\nkubectl logs <pod-name> --previous" },
-                    { t: "Node Failures", d: "Troubleshooting worker nodes stuck in NotReady state due to Kubelet crashes or network plugin issues.", c: "systemctl status kubelet\njournalctl -u kubelet -e\nkubectl describe node <node-name>" },
-                    { t: "Network Debugging", d: "Debugging container connectivity, DNS resolution, and faulty network policies.", c: "kubectl run tmp-shell --rm -i --tty --image=busybox -- sh\nnslookup kubernetes.default.svc.cluster.local" },
-                    { t: "Control Plane", d: "Troubleshooting API server, scheduler, or controller manager static pods failing to start.", c: "cd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>" }
+                    { t: "Node Maintenance (Cordon & Drain)", d: "Safely isolate worker nodes for maintenance by evicting running pods and marking unschedulable.", c: "kubectl cordon worker-1\nkubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data\nkubectl uncordon worker-1" },
+                    { t: "Pod Troubleshooting (CrashLoopBackOff)", d: "Diagnose application crashes, exit codes, missing configmaps, and OOMKilled states.", c: "kubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous\nkubectl get events --sort-by='.metadata.creationTimestamp'" },
+                    { t: "Control Plane Troubleshooting", d: "Inspect static manifest files and container runtime logs when control plane components fail.", c: "cd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>\njournalctl -u kubelet -e" },
+                    { t: "Network & DNS Debugging", d: "Test pod connectivity and packet routing using ephemeral debug containers or busybox pods.", c: "kubectl debug pod/web -it --image=busybox -- sh\nnc -zv <service-ip> <port>" },
+                    { t: "Certificate Expiration Checks", d: "Inspect and verify TLS certificate expiry dates for kubeadm managed clusters.", c: "kubeadm certs check-expiration" }
                 ]
             }
         ];
@@ -643,9 +644,9 @@
             
             document.getElementById('m-body').innerHTML = `
                 <div class="concept">
-                    <div class="concept-title">Concept Overview & Exam Guide</div>
+                    <div class="concept-title">Last-Minute Exam Overview & Syntax Guide</div>
                     <div class="concept-desc">${topicData.d}</div>
-                    <div class="code">${topicData.c}</div>
+                    <div class="code">${topicData.c || '# No YAML snippet required for this conceptual topic.'}</div>
                 </div>
             `;
             

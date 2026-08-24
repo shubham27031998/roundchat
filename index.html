@@ -750,14 +750,37 @@
             .btn-sim { padding: 9px 12px; min-height: 40px; font-size: 0.76rem; }
             .console-logs { padding: 10px; height: 220px; font-size: 0.72rem; }
 
-            .curriculum-toolbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px 14px; }
-            .domain-tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; -webkit-overflow-scrolling: touch; gap: 6px; }
-            .domain-tab-btn { white-space: nowrap; flex-shrink: 0; padding: 6px 10px; font-size: 0.74rem; }
-            .curriculum-search-wrap { max-width: 100%; min-width: 100%; }
-            .curriculum-search-input { font-size: 16px !important; padding: 8px 30px 8px 30px; }
-            .curriculum-content-body { padding: 16px 14px; gap: 20px; }
+            .curriculum-toolbar { flex-direction: column; align-items: stretch; gap: 10px; padding: 12px; }
+            .domain-tabs {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 6px;
+                width: 100%;
+                overflow-x: visible;
+                padding-bottom: 0;
+            }
+            .domain-tab-btn {
+                width: 100%;
+                justify-content: space-between;
+                padding: 7px 10px;
+                font-size: 0.74rem;
+                white-space: normal;
+                text-align: left;
+                box-sizing: border-box;
+            }
+            .domain-tab-btn:first-child {
+                grid-column: 1 / -1;
+                justify-content: center;
+                text-align: center;
+                font-weight: 700;
+            }
+            .curriculum-search-wrap { max-width: 100%; min-width: 100%; width: 100%; box-sizing: border-box; }
+            .curriculum-search-input { font-size: 16px !important; padding: 9px 30px 9px 30px; width: 100%; box-sizing: border-box; }
+            .curriculum-content-body { padding: 14px 10px; gap: 16px; }
+            .domain-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 12px; }
+            .domain-banner-badges { width: 100%; justify-content: flex-start; }
             .topic-matrix-grid { grid-template-columns: 1fr; gap: 10px; }
-            .topic-card { padding: 12px 14px; }
+            .topic-card { padding: 12px 14px; width: 100%; box-sizing: border-box; }
 
             /* Zero-scroll single screen Quiz HUD on Phone */
             .game-container { padding: 14px 12px; border-radius: 14px; }
@@ -800,6 +823,8 @@
         @media (max-width: 480px) {
             header h1 { font-size: 1.35rem; }
             .k8s-logo { width: 30px; height: 30px; }
+            .domain-tab-btn { font-size: 0.71rem; padding: 6px 8px; }
+            .domain-tab-btn span.tab-weight { font-size: 0.64rem; padding: 1px 3px; }
             .btn-ask-ai { font-size: 0.72rem; padding: 5px 10px; }
             .btn-primary-game { width: 100%; justify-content: center; font-size: 0.88rem; padding: 11px 20px; }
             .game-start-screen { padding: 24px 10px; }

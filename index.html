@@ -52,20 +52,11 @@
         /* Header Hero */
         header { 
             text-align: center; 
-            padding: 55px 20px 45px; 
+            padding: 45px 20px 35px; 
             border-bottom: 1px solid var(--border); 
             background: linear-gradient(180deg, rgba(30, 58, 138, 0.15) 0%, rgba(7, 9, 14, 0.8) 100%);
             position: relative;
         }
-        .hero-badge {
-            display: inline-flex; align-items: center; gap: 8px;
-            padding: 6px 16px; border-radius: 9999px;
-            background: rgba(50, 108, 229, 0.12); border: 1px solid rgba(96, 165, 250, 0.3);
-            color: var(--k8s-light); font-size: 0.78rem; font-weight: 600;
-            margin-bottom: 16px; letter-spacing: 0.5px;
-            box-shadow: 0 0 20px rgba(50, 108, 229, 0.2);
-        }
-        .hero-badge .badge-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--accent-emerald); box-shadow: 0 0 8px var(--accent-emerald); }
         header h1 { 
             font-size: 2.6rem; font-weight: 800; margin-bottom: 12px; 
             display: flex; justify-content: center; align-items: center; gap: 14px; 
@@ -432,10 +423,6 @@
 <body>
 
     <header>
-        <div class="hero-badge">
-            <span class="badge-dot"></span>
-            Certified Kubernetes Administrator (CKA) 2026 Ready
-        </div>
         <h1>
             <svg class="k8s-logo" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M50 0L93.3013 25V75L50 100L6.69873 75V25L50 0Z" fill="#326CE5"/><circle cx="50" cy="50" r="20" fill="white"/>

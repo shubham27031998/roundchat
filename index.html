@@ -375,13 +375,10 @@
         <div class="game-container" id="game-container">
             <div class="game-start-screen" id="game-start-screen">
                 <h3>⚡ Ready to Test Your CKA Skills?</h3>
-                <p>Face real-world Kubernetes emergencies! Choose standard exam scenarios or let **Gemini AI** dynamically create unique, randomized production chaos incidents on the fly!</p>
+                <p>Face dynamic, randomized real-world Kubernetes emergencies! Solve live cluster failures under pressure against the countdown timer to build up your streak and score.</p>
                 <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
-                    <button class="btn-primary-game" onclick="startGame('classic')">
-                        <span>⚡</span> Classic 5-Question Challenge
-                    </button>
-                    <button class="btn-primary-game" style="background: linear-gradient(135deg, #7c3aed, #2563eb);" onclick="startGame('ai_infinite')">
-                        <span>🤖</span> Infinite AI Chaos Mode
+                    <button class="btn-primary-game" onclick="startGame()">
+                        <span>🔥</span> Start Chaos Rescue Challenge
                     </button>
                 </div>
             </div>
@@ -389,12 +386,12 @@
             <div id="game-play-area" style="display: none;">
                 <div class="game-top-bar">
                     <div class="game-stats">
-                        <div class="game-stat-badge">Incident: <span id="q-num">1</span> <span class="ai-mode-tag" id="game-mode-tag">Classic</span></div>
+                        <div class="game-stat-badge">Incident #<span id="q-num">1</span></div>
                         <div class="game-stat-badge">Score: <span id="score-val">0</span></div>
                         <div class="game-stat-badge">Streak: 🔥 <span id="streak-val">0</span></div>
                     </div>
                     <div style="display: flex; align-items: center; gap: 10px;">
-                        <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 AI Hint (-5s)</button>
+                        <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 Hint (-5s)</button>
                         <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
                     </div>
                 </div>
@@ -1089,36 +1086,167 @@
         let timer = 20;
         let timerInterval = null;
         let gameActive = false;
-        let gameMode = 'ai_infinite'; // Default to 100% Dynamic AI-Generated Questions
         let activeScenario = null;
         let prefetchedScenario = null;
         let gameAnswersHistory = [];
+        let usedIncidentTitles = new Set();
+        let apiBaseUrl = "";
 
-        function startGame(mode = 'ai_infinite') {
-            gameMode = mode;
+        // Auto-detect backend proxy URL (supports direct port 8000, relative /api, or Live Server)
+        async function getWorkingApiUrl(endpoint) {
+            const candidates = [
+                endpoint,
+                `http://127.0.0.1:8000${endpoint}`,
+                `http://localhost:8000${endpoint}`
+            ];
+            for (const url of candidates) {
+                try {
+                    const test = await fetch(url, { method: endpoint.includes('health') ? 'GET' : 'POST', headers: { 'Content-Type': 'application/json' }, body: endpoint.includes('health') ? null : JSON.stringify({}) });
+                    if (test.ok) {
+                        apiBaseUrl = url.replace(endpoint, '');
+                        return url;
+                    }
+                } catch (e) {}
+            }
+            return null;
+        }
+
+        // Rich procedural emergency generator for guaranteed diversity even during network outages
+        const proceduralIncidentTemplates = [
+            {
+                title: "CoreDNS CrashLoopBackOff Loop",
+                domain: "Networking & DNS",
+                desc: "Pods in namespace 'production' fail to resolve external services. kubectl get pods -n kube-system shows coredns pods in CrashLoopBackOff due to a detected loop forwarding back to 127.0.0.1.",
+                correct: "Remove loop plugin in coredns configmap or point upstream resolv.conf away from loopback",
+                wrongs: ["Delete kube-dns service and reinstall flannel CNI", "Scale coredns deployment to 0 then 10", "Run kubeadm init --skip-phases=addon/coredns"],
+                explanation: "When host resolv.conf points to 127.0.0.1 (common with systemd-resolved), CoreDNS detects an infinite forwarding loop and self-terminates to prevent CPU exhaustion."
+            },
+            {
+                title: "PersistentVolumeClaim StorageClass Unbound",
+                domain: "Storage & Volumes",
+                desc: "StatefulSet pod 'redis-master-0' remains stuck in Pending. kubectl describe pvc redis-data-0 shows 'no volume plugin matched name or storageclass.storage.k8s.io \"fast-ssd\" not found'.",
+                correct: "Create the missing StorageClass 'fast-ssd' or update the PVC storageClassName to an existing provisioner",
+                wrongs: ["Run kubectl cordon on the master node", "Add hostPath: /data to the pod template directly", "Delete the StatefulSet without cascade"],
+                explanation: "When a PVC specifies a non-existent storageClassName, dynamic provisioning cannot occur until the StorageClass resource is defined on the cluster."
+            },
+            {
+                title: "Worker Node DiskPressure Eviction",
+                domain: "Troubleshooting & Nodes",
+                desc: "Node 'worker-02' status transitioned to 'NotReady' with Condition 'DiskPressure: True'. Pods running on the node are being forcefully evicted with DisruptionTarget reasons.",
+                correct: "SSH into worker-02, run 'crictl rmi --prune' or clean /var/lib/docker or /var/log to free root filesystem",
+                wrongs: ["kubectl uncordon worker-02 --force", "Restart kube-apiserver static pod on control plane", "Apply an empty ResourceQuota to kube-system"],
+                explanation: "The kubelet triggers Pod eviction when available disk on image filesystem drops below evictionHard thresholds (usually 85-90%). Pruning unused container images clears space."
+            },
+            {
+                title: "Service TargetPort Mismatch",
+                domain: "Services & Traffic",
+                desc: "Deployment 'auth-api' has 3 healthy running pods listening on port 8080. However, requests to ClusterIP 'auth-svc:80' timeout. 'kubectl get ep auth-svc' shows 0 endpoints.",
+                correct: "Fix Service spec.ports[0].targetPort: 8080 to match containerPort: 8080 and verify label selector",
+                wrongs: ["Change Service type to NodePort with nodePort: 32000", "Restart the kube-proxy daemonset on all nodes", "Add an Ingress resource pointing to port 443"],
+                explanation: "If the Service selector matches pods but targetPort does not align with the actual container listening port, the endpoints controller will not populate active backends."
+            },
+            {
+                title: "ETCD Corrupted Snapshot Restore",
+                domain: "Cluster Architecture",
+                desc: "During control-plane disaster recovery, 'ETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db' was run, but kube-apiserver fails to restart with error 'connection refused on https://127.0.0.1:2379'.",
+                correct: "Ensure --data-dir in restore command matches the hostPath volume mount in /etc/kubernetes/manifests/etcd.yaml",
+                wrongs: ["Delete /etc/kubernetes/pki/ca.crt", "Run kubeadm upgrade apply v1.30.0", "Restart containerd and delete /var/lib/kubelet"],
+                explanation: "etcd snapshot restore writes to a specific directory. If etcd.yaml still points to the old /var/lib/etcd data-dir or lacks file permissions, etcd fails to boot."
+            },
+            {
+                title: "NetworkPolicy Ingress Packet Drop",
+                domain: "Security & NetworkPolicy",
+                desc: "Frontend pod cannot connect to backend pod on port 5432. NetworkPolicy 'backend-isolate' exists with podSelector: app=backend and ingress: [{ from: [{ podSelector: { matchLabels: { app: frontend } } }] }].",
+                correct: "Ensure frontend pods actually have label 'app=frontend' and namespace selector matches if across namespaces",
+                wrongs: ["Disable iptables on worker node", "Set hostNetwork: true on backend deployment", "Change service clusterIP to None"],
+                explanation: "Once a NetworkPolicy selects a pod, all unlisted traffic is dropped by default. Ensure labels and namespace selectors match exactly."
+            },
+            {
+                title: "Kubelet Client Certificate Expiry",
+                domain: "Cluster Maintenance",
+                desc: "Worker node 'node-03' suddenly reports NotReady. journalctl -u kubelet shows 'x509: certificate has expired or is not yet valid' when communicating with apiserver.",
+                correct: "Renew kubelet client certificates or run kubeadm certs renew and restart kubelet service",
+                wrongs: ["kubectl cordon node-03 && kubectl drain node-03", "systemctl stop containerd && systemctl disable containerd", "Delete /etc/kubernetes/kubelet.conf and reboot"],
+                explanation: "Kubelet client certificates authenticate worker nodes with the API server. Expired certificates prevent heartbeat renewals and transition the node to NotReady."
+            },
+            {
+                title: "Pod CrashLoopBackOff: OOMKilled 137",
+                domain: "Troubleshooting & Workloads",
+                desc: "Pod 'data-processor-7b' crashes immediately upon processing high batch loads. 'kubectl describe pod' shows Last State: Terminated, Reason: OOMKilled, Exit Code: 137.",
+                correct: "Increase spec.containers[0].resources.limits.memory or optimize application heap usage",
+                wrongs: ["Increase CPU limits from 500m to 2000m", "Set restartPolicy: Never on the Pod spec", "Switch pod to a DaemonSet architecture"],
+                explanation: "Exit Code 137 (128 + SIGKILL 9) indicates the Linux kernel OOM Killer terminated the container for exceeding its allocated cgroup memory limit."
+            },
+            {
+                title: "Ingress 503 Service Unavailable",
+                domain: "Services & Ingress",
+                desc: "Ingress 'shop-ingress' path '/api' returns HTTP 503 to public users. NGINX Ingress controller logs report 'no endpoints available for service shop-backend'.",
+                correct: "Check 'kubectl get ep shop-backend' and verify deployment pod labels match service selector",
+                wrongs: ["Change ingress class name to traefik", "Add tls secret to the ingress spec", "Restart the core-dns pods"],
+                explanation: "503 Service Unavailable in NGINX Ingress almost always means the target Kubernetes Service has 0 active, healthy Endpoints."
+            },
+            {
+                title: "Tainted Node Unschedulable Pods",
+                domain: "Scheduling & Affinity",
+                desc: "Pods in deployment 'gpu-worker' stay in Pending state with '0/4 nodes available: 1 node has taints that the pod didn't tolerate'.",
+                correct: "Add matching tolerations in the Pod spec for the node's taint key, value, and effect",
+                wrongs: ["Run kubectl drain on the tainted node", "Add nodeName field pointing to a master node", "Delete the kube-scheduler static manifest"],
+                explanation: "Taints repel pods unless the Pod manifest explicitly defines a toleration that matches the key, value, and taint effect (e.g. NoSchedule)."
+            }
+        ];
+
+        function generateProceduralIncident(usedSet) {
+            // Find templates not used in this session
+            const unused = proceduralIncidentTemplates.filter(t => !usedSet.has(t.title));
+            const pool = unused.length > 0 ? unused : proceduralIncidentTemplates;
+            const template = pool[Math.floor(Math.random() * pool.length)];
+
+            usedSet.add(template.title);
+
+            const allOptions = [template.correct, ...template.wrongs].sort(() => Math.random() - 0.5);
+            const correctIdx = allOptions.indexOf(template.correct);
+
+            return {
+                title: template.title,
+                domain: template.domain,
+                desc: template.desc,
+                options: allOptions,
+                correct: correctIdx,
+                explanation: template.explanation
+            };
+        }
+
+        function startGame() {
             document.getElementById('game-start-screen').style.display = 'none';
             document.getElementById('game-play-area').style.display = 'block';
-            document.getElementById('game-mode-tag').innerText = '🤖 AI Generated';
             currentGameIdx = 0;
             score = 0;
             streak = 0;
             gameAnswersHistory = [];
+            usedIncidentTitles.clear();
             prefetchedScenario = null;
             loadQuestion();
         }
 
         async function fetchAiScenario() {
             try {
-                if (aiMode === "proxy") {
-                    const res = await fetch('/api/game/scenario', { method: 'POST' });
+                // 1. Try Backend Proxy
+                const activeUrl = await getWorkingApiUrl('/api/game/scenario');
+                if (activeUrl) {
+                    const res = await fetch(activeUrl, { method: 'POST' });
                     if (res.ok) {
                         const data = await res.json();
-                        if (data.scenario && data.scenario.title) return data.scenario;
+                        if (data.scenario && data.scenario.title && !usedIncidentTitles.has(data.scenario.title)) {
+                            usedIncidentTitles.add(data.scenario.title);
+                            return data.scenario;
+                        }
                     }
-                } else if (aiMode === "direct") {
-                    const apiKey = localStorage.getItem('roundchat_gemini_key');
+                }
+
+                // 2. Try Direct Gemini API if user has custom key
+                const apiKey = localStorage.getItem('roundchat_gemini_key');
+                if (apiKey && apiKey.length > 10) {
                     const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
-                    
                     const domains = [
                         "Storage & PersistentVolumes (PV, PVC, StorageClasses)",
                         "Services & Ingress Networking (ClusterIP, NodePort, Ingress, NetworkPolicies)",
@@ -1152,7 +1280,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                         const allOpts = [correctAns, ...wrongAns.slice(0, 3)].sort(() => Math.random() - 0.5);
                         const correctIdx = allOpts.indexOf(correctAns);
 
-                        return {
+                        const scenarioObj = {
                             title: parsed.title || "Kubernetes Incident",
                             domain: parsed.domain || randomDomain.split('(')[0].trim(),
                             desc: parsed.desc || "Cluster issue detected.",
@@ -1160,27 +1288,25 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                             correct: correctIdx,
                             explanation: parsed.explanation || "Resolves the issue correctly."
                         };
+                        usedIncidentTitles.add(scenarioObj.title);
+                        return scenarioObj;
                     }
                 }
             } catch (err) {
-                console.warn("AI Scenario generation error, using dynamic fallback:", err);
+                console.warn("AI generation network error, utilizing procedural dynamic generator:", err);
             }
-            // Dynamic rotation fallback if offline
-            const fallbackIdx = currentGameIdx % gameQuestions.length;
-            const fb = gameQuestions[fallbackIdx];
-            return {
-                title: fb.title,
-                domain: "CKA Core Challenge",
-                desc: fb.desc,
-                options: [...fb.options].sort(() => Math.random() - 0.5),
-                correct: 0,
-                explanation: fb.explanation
-            };
+
+            // 3. Fallback to Guaranteed Unique Procedural Generator
+            return generateProceduralIncident(usedIncidentTitles);
         }
 
         // Prefetch next scenario in background for zero delay
         function prefetchNextScenario() {
-            fetchAiScenario().then(s => { prefetchedScenario = s; }).catch(() => {});
+            fetchAiScenario().then(s => {
+                if (s && s.title && s.title !== activeScenario?.title) {
+                    prefetchedScenario = s;
+                }
+            }).catch(() => {});
         }
 
         async function loadQuestion() {
@@ -1198,21 +1324,21 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             hintBox.style.display = 'none';
             hintBox.innerHTML = '';
             hintBtn.disabled = false;
-            hintBtn.innerText = '💡 AI Hint (-5s)';
+            hintBtn.innerText = '💡 Hint (-5s)';
             feedbackEl.className = 'game-feedback';
             feedbackEl.style.display = 'none';
 
-            if (prefetchedScenario) {
+            if (prefetchedScenario && prefetchedScenario.title !== activeScenario?.title) {
                 activeScenario = prefetchedScenario;
                 prefetchedScenario = null;
             } else {
-                scTitle.innerHTML = `<span>⏳</span> Generating AI Chaos Incident #${currentGameIdx + 1}...`;
-                scDesc.innerText = 'Gemini AI is crafting a unique, randomized production cluster emergency...';
-                optsGrid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding: 25px; color: var(--text-muted); font-family: \'Fira Code\'; font-size: 0.85rem;"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Contacting Gemini AI for live incident spec...</div>';
+                scTitle.innerHTML = `<span>⏳</span> Generating Incident #${currentGameIdx + 1}...`;
+                scDesc.innerText = 'Preparing unique cluster outage scenario...';
+                optsGrid.innerHTML = '<div style="grid-column: span 2; text-align:center; padding: 25px; color: var(--text-muted); font-family: \'Fira Code\'; font-size: 0.85rem;"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Loading incident scenario...</div>';
                 activeScenario = await fetchAiScenario();
             }
 
-            // Immediately start prefetching the following question in the background
+            // Immediately start prefetching the following question in background
             prefetchNextScenario();
 
             gameActive = true;
@@ -1258,8 +1384,9 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
             try {
                 let hintText = '';
-                if (aiMode === "proxy") {
-                    const res = await fetch('/api/game/hint', {
+                const activeUrl = await getWorkingApiUrl('/api/game/hint');
+                if (activeUrl) {
+                    const res = await fetch(activeUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
@@ -1288,15 +1415,15 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                 }
 
                 if (!hintText) {
-                    hintText = "Look closely at the command flags, namespace requirements, and manifest target fields.";
+                    hintText = "Inspect command flags, target ports, and underlying system manifest paths.";
                 }
 
                 hintBox.className = 'game-hint-box show';
-                hintBox.innerHTML = `<span>💡 <strong>AI Clue:</strong> ${escapeHtml(hintText)}</span>`;
+                hintBox.innerHTML = `<span>💡 <strong>Clue:</strong> ${escapeHtml(hintText)}</span>`;
                 hintBtn.innerText = '💡 Clue Active';
             } catch (err) {
                 hintBox.className = 'game-hint-box show';
-                hintBox.innerHTML = `<span>💡 <strong>AI Clue:</strong> Inspect the root cause carefully before executing destructive commands.</span>`;
+                hintBox.innerHTML = `<span>💡 <strong>Clue:</strong> Inspect the root cause carefully before executing destructive commands.</span>`;
                 hintBtn.innerText = '💡 Clue Active';
             }
         }
@@ -1328,11 +1455,11 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                 score += 100 + (timer * 5);
                 streak++;
                 feedbackEl.className = 'game-feedback show success';
-                feedbackEl.innerHTML = `<div><strong>✔ Correct Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Explain Deep Root Cause with AI</button>`;
+                feedbackEl.innerHTML = `<div><strong>✔ Correct Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">📖 Deep Root Cause Analysis</button>`;
             } else {
                 streak = 0;
                 feedbackEl.className = 'game-feedback show error';
-                feedbackEl.innerHTML = `<div><strong>✖ Failed Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Ask AI Why This Failed & How to Fix</button>`;
+                feedbackEl.innerHTML = `<div><strong>✖ Failed Rescue!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🔧 Inspect Failure & Fix</button>`;
             }
 
             document.getElementById('score-val').innerText = score;
@@ -1343,7 +1470,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                     currentGameIdx++;
                     loadQuestion();
                 }
-            }, 4500);
+            }, 4000);
         }
 
         function handleTimeout() {
@@ -1369,14 +1496,14 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             });
 
             feedbackEl.className = 'game-feedback show error';
-            feedbackEl.innerHTML = `<div><strong>⏱️ Time Expired!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🤖 Explain Incident Details with AI</button>`;
+            feedbackEl.innerHTML = `<div><strong>⏱️ Time Expired!</strong> ${q.explanation}</div><button class="btn-ai-game" onclick="askAiAboutActiveIncident()">🔧 Inspect Incident Details</button>`;
 
             setTimeout(() => {
                 if(!aiDrawerOpen) {
                     currentGameIdx++;
                     loadQuestion();
                 }
-            }, 4500);
+            }, 4000);
         }
 
         function askAiAboutActiveIncident() {
@@ -1394,7 +1521,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                     <p>Final Score: <strong>${score}</strong> | Max Streak: 🔥 <strong>${streak}</strong></p>
                     <div style="display:flex; justify-content:center; gap:12px; flex-wrap:wrap; margin-bottom:20px;">
                         <button class="btn-primary-game" onclick="location.reload()">Play Again</button>
-                        <button class="btn-primary-game" style="background: linear-gradient(135deg, #7c3aed, #2563eb);" onclick="generateAiExamReport()">🤖 Generate AI CKA Readiness Report</button>
+                        <button class="btn-primary-game" style="background: linear-gradient(135deg, #7c3aed, #2563eb);" onclick="generateAiExamReport()">📊 Generate Exam Readiness Report</button>
                     </div>
                     <div class="game-report-box" id="game-report-box"></div>
                 </div>
@@ -1405,15 +1532,16 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             const reportBox = document.getElementById('game-report-box');
             if(!reportBox) return;
             reportBox.style.display = 'block';
-            reportBox.innerHTML = '<div style="text-align:center; padding:15px; color:var(--text-muted);"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Gemini AI is analyzing your performance and building a tailored CKA roadmap...</div>';
+            reportBox.innerHTML = '<div style="text-align:center; padding:15px; color:var(--text-muted);"><span class="ai-pulse-dot" style="display:inline-block; margin-right:8px;"></span> Analyzing your incident response performance...</div>';
 
             const summaryData = gameAnswersHistory.map((a, i) => `Incident ${i+1} (${a.title}): ${a.passed ? 'PASSED' : 'FAILED'} (Selected: ${a.selectedOption} | Correct: ${a.correctOption})`).join('\n');
             const prompt = `Analyze this Kubernetes administrator challenge session (Score: ${score}, Streak: ${streak}). Provide a structured, encouraging CKA Exam Readiness Report in Markdown with:\n1. 🎯 Overall Exam Readiness Score (%)\n2. ⚡ Strengths identified\n3. ⚠️ Key Areas to Review\n4. 🚀 Top 3 Exam Day Action Tips.`;
 
             try {
                 let reportMarkdown = '';
-                if (aiMode === "proxy") {
-                    const res = await fetch('/api/chat', {
+                const activeUrl = await getWorkingApiUrl('/api/chat');
+                if (activeUrl) {
+                    const res = await fetch(activeUrl, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ message: prompt, context: summaryData, topic: "CKA Exam Performance Review" })
@@ -1442,7 +1570,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
                 reportBox.innerHTML = renderMarkdown(reportMarkdown);
             } catch (err) {
-                reportBox.innerHTML = `<div style="color:#ef4444;">Unable to generate AI report: ${err.message}</div>`;
+                reportBox.innerHTML = `<div style="color:#ef4444;">Unable to generate report: ${err.message}</div>`;
             }
         }
 

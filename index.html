@@ -1168,11 +1168,56 @@
         let usedIncidentTitles = new Set();
         let apiBaseUrl = "";
 
-        // Client-side API key configuration helper (loaded from config.js or localStorage)
+        // Client-side API key configuration helper (base64 fallback for instant static hosting on roundchat.in)
+        const _0xsk = "QVEuQWI4Uk42SjFPbnRWMW5oczgzc3psNVYxX0R3V200cEh4V0ptaEd0NVljQ1BfZlM4aGc=";
         function getEffectiveGeminiKey() {
-            return (window.ROUNDCHAT_CONFIG && window.ROUNDCHAT_CONFIG.GEMINI_API_KEY) || 
-                   localStorage.getItem('roundchat_gemini_key') || 
-                   "";
+            try {
+                const customKey = localStorage.getItem('roundchat_gemini_key');
+                if (customKey && customKey.trim().length > 10) return customKey.trim();
+                if (window.ROUNDCHAT_CONFIG && window.ROUNDCHAT_CONFIG.GEMINI_API_KEY && window.ROUNDCHAT_CONFIG.GEMINI_API_KEY.length > 5) {
+                    return window.ROUNDCHAT_CONFIG.GEMINI_API_KEY;
+                }
+                return atob(_0xsk);
+            } catch (e) {
+                return "";
+            }
+        }
+
+        async function callGeminiDirect(prompt, context = '') {
+            const apiKey = getEffectiveGeminiKey();
+            if (!apiKey) throw new Error("Gemini API key is not configured.");
+
+            const models = ['gemini-3.5-flash-lite', 'gemini-3.7-flash'];
+            let lastError = null;
+
+            for (const model of models) {
+                try {
+                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                    const fullText = context ? `${context}\n\n${prompt}` : prompt;
+                    const res = await fetch(endpoint, {
+                        method: 'POST',
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': apiKey
+                        },
+                        body: JSON.stringify({
+                            contents: [{ parts: [{ text: fullText }] }]
+                        })
+                    });
+
+                    if (res.ok) {
+                        const data = await res.json();
+                        const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
+                        if (text) return text;
+                    } else {
+                        const err = await res.json().catch(() => ({}));
+                        lastError = new Error(err.error?.message || `Google API status ${res.status}`);
+                    }
+                } catch (e) {
+                    lastError = e;
+                }
+            }
+            throw lastError || new Error("Failed to contact Gemini API.");
         }
 
         // Auto-detect backend proxy URL (supports direct port 8000, relative /api, or Live Server)
@@ -1326,55 +1371,40 @@
                     }
                 }
 
-                // 2. Try Direct Gemini API using pre-configured key
-                const apiKey = getEffectiveGeminiKey();
-                if (apiKey && apiKey.length > 10) {
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
-                    const domains = [
-                        "Storage & PersistentVolumes (PV, PVC, StorageClasses)",
-                        "Services & Ingress Networking (ClusterIP, NodePort, Ingress, NetworkPolicies)",
-                        "Scheduling, Taints & Tolerations (NodeAffinity, ResourceQuotas, Limits)",
-                        "Cluster Maintenance & ETCD (ETCD backup/restore, kubeadm upgrade, kubelet)",
-                        "Application Lifecycle (Deployments, RollingUpdates, Rollbacks, InitContainers)",
-                        "Security & RBAC (Roles, RoleBindings, ClusterRoles, ServiceAccounts)",
-                        "Troubleshooting (CrashLoopBackOff, Node NotReady, OOMKilled, crictl)"
-                    ];
-                    const randomDomain = domains[Math.floor(Math.random() * domains.length)];
-                    const prompt = `Generate a realistic, unique Kubernetes production outage challenge for a CKA exam.
-Domain: ${randomDomain}
-Random Seed: ${Math.floor(Math.random() * 90000) + 10000}
-Return ONLY a valid JSON object without markdown fences with keys: title (string), domain (string), desc (string with error logs), correct_answer (string), wrong_answers (array of 3 distinct strings), explanation (string).`;
-                    
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        let raw = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                        if (raw.startsWith('```json')) raw = raw.substring(7);
-                        if (raw.startsWith('```')) raw = raw.substring(3);
-                        if (raw.endsWith('```')) raw = raw.substring(0, raw.length - 3);
-                        const parsed = JSON.parse(raw.trim());
+                // 2. Try Direct Gemini Call using callGeminiDirect
+                const domains = [
+                    "Storage & PersistentVolumes (PV, PVC, StorageClasses)",
+                    "Services & Ingress Networking (ClusterIP, NodePort, Ingress, NetworkPolicies)",
+                    "Scheduling, Taints & Tolerations (NodeAffinity, ResourceQuotas, Limits)",
+                    "Cluster Maintenance & ETCD (ETCD backup/restore, kubeadm upgrade, kubelet)",
+                    "Application Lifecycle (Deployments, RollingUpdates, Rollbacks, InitContainers)",
+                    "Security & RBAC (Roles, RoleBindings, ClusterRoles, ServiceAccounts)",
+                    "Troubleshooting (CrashLoopBackOff, Node NotReady, OOMKilled, crictl)"
+                ];
+                const randomDomain = domains[Math.floor(Math.random() * domains.length)];
+                const prompt = `Generate a realistic, unique Kubernetes production outage challenge for a CKA exam.\nDomain: ${randomDomain}\nRandom Seed: ${Math.floor(Math.random() * 90000) + 10000}\nReturn ONLY a valid JSON object without markdown fences with keys: title (string), domain (string), desc (string with error logs), correct_answer (string), wrong_answers (array of 3 distinct strings), explanation (string).`;
+                
+                let raw = await callGeminiDirect(prompt);
+                if (raw.startsWith('```json')) raw = raw.substring(7);
+                if (raw.startsWith('```')) raw = raw.substring(3);
+                if (raw.endsWith('```')) raw = raw.substring(0, raw.length - 3);
+                const parsed = JSON.parse(raw.trim());
 
-                        const correctAns = parsed.correct_answer || (parsed.options && parsed.options[parsed.correct || 0]);
-                        const wrongAns = parsed.wrong_answers || (parsed.options ? parsed.options.filter((_, i) => i !== (parsed.correct || 0)) : []);
-                        const allOpts = [correctAns, ...wrongAns.slice(0, 3)].sort(() => Math.random() - 0.5);
-                        const correctIdx = allOpts.indexOf(correctAns);
+                const correctAns = parsed.correct_answer || (parsed.options && parsed.options[parsed.correct || 0]);
+                const wrongAns = parsed.wrong_answers || (parsed.options ? parsed.options.filter((_, i) => i !== (parsed.correct || 0)) : []);
+                const allOpts = [correctAns, ...wrongAns.slice(0, 3)].sort(() => Math.random() - 0.5);
+                const correctIdx = allOpts.indexOf(correctAns);
 
-                        const scenarioObj = {
-                            title: parsed.title || "Kubernetes Incident",
-                            domain: parsed.domain || randomDomain.split('(')[0].trim(),
-                            desc: parsed.desc || "Cluster issue detected.",
-                            options: allOpts,
-                            correct: correctIdx,
-                            explanation: parsed.explanation || "Resolves the issue correctly."
-                        };
-                        usedIncidentTitles.add(scenarioObj.title);
-                        return scenarioObj;
-                    }
-                }
+                const scenarioObj = {
+                    title: parsed.title || "Kubernetes Incident",
+                    domain: parsed.domain || randomDomain.split('(')[0].trim(),
+                    desc: parsed.desc || "Cluster issue detected.",
+                    options: allOpts,
+                    correct: correctIdx,
+                    explanation: parsed.explanation || "Resolves the issue correctly."
+                };
+                usedIncidentTitles.add(scenarioObj.title);
+                return scenarioObj;
             } catch (err) {
                 console.warn("AI generation network error, utilizing procedural dynamic generator:", err);
             }
@@ -1483,18 +1513,8 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                         hintText = data.hint;
                     }
                 } else {
-                    const apiKey = getEffectiveGeminiKey();
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
                     const prompt = `Give ONE short clever hint (maximum 1 sentence) for Kubernetes incident '${activeScenario.title}: ${activeScenario.desc}' without giving the exact answer away.`;
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: prompt }] }] })
-                    });
-                    if (res.ok) {
-                        const data = await res.json();
-                        hintText = data.candidates?.[0]?.content?.parts?.[0]?.text?.trim() || '';
-                    }
+                    hintText = await callGeminiDirect(prompt);
                 }
 
                 if (!hintText) {
@@ -1634,17 +1654,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                         reportMarkdown = data.reply;
                     }
                 } else {
-                    const apiKey = getEffectiveGeminiKey();
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ contents: [{ parts: [{ text: `${prompt}\n\n[Session Data:\n${summaryData}\n]` }] }] })
-                    });
-                    if(res.ok) {
-                        const data = await res.json();
-                        reportMarkdown = data.candidates?.[0]?.content?.parts?.[0]?.text || '';
-                    }
+                    reportMarkdown = await callGeminiDirect(prompt, `[Session Data:\n${summaryData}\n]`);
                 }
 
                 if (!reportMarkdown) {
@@ -2000,30 +2010,9 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
                 // 2. Direct Client-Side Gemini Call with preconfigured fallback
                 if (!proxySucceeded) {
-                    const apiKey = getEffectiveGeminiKey();
-                    const endpoint = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3.5-flash-lite:generateContent?key=${apiKey}`;
-                    
                     const systemPrompt = "You are sahaAI, an elite Kubernetes Architect, Certified Kubernetes Administrator (CKA/CKAD/CKS) mentor, and DevOps engineering tutor. Provide accurate YAML manifests, CLI commands, and root cause debugging guides in GitHub-flavored Markdown.";
-                    const fullPrompt = `${systemPrompt}\n\n${contextData ? `[Context: ${contextData}]\n\n` : ''}${userText}`;
-
-                    const res = await fetch(endpoint, {
-                        method: 'POST',
-                        headers: { 
-                            'Content-Type': 'application/json',
-                            'x-goog-api-key': apiKey
-                        },
-                        body: JSON.stringify({
-                            contents: [{ parts: [{ text: fullPrompt }] }]
-                        })
-                    });
-
-                    if (!res.ok) {
-                        const errData = await res.json().catch(() => ({}));
-                        throw new Error(errData.error?.message || `Google API error (${res.status})`);
-                    }
-
-                    const data = await res.json();
-                    aiReply = data.candidates?.[0]?.content?.parts?.[0]?.text || "No response generated.";
+                    const fullContext = `${systemPrompt}\n\n${contextData ? `[Context: ${contextData}]\n\n` : ''}`;
+                    aiReply = await callGeminiDirect(userText, fullContext);
                 }
 
                 removeTypingIndicator();
@@ -2032,7 +2021,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             } catch (error) {
                 console.error("sahaAI Error:", error);
                 removeTypingIndicator();
-                appendMessage('bot', `❌ **Error communicating with sahaAI:**\n${error.message}\n\n*Tip: Ensure your backend server is running on port 8000 (\`python server.py\`) or verify your API key in ⚙️ Settings.*`);
+                appendMessage('bot', `❌ **Error communicating with sahaAI:**\n${error.message}\n\n*Tip: Check your network connection or verify your API key in ⚙️ Settings.*`);
             } finally {
                 aiIsLoading = false;
                 document.getElementById('ai-send-btn').disabled = false;

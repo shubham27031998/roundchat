@@ -218,6 +218,70 @@
         .log-entry.danger { color: #f87171; font-weight: 600; }
         .log-entry.danger .log-step-badge { background: #450a0a; border-color: #dc2626; color: #f87171; }
 
+        /* --- TOP-LEVEL SECTION NAVIGATION TABS --- */
+        .platform-nav-bar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 30px auto;
+            max-width: 860px;
+            background: #0b1120;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            padding: 5px;
+            gap: 6px;
+        }
+        .nav-tab-btn {
+            flex: 1;
+            background: transparent;
+            border: 1px solid transparent;
+            color: #94a3b8;
+            padding: 10px 14px;
+            border-radius: 8px;
+            font-size: 0.86rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            text-align: center;
+        }
+        .nav-tab-btn:hover {
+            color: #f8fafc;
+            background: #151f32;
+        }
+        .nav-tab-btn.active {
+            background: #2563eb;
+            color: #fff;
+            border-color: #3b82f6;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+        .nav-tab-btn span.tab-badge-pill {
+            font-size: 0.68rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.08);
+            font-weight: 700;
+        }
+        .nav-tab-btn.active span.tab-badge-pill {
+            background: rgba(0, 0, 0, 0.25);
+            color: #fff;
+        }
+
+        .platform-section-view {
+            display: none;
+            animation: fadeInView 0.25s ease forwards;
+        }
+        .platform-section-view.active {
+            display: block;
+        }
+        @keyframes fadeInView {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* --- 2. UNIFIED CKA CURRICULUM EXPLORER --- */
         .curriculum-hub {
             background: var(--surface);
@@ -229,8 +293,8 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 16px;
-            padding: 16px 20px;
+            gap: 12px;
+            padding: 14px 18px;
             background: #0c1220;
             border-bottom: 1px solid var(--border);
             flex-wrap: wrap;
@@ -245,8 +309,8 @@
             background: #151e30;
             border: 1px solid var(--border);
             color: var(--text-muted);
-            padding: 7px 13px;
-            border-radius: 8px;
+            padding: 7px 12px;
+            border-radius: 7px;
             font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
@@ -277,11 +341,48 @@
             color: #fff;
         }
 
+        .toolbar-right-controls {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .domain-select-dropdown {
+            background: #090d16;
+            border: 1px solid var(--border);
+            color: #f8fafc;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            outline: none;
+            cursor: pointer;
+        }
+        .domain-select-dropdown:focus {
+            border-color: #3b82f6;
+        }
+        .btn-toggle-expand {
+            background: #151e30;
+            border: 1px solid var(--border);
+            color: #94a3b8;
+            padding: 7px 12px;
+            border-radius: 8px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+        }
+        .btn-toggle-expand:hover {
+            background: #1c273e;
+            color: #fff;
+            border-color: #3b82f6;
+        }
+
         .curriculum-search-wrap {
             position: relative;
-            min-width: 240px;
-            flex: 1;
-            max-width: 340px;
+            min-width: 220px;
+            max-width: 300px;
         }
         .curriculum-search-wrap .search-icon {
             position: absolute;
@@ -296,7 +397,7 @@
             width: 100%;
             background: #090d16;
             border: 1px solid var(--border);
-            padding: 8px 32px 8px 32px;
+            padding: 8px 30px 8px 30px;
             border-radius: 8px;
             color: #fff;
             font-size: 0.8rem;
@@ -322,25 +423,38 @@
         .search-clear-btn:hover { color: #fff; }
 
         .curriculum-content-body {
-            padding: 24px;
+            padding: 20px;
             display: flex;
             flex-direction: column;
-            gap: 28px;
+            gap: 18px;
         }
 
+        /* Expandable Accordion Domain Blocks */
         .domain-block {
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            background: #0b101e;
+            border: 1px solid #1e293b;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: border-color 0.15s ease;
+        }
+        .domain-block:hover {
+            border-color: #334155;
         }
         .domain-banner {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding-bottom: 12px;
-            border-bottom: 1px solid var(--border);
-            flex-wrap: wrap;
-            gap: 10px;
+            padding: 14px 18px;
+            background: #0f172a;
+            cursor: pointer;
+            user-select: none;
+            transition: background 0.15s ease;
+            gap: 12px;
+        }
+        .domain-banner:hover {
+            background: #141f36;
         }
         .domain-banner-left {
             display: flex;
@@ -353,12 +467,13 @@
         .domain-banner-title {
             font-size: 1.05rem;
             font-weight: 700;
-            color: #fff;
+            color: #f8fafc;
+            letter-spacing: -0.01em;
         }
-        .domain-banner-badges {
+        .domain-banner-right {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
         }
         .domain-weight-badge {
             font-size: 0.72rem;
@@ -378,6 +493,22 @@
             border: 1px solid var(--border);
             color: var(--text-muted);
         }
+        .domain-accordion-chevron {
+            font-size: 0.76rem;
+            color: #94a3b8;
+            transition: transform 0.2s ease;
+        }
+        .domain-block.collapsed .domain-accordion-chevron {
+            transform: rotate(-90deg);
+        }
+        .domain-block.collapsed .domain-content-wrap {
+            display: none;
+        }
+        .domain-content-wrap {
+            padding: 18px 18px 20px 18px;
+            border-top: 1px solid #1e293b;
+            background: #090e1a;
+        }
 
         .topic-matrix-grid {
             display: grid;
@@ -388,21 +519,23 @@
             .topic-matrix-grid { grid-template-columns: 1fr; }
         }
 
+        /* Prominent & Noticeable Topic Cards */
         .topic-card {
-            background: #131c2d;
-            border: 1px solid var(--border);
+            background: #0f172a;
+            border: 1px solid #1e293b;
             border-radius: 10px;
-            padding: 14px 16px;
+            padding: 16px 18px;
             cursor: pointer;
             transition: all 0.15s ease;
             display: flex;
             flex-direction: column;
-            gap: 6px;
+            gap: 8px;
         }
         .topic-card:hover {
-            background: #182338;
+            background: #162238;
             border-color: #3b82f6;
             transform: translateY(-2px);
+            box-shadow: 0 4px 16px rgba(0,0,0,0.5);
         }
         .topic-card-header {
             display: flex;
@@ -413,48 +546,35 @@
         .topic-card-title-wrap {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 10px;
             min-width: 0;
             flex: 1;
         }
         .topic-card-idx {
             font-size: 0.72rem;
-            font-weight: 700;
+            font-weight: 800;
             font-family: 'Fira Code', monospace;
-            color: var(--text-subtle);
+            color: #38bdf8;
+            background: #1e293b;
+            border: 1px solid #334155;
+            padding: 2px 7px;
+            border-radius: 5px;
             flex-shrink: 0;
         }
         .topic-card-title {
-            font-size: 0.88rem;
-            font-weight: 600;
+            font-size: 0.98rem;
+            font-weight: 700;
             color: #f8fafc;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            line-height: 1.35;
+            letter-spacing: -0.01em;
         }
         .topic-card:hover .topic-card-title {
-            color: #38bdf8;
-        }
-        .topic-card-badges {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            flex-shrink: 0;
-        }
-        .meta-pill {
-            font-size: 0.65rem;
-            font-weight: 700;
-            font-family: 'Fira Code', monospace;
-            padding: 2px 6px;
-            border-radius: 4px;
-            background: #1e293b;
-            border: 1px solid #334155;
-            color: #94a3b8;
+            color: #60a5fa;
         }
         .topic-card-desc {
-            font-size: 0.78rem;
-            color: var(--text-muted);
-            line-height: 1.45;
+            font-size: 0.82rem;
+            color: #94a3b8;
+            line-height: 1.5;
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
@@ -465,20 +585,22 @@
             align-items: center;
             justify-content: space-between;
             margin-top: 4px;
-            padding-top: 6px;
-            border-top: 1px solid rgba(255, 255, 255, 0.04);
-            font-size: 0.72rem;
-            color: var(--text-subtle);
+            padding-top: 8px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            font-size: 0.76rem;
+            color: #64748b;
         }
         .topic-card:hover .topic-card-footer {
-            color: #38bdf8;
+            color: #94a3b8;
         }
         .topic-card-arrow {
-            font-size: 0.85rem;
-            transition: transform 0.15s;
+            color: #38bdf8;
+            font-weight: bold;
+            font-size: 0.9rem;
+            transition: transform 0.15s ease;
         }
         .topic-card:hover .topic-card-arrow {
-            transform: translateX(3px);
+            transform: translateX(4px);
         }
         /* --- 3. INTERACTIVE MINI-GAME --- */
         .game-container {
@@ -693,12 +815,29 @@
         .ai-input-wrap { display: flex; gap: 8px; align-items: flex-end; }
         .ai-input { flex: 1; background: #060810; border: 1px solid var(--border); border-radius: 10px; padding: 11px 14px; color: #fff; font-size: 0.84rem; resize: none; max-height: 110px; min-height: 42px; outline: none; font-family: 'Plus Jakarta Sans', sans-serif; transition: 0.2s; }
         .ai-input:focus { border-color: var(--k8s-blue); box-shadow: 0 0 15px rgba(50, 108, 229, 0.3); }
-        .ai-send-btn { background: linear-gradient(135deg, #2563eb, #1d4ed8); border: none; color: #fff; padding: 11px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.86rem; transition: 0.2s; }
-        .ai-send-btn:hover:not(:disabled) { transform: translateY(-1px); box-shadow: 0 4px 14px rgba(37, 99, 235, 0.4); }
+        .ai-send-btn { background: #2563eb; border: 1px solid #3b82f6; color: #fff; padding: 11px 16px; border-radius: 10px; cursor: pointer; font-weight: 700; font-size: 0.86rem; transition: 0.2s; }
+        .ai-send-btn:hover:not(:disabled) { background: #1d4ed8; }
         .ai-send-btn:disabled { opacity: 0.4; cursor: not-allowed; }
 
-        .btn-ask-ai { background: linear-gradient(135deg, #1e40af, #6d28d9); border: 1px solid rgba(255,255,255,0.25); color: #fff; padding: 7px 16px; border-radius: 8px; cursor: pointer; font-size: 0.8rem; font-weight: 700; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; box-shadow: 0 4px 15px rgba(109, 40, 217, 0.4); }
-        .btn-ask-ai:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(109, 40, 217, 0.6); }
+        .btn-ask-ai { 
+            background: #1e293b; 
+            border: 1px solid #334155; 
+            color: #f8fafc; 
+            padding: 6px 13px; 
+            border-radius: 6px; 
+            cursor: pointer; 
+            font-size: 0.78rem; 
+            font-weight: 600; 
+            transition: all 0.15s ease; 
+            display: inline-flex; 
+            align-items: center; 
+            gap: 6px; 
+        }
+        .btn-ask-ai:hover { 
+            background: #273549; 
+            border-color: #3b82f6; 
+            color: #fff; 
+        }
         
         .btn-ai-game { background: rgba(50, 108, 229, 0.18); border: 1px solid var(--k8s-blue); color: #93c5fd; padding: 6px 12px; border-radius: 8px; cursor: pointer; font-size: 0.78rem; font-weight: 600; transition: 0.2s; display: inline-flex; align-items: center; gap: 6px; margin-top: 8px; }
         .btn-ai-game:hover { background: var(--k8s-blue); color: #fff; }
@@ -739,6 +878,9 @@
             header p { font-size: 0.84rem; line-height: 1.5; }
 
             .container { padding: 14px 10px; }
+            .platform-nav-bar { flex-direction: column; gap: 4px; padding: 4px; margin-bottom: 18px; }
+            .nav-tab-btn { width: 100%; padding: 8px 12px; font-size: 0.8rem; justify-content: space-between; }
+            
             .section-header { margin-bottom: 18px; }
             .section-title { font-size: 1.25rem; }
             .section-desc { font-size: 0.82rem; }
@@ -774,13 +916,17 @@
                 text-align: center;
                 font-weight: 700;
             }
+            .toolbar-right-controls { width: 100%; display: flex; flex-direction: column; gap: 8px; }
+            .domain-select-dropdown { width: 100%; font-size: 16px !important; }
+            .btn-toggle-expand { width: 100%; text-align: center; }
             .curriculum-search-wrap { max-width: 100%; min-width: 100%; width: 100%; box-sizing: border-box; }
             .curriculum-search-input { font-size: 16px !important; padding: 9px 30px 9px 30px; width: 100%; box-sizing: border-box; }
-            .curriculum-content-body { padding: 14px 10px; gap: 16px; }
-            .domain-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 10px 12px; }
-            .domain-banner-badges { width: 100%; justify-content: flex-start; }
+            .curriculum-content-body { padding: 14px 10px; gap: 14px; }
+            .domain-banner { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+            .domain-banner-right { width: 100%; justify-content: space-between; }
+            .domain-content-wrap { padding: 14px 10px; }
             .topic-matrix-grid { grid-template-columns: 1fr; gap: 10px; }
-            .topic-card { padding: 12px 14px; width: 100%; box-sizing: border-box; }
+            .topic-card { padding: 14px 14px; width: 100%; box-sizing: border-box; }
 
             /* Zero-scroll single screen Quiz HUD on Phone */
             .game-container { padding: 14px 12px; border-radius: 14px; }
@@ -846,143 +992,170 @@
     </header>
 
     <div class="container">
+
+        <!-- PLATFORM TOP-LEVEL NAVIGATION BAR -->
+        <nav class="platform-nav-bar">
+            <button class="nav-tab-btn active" id="tab-btn-curriculum" onclick="switchMainTab('curriculum')">
+                <span>📚</span> CKA Curriculum Hub <span class="tab-badge-pill">28 Topics</span>
+            </button>
+            <button class="nav-tab-btn" id="tab-btn-topology" onclick="switchMainTab('topology')">
+                <span>🗺️</span> Architecture Visualizer <span class="tab-badge-pill">Interactive</span>
+            </button>
+            <button class="nav-tab-btn" id="tab-btn-drills" onclick="switchMainTab('drills')">
+                <span>🚨</span> Incident Chaos Drills <span class="tab-badge-pill">Timed Rescue</span>
+            </button>
+        </nav>
         
-        <!-- SECTION 1: ARCHITECTURE TOPOLOGY -->
-        <div class="section-header">
-            <div class="section-eyebrow">Cluster Architecture</div>
-            <h2 class="section-title">Control Plane & Node Topology Simulator</h2>
-            <p class="section-desc">Observe live API server reconciliation loops, scheduler bindings, and container lifecycle events in real time. Click any component to inspect its architecture and debugging procedures.</p>
-        </div>
-
-        <div class="arch-simulator">
-            <div class="arch-canvas-container" id="canvas-container">
-                <div class="arch-canvas" id="canvas">
-                    <svg id="svg-lines">
-                        <line id="line-user-api" class="net-line" />
-                        <line id="line-api-etcd" class="net-line" />
-                        <line id="line-api-sched" class="net-line" />
-                        <line id="line-api-ctrl" class="net-line" />
-                        <line id="line-api-kubelet" class="net-line" />
-                        <line id="line-kubelet-cri" class="net-line" />
-                        <line id="line-proxy-app" class="net-line" />
-                    </svg>
-
-                    <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
-                    <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
-                    
-                    <div id="user-icon">Kube<br>Ctl</div>
-                    
-                    <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
-                    <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
-                    <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
-                    <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
-                    <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
-                    <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
-                    <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
-                </div>
+        <!-- VIEW 1: CKA CURRICULUM & MANIFESTS HUB (Default Active) -->
+        <div id="section-curriculum" class="platform-section-view active">
+            <div class="section-header">
+                <div class="section-eyebrow">Exam Curriculum Matrix</div>
+                <h2 class="section-title">CKA Domain Knowledge, Architecture & Manifests</h2>
+                <p class="section-desc">Exhaustive subtopics covering core controller loops, Linux primitives, copy-ready declarative YAML specs & imperative CLI commands.</p>
             </div>
 
-            <!-- Simulation Console Panel -->
-            <div class="console-panel">
-                <div class="console-header">
-                    <span>Simulation Engine</span>
-                    <div class="speed-control">
-                        Speed: 
-                        <select id="speed-select" onchange="updateSpeed()">
-                            <option value="2.0" selected>Slow (2.0x)</option>
-                            <option value="1.0">Normal (1.0x)</option>
-                            <option value="0.5">Fast (0.5x)</option>
+            <div class="curriculum-hub">
+                <div class="curriculum-toolbar">
+                    <div class="domain-tabs" id="domain-filters">
+                        <button class="domain-tab-btn active" onclick="filterDomain('all')">All Domains <span class="tab-weight">28 Topics</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(0)">🏗️ Architecture <span class="tab-weight">25%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(1)">📦 Workloads <span class="tab-weight">15%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(2)">🌐 Networking <span class="tab-weight">20%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(3)">💾 Storage <span class="tab-weight">10%</span></button>
+                        <button class="domain-tab-btn" onclick="filterDomain(4)">🛠️ Troubleshooting <span class="tab-weight">30%</span></button>
+                    </div>
+                    
+                    <div class="toolbar-right-controls">
+                        <select class="domain-select-dropdown" id="domain-select-dropdown" onchange="filterDomain(this.value)">
+                            <option value="all">📂 Jump to Domain (All 28 Topics)</option>
+                            <option value="0">🏗️ 1. Cluster Architecture (25%)</option>
+                            <option value="1">📦 2. Workloads & Scheduling (15%)</option>
+                            <option value="2">🌐 3. Services & Networking (20%)</option>
+                            <option value="3">💾 4. Storage Configuration (10%)</option>
+                            <option value="4">🛠️ 5. Troubleshooting & Maintenance (30%)</option>
                         </select>
+                        <button class="btn-toggle-expand" id="btn-toggle-expand" onclick="toggleAllAccordions()">⤢ Collapse All</button>
+                        <div class="curriculum-search-wrap">
+                            <span class="search-icon">🔍</span>
+                            <input type="text" id="syllabus-search-input" class="curriculum-search-input" placeholder="Search topics, CLI, YAML..." oninput="handleSyllabusSearch(this.value)">
+                            <button class="search-clear-btn" id="search-clear-btn" onclick="clearSyllabusSearch()" style="display:none;">✕</button>
+                        </div>
                     </div>
                 </div>
-                <div class="sim-controls">
-                    <button class="btn-sim green" onclick="runWorkflow(runCreate)">▶ Pod Scheduling Lifecycle <span>kubectl run</span></button>
-                    <button class="btn-sim red" onclick="runWorkflow(runDelete)">▶ Graceful Pod Eviction <span>kubectl delete</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runCrash)">▶ Self-Healing CrashLoop <span>ReplicaSet Loop</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runDrain)">▶ Safe Node Drain <span>kubectl drain</span></button>
-                    <button class="btn-sim" onclick="runWorkflow(runProxy)">▶ Service Proxy Routing <span>ClusterIP / Proxy</span></button>
-                    <button class="btn-sim red" style="background:#451a03; border-color:#d97706; color:#fde68a;" onclick="stopCurrentSimulation()">■ Reset Simulation <span>Halt & Clear</span></button>
+
+                <div class="curriculum-content-body" id="syllabus-grid"></div>
+            </div>
+        </div>
+
+        <!-- VIEW 2: ARCHITECTURE TOPOLOGY SIMULATOR -->
+        <div id="section-topology" class="platform-section-view">
+            <div class="section-header">
+                <div class="section-eyebrow">Cluster Topology</div>
+                <h2 class="section-title">Control Plane & Node Architecture Visualizer</h2>
+                <p class="section-desc">Observe live API server reconciliation loops, scheduler bindings, and container lifecycle events in real time. Click any component to inspect its architecture and debugging procedures.</p>
+            </div>
+
+            <div class="arch-simulator">
+                <div class="arch-canvas-container" id="canvas-container">
+                    <div class="arch-canvas" id="canvas">
+                        <svg id="svg-lines">
+                            <line id="line-user-api" class="net-line" />
+                            <line id="line-api-etcd" class="net-line" />
+                            <line id="line-api-sched" class="net-line" />
+                            <line id="line-api-ctrl" class="net-line" />
+                            <line id="line-api-kubelet" class="net-line" />
+                            <line id="line-kubelet-cri" class="net-line" />
+                            <line id="line-proxy-app" class="net-line" />
+                        </svg>
+
+                        <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
+                        <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
+                        
+                        <div id="user-icon">Kube<br>Ctl</div>
+                        
+                        <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
+                        <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
+                        <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
+                        <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
+                        <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
+                        <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
+                        <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
+                    </div>
                 </div>
-                <div class="console-logs" id="logs">
-                    <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect its architecture.</div>
+
+                <!-- Simulation Console Panel -->
+                <div class="console-panel">
+                    <div class="console-header">
+                        <span>Simulation Engine</span>
+                        <div class="speed-control">
+                            Speed: 
+                            <select id="speed-select" onchange="updateSpeed()">
+                                <option value="2.0" selected>Slow (2.0x)</option>
+                                <option value="1.0">Normal (1.0x)</option>
+                                <option value="0.5">Fast (0.5x)</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="sim-controls">
+                        <button class="btn-sim green" onclick="runWorkflow(runCreate)">▶ Pod Scheduling Lifecycle <span>kubectl run</span></button>
+                        <button class="btn-sim red" onclick="runWorkflow(runDelete)">▶ Graceful Pod Eviction <span>kubectl delete</span></button>
+                        <button class="btn-sim" onclick="runWorkflow(runCrash)">▶ Self-Healing CrashLoop <span>ReplicaSet Loop</span></button>
+                        <button class="btn-sim" onclick="runWorkflow(runDrain)">▶ Safe Node Drain <span>kubectl drain</span></button>
+                        <button class="btn-sim" onclick="runWorkflow(runProxy)">▶ Service Proxy Routing <span>ClusterIP / Proxy</span></button>
+                        <button class="btn-sim red" style="background:#451a03; border-color:#d97706; color:#fde68a;" onclick="stopCurrentSimulation()">■ Reset Simulation <span>Halt & Clear</span></button>
+                    </div>
+                    <div class="console-logs" id="logs">
+                        <div class="log-entry">Simulations run at slow speed by default. Click any simulation above, or click any component box on the canvas to inspect its architecture.</div>
+                    </div>
                 </div>
             </div>
         </div>
 
-        <br><br><br>
-
-        <!-- SECTION 2: CKA CURRICULUM -->
-        <div class="section-header">
-            <div class="section-eyebrow">Exam Curriculum</div>
-            <h2 class="section-title">CKA Domain Knowledge & Command Matrix</h2>
-            <p class="section-desc">Comprehensive architectural workflows, underlying mechanisms, and copy-ready declarative YAML manifests & imperative CLI commands.</p>
-        </div>
-
-        <div class="curriculum-hub">
-            <div class="curriculum-toolbar">
-                <div class="domain-tabs" id="domain-filters">
-                    <button class="domain-tab-btn active" onclick="filterDomain('all')">All Domains <span class="tab-weight">28 Topics</span></button>
-                    <button class="domain-tab-btn" onclick="filterDomain(0)">🏗️ Architecture <span class="tab-weight">25%</span></button>
-                    <button class="domain-tab-btn" onclick="filterDomain(1)">📦 Workloads <span class="tab-weight">15%</span></button>
-                    <button class="domain-tab-btn" onclick="filterDomain(2)">🌐 Networking <span class="tab-weight">20%</span></button>
-                    <button class="domain-tab-btn" onclick="filterDomain(3)">💾 Storage <span class="tab-weight">10%</span></button>
-                    <button class="domain-tab-btn" onclick="filterDomain(4)">🛠️ Troubleshooting <span class="tab-weight">30%</span></button>
-                </div>
-                <div class="curriculum-search-wrap">
-                    <span class="search-icon">🔍</span>
-                    <input type="text" id="syllabus-search-input" class="curriculum-search-input" placeholder="Search concepts, CLI commands, YAML..." oninput="handleSyllabusSearch(this.value)">
-                    <button class="search-clear-btn" id="search-clear-btn" onclick="clearSyllabusSearch()" style="display:none;">✕</button>
-                </div>
+        <!-- VIEW 3: INCIDENT CHAOS DRILLS -->
+        <div id="section-drills" class="platform-section-view">
+            <div class="section-header">
+                <div class="section-eyebrow">Incident Response Simulator</div>
+                <h2 class="section-title">Chaos Drills: Real-World Outage Scenarios</h2>
+                <p class="section-desc">Resolve simulated cluster outages, CrashLoopBackOff states, and networking failures against the clock to validate your operational troubleshooting skills.</p>
             </div>
 
-            <div class="curriculum-content-body" id="syllabus-grid"></div>
-        </div>
-
-        <br><br><br>
-
-        <!-- SECTION 3: INCIDENT DRILLS -->
-        <div class="section-header">
-            <div class="section-eyebrow">Incident Response Simulator</div>
-            <h2 class="section-title">Chaos Drills: Real-World Incident Scenarios</h2>
-            <p class="section-desc">Resolve simulated cluster outages, CrashLoopBackOff states, and networking failures against the clock to validate your operational troubleshooting skills.</p>
-        </div>
-
-        <div class="game-container" id="game-container">
-            <div class="game-start-screen" id="game-start-screen">
-                <h3>⚡ Ready to Test Your CKA Skills?</h3>
-                <p>Face dynamic, randomized real-world Kubernetes emergencies! Solve live cluster failures under pressure against the countdown timer to build up your streak and score.</p>
-                <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
-                    <button class="btn-primary-game" onclick="startGame()">
-                        <span>🔥</span> Start Chaos Rescue Challenge
-                    </button>
-                </div>
-            </div>
-
-            <div id="game-play-area" style="display: none;">
-                <div class="game-top-bar">
-                    <div class="game-stats">
-                        <div class="game-stat-badge">Incident #<span id="q-num">1</span></div>
-                        <div class="game-stat-badge">Score: <span id="score-val">0</span></div>
-                        <div class="game-stat-badge">Streak: 🔥 <span id="streak-val">0</span></div>
-                    </div>
-                    <div style="display: flex; align-items: center; gap: 10px;">
-                        <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 Hint (-5s)</button>
-                        <button class="btn-game-end" id="btn-game-end" onclick="endGame()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 5px 12px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px;">⏹️ End Game</button>
-                        <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
+            <div class="game-container" id="game-container">
+                <div class="game-start-screen" id="game-start-screen">
+                    <h3>⚡ Ready to Test Your CKA Skills?</h3>
+                    <p>Face dynamic, randomized real-world Kubernetes emergencies! Solve live cluster failures under pressure against the countdown timer to build up your streak and score.</p>
+                    <div style="display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 20px;">
+                        <button class="btn-primary-game" onclick="startGame()">
+                            <span>🔥</span> Start Chaos Rescue Challenge
+                        </button>
                     </div>
                 </div>
 
-                <div class="scenario-box">
-                    <div class="scenario-title" id="sc-title">Scenario Title</div>
-                    <div id="sc-desc" style="color: var(--text-muted);">Scenario description goes here...</div>
-                    <div class="game-hint-box" id="game-hint-box"></div>
-                </div>
+                <div id="game-play-area" style="display: none;">
+                    <div class="game-top-bar">
+                        <div class="game-stats">
+                            <div class="game-stat-badge">Incident #<span id="q-num">1</span></div>
+                            <div class="game-stat-badge">Score: <span id="score-val">0</span></div>
+                            <div class="game-stat-badge">Streak: 🔥 <span id="streak-val">0</span></div>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <button class="btn-game-hint" id="btn-game-hint" onclick="requestAiGameHint()">💡 Hint (-5s)</button>
+                            <button class="btn-game-end" id="btn-game-end" onclick="endGame()" style="background: rgba(239, 68, 68, 0.15); border: 1px solid rgba(239, 68, 68, 0.4); color: #fca5a5; padding: 5px 12px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px;">⏹️ End Game</button>
+                            <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
+                        </div>
+                    </div>
 
-                <div class="options-grid" id="options-grid">
-                    <!-- Populated dynamically -->
-                </div>
+                    <div class="scenario-box">
+                        <div class="scenario-title" id="sc-title">Scenario Title</div>
+                        <div id="sc-desc" style="color: var(--text-muted);">Scenario description goes here...</div>
+                        <div class="game-hint-box" id="game-hint-box"></div>
+                    </div>
 
-                <div class="game-feedback" id="game-feedback"></div>
+                    <div class="options-grid" id="options-grid">
+                        <!-- Populated dynamically -->
+                    </div>
+
+                    <div class="game-feedback" id="game-feedback"></div>
+                </div>
             </div>
         </div>
 
@@ -1792,6 +1965,53 @@
             }
         ];
 
+        // Platform Tab Switching
+        function switchMainTab(tabName) {
+            document.querySelectorAll('.platform-section-view').forEach(el => el.classList.remove('active'));
+            document.querySelectorAll('.nav-tab-btn').forEach(btn => btn.classList.remove('active'));
+            
+            const targetSection = document.getElementById('section-' + tabName);
+            const targetBtn = document.getElementById('tab-btn-' + tabName);
+            if (targetSection) targetSection.classList.add('active');
+            if (targetBtn) targetBtn.classList.add('active');
+
+            if (tabName === 'topology') {
+                setTimeout(updateLinePositions, 60);
+            }
+        }
+
+        // Domain Accordion state tracker
+        const domainCollapseState = {}; // modIdx -> boolean (true if collapsed)
+
+        function toggleDomainAccordion(modIdx) {
+            domainCollapseState[modIdx] = !domainCollapseState[modIdx];
+            const block = document.getElementById(`domain-block-${modIdx}`);
+            if (block) {
+                if (domainCollapseState[modIdx]) {
+                    block.classList.add('collapsed');
+                } else {
+                    block.classList.remove('collapsed');
+                }
+            }
+        }
+
+        let allAccordionsExpanded = true;
+        function toggleAllAccordions() {
+            allAccordionsExpanded = !allAccordionsExpanded;
+            syllabus.forEach((_, modIdx) => {
+                domainCollapseState[modIdx] = !allAccordionsExpanded;
+                const block = document.getElementById(`domain-block-${modIdx}`);
+                if (block) {
+                    if (!allAccordionsExpanded) block.classList.add('collapsed');
+                    else block.classList.remove('collapsed');
+                }
+            });
+            const toggleBtn = document.getElementById('btn-toggle-expand');
+            if (toggleBtn) {
+                toggleBtn.innerText = allAccordionsExpanded ? '⤢ Collapse All' : '⤢ Expand All';
+            }
+        }
+
         // Filter and Render Unified Curriculum Explorer
         let activeDomainFilter = 'all';
         let currentSyllabusSearch = '';
@@ -1806,7 +2026,7 @@
 
             syllabus.forEach((s, modIdx) => {
                 // Domain filter condition
-                if (activeDomainFilter !== 'all' && activeDomainFilter !== modIdx) {
+                if (activeDomainFilter !== 'all' && activeDomainFilter !== modIdx && activeDomainFilter !== String(modIdx)) {
                     return;
                 }
 
@@ -1831,36 +2051,37 @@
                             <div class="topic-card-header">
                                 <div class="topic-card-title-wrap">
                                     <span class="topic-card-idx">${numStr}</span>
-                                    <span class="topic-card-title">${escapeHtml(item.t)}</span>
-                                </div>
-                                <div class="topic-card-badges">
-                                    <span class="meta-pill">CLI</span>
-                                    <span class="meta-pill">YAML</span>
+                                    <div class="topic-card-title">${escapeHtml(item.t)}</div>
                                 </div>
                             </div>
                             <div class="topic-card-desc">${escapeHtml(item.overview || '')}</div>
                             <div class="topic-card-footer">
-                                <span>View architecture & YAML manifests</span>
+                                <span>View architecture & manifests</span>
                                 <span class="topic-card-arrow">→</span>
                             </div>
                         </div>
                     `;
                 }).join('');
 
+                const isCollapsed = Boolean(domainCollapseState[modIdx]);
+
                 grid.innerHTML += `
-                    <div class="domain-block">
-                        <div class="domain-banner">
+                    <div class="domain-block ${isCollapsed ? 'collapsed' : ''}" id="domain-block-${modIdx}">
+                        <div class="domain-banner" onclick="toggleDomainAccordion(${modIdx})">
                             <div class="domain-banner-left">
                                 <span class="domain-banner-icon">${s.icon}</span>
                                 <span class="domain-banner-title">${escapeHtml(s.mod)}</span>
                             </div>
-                            <div class="domain-banner-badges">
+                            <div class="domain-banner-right">
                                 <span class="domain-weight-badge">${s.weight} Weight</span>
                                 <span class="domain-count-badge">${matchingTopics.length} ${matchingTopics.length === 1 ? 'Topic' : 'Topics'}</span>
+                                <span class="domain-accordion-chevron">▼</span>
                             </div>
                         </div>
-                        <div class="topic-matrix-grid">
-                            ${topicsHtml}
+                        <div class="domain-content-wrap">
+                            <div class="topic-matrix-grid">
+                                ${topicsHtml}
+                            </div>
                         </div>
                     </div>
                 `;
@@ -1879,12 +2100,24 @@
         }
 
         function filterDomain(domainIdx) {
-            activeDomainFilter = domainIdx;
+            activeDomainFilter = (domainIdx === 'all') ? 'all' : parseInt(domainIdx, 10);
+            
+            // Sync desktop/mobile tabs
             document.querySelectorAll('.domain-tab-btn').forEach((btn, idx) => {
-                if (domainIdx === 'all' && idx === 0) btn.classList.add('active');
-                else if (domainIdx === (idx - 1)) btn.classList.add('active');
+                if (activeDomainFilter === 'all' && idx === 0) btn.classList.add('active');
+                else if (activeDomainFilter === (idx - 1)) btn.classList.add('active');
                 else btn.classList.remove('active');
             });
+
+            // Sync dropdown select
+            const dropdown = document.getElementById('domain-select-dropdown');
+            if (dropdown) dropdown.value = domainIdx;
+
+            // If a specific domain is chosen, automatically uncollapse it
+            if (activeDomainFilter !== 'all') {
+                domainCollapseState[activeDomainFilter] = false;
+            }
+
             renderSyllabus();
         }
 
@@ -1892,6 +2125,10 @@
             currentSyllabusSearch = val;
             const clearBtn = document.getElementById('search-clear-btn');
             if (clearBtn) clearBtn.style.display = val ? 'block' : 'none';
+            // When searching, expand all accordions so results are immediately visible
+            if (val) {
+                syllabus.forEach((_, idx) => { domainCollapseState[idx] = false; });
+            }
             renderSyllabus();
         }
 
@@ -2510,23 +2747,23 @@
                 type: "syllabus_topic"
             };
 
-            document.getElementById('m-title').innerHTML = `<span>⚡</span> ${escapeHtml(item.t)}`;
+            document.getElementById('m-title').innerHTML = `${escapeHtml(item.t)}`;
 
             const workflowHtml = item.workflow.map(step => `
-                <div class="bullet-item"><span>→</span> ${escapeHtml(step)}</div>
+                <div class="bullet-item"><span class="bullet-dot">→</span> ${escapeHtml(step)}</div>
             `).join('');
 
             const tipsHtml = item.tips.map(tip => `
-                <div class="bullet-item"><span>💡</span> ${escapeHtml(tip)}</div>
+                <div class="bullet-item"><span class="bullet-dot">💡</span> ${escapeHtml(tip)}</div>
             `).join('');
 
             document.getElementById('modal-body-content').innerHTML = `
                 <div class="modal-section">
-                    <div class="pane-heading">Core Architecture Overview</div>
+                    <div class="pane-heading">Architecture & System Overview</div>
                     <div class="pane-text">${escapeHtml(item.overview)}</div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading">Internal Logic, State Machine & Workflow</div>
+                    <div class="pane-heading">Internal Workflow & State Transitions</div>
                     <div class="bullet-box">${workflowHtml}</div>
                 </div>
                 <div class="modal-section">
@@ -2534,10 +2771,10 @@
                     <div class="bullet-box">${tipsHtml}</div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading" style="color:#86efac;">🛠️ Imperative CLI Commands</div>
+                    <div class="pane-heading">Imperative CLI Commands</div>
                     <div class="code-box-wrapper cli-wrapper">
                         <div class="code-box-header">
-                            <span class="code-tag cli-tag">CLI COMMANDS</span>
+                            <span class="code-tag cli-tag">CLI / BASH</span>
                             <button class="code-copy-action-btn" onclick="copyCodeSnippetBlock(this)">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 Copy CLI
@@ -2547,10 +2784,10 @@
                     </div>
                 </div>
                 <div class="modal-section">
-                    <div class="pane-heading" style="color:#93c5fd;">📄 Declarative YAML Manifest</div>
+                    <div class="pane-heading">Declarative YAML Manifest</div>
                     <div class="code-box-wrapper yaml-wrapper">
                         <div class="code-box-header">
-                            <span class="code-tag yaml-tag">YAML MANIFEST</span>
+                            <span class="code-tag yaml-tag">YAML SPEC</span>
                             <button class="code-copy-action-btn" onclick="copyCodeSnippetBlock(this)">
                                 <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
                                 Copy YAML

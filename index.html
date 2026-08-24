@@ -1792,20 +1792,13 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             const statusText = document.getElementById('ai-status-text');
             const fabDot = document.getElementById('ai-fab-dot');
 
-            try {
-                const res = await fetch('/api/health', { method: 'GET' });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.has_api_key) {
-                        aiMode = "proxy";
-                        statusBadge.className = "ai-status-tag";
-                        statusText.innerText = "sahaAI (Active)";
-                        fabDot.className = "ai-pulse-dot";
-                        return;
-                    }
-                }
-            } catch (err) {
-                // Backend proxy not reachable (running on static host or direct file)
+            const activeHealth = await getWorkingApiUrl('/api/health');
+            if (activeHealth) {
+                aiMode = "proxy";
+                statusBadge.className = "ai-status-tag";
+                statusText.innerText = "sahaAI (Active)";
+                fabDot.className = "ai-pulse-dot";
+                return;
             }
 
             aiMode = "direct";
@@ -1982,28 +1975,26 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
                 let aiReply = '';
                 let proxySucceeded = false;
 
-                // 1. Try Backend Proxy if available
-                if (aiMode === "proxy") {
+                // 1. Try Backend Proxy with auto-discovery across ports (8000 / relative / localhost)
+                const activeUrl = await getWorkingApiUrl('/api/chat');
+                if (activeUrl) {
                     try {
-                        const activeUrl = await getWorkingApiUrl('/api/chat');
-                        if (activeUrl) {
-                            const res = await fetch(activeUrl, {
-                                method: 'POST',
-                                headers: { 'Content-Type': 'application/json' },
-                                body: JSON.stringify({
-                                    message: userText,
-                                    context: contextData,
-                                    topic: currentActiveContext ? currentActiveContext.title : null
-                                })
-                            });
-                            if (res.ok) {
-                                const data = await res.json();
-                                aiReply = data.reply;
-                                proxySucceeded = true;
-                            }
+                        const res = await fetch(activeUrl, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                message: userText,
+                                context: contextData,
+                                topic: currentActiveContext ? currentActiveContext.title : null
+                            })
+                        });
+                        if (res.ok) {
+                            const data = await res.json();
+                            aiReply = data.reply;
+                            proxySucceeded = true;
                         }
                     } catch (e) {
-                        // Fallback to direct client API call
+                        console.warn("Backend proxy call failed, falling back to direct:", e);
                     }
                 }
 
@@ -2017,7 +2008,10 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
 
                     const res = await fetch(endpoint, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 
+                            'Content-Type': 'application/json',
+                            'x-goog-api-key': apiKey
+                        },
                         body: JSON.stringify({
                             contents: [{ parts: [{ text: fullPrompt }] }]
                         })
@@ -2038,7 +2032,7 @@ Return ONLY a valid JSON object without markdown fences with keys: title (string
             } catch (error) {
                 console.error("sahaAI Error:", error);
                 removeTypingIndicator();
-                appendMessage('bot', `❌ **Error communicating with sahaAI:**\n${error.message}\n\n*Tip: Check network connectivity or verify your API key in ⚙️ Settings.*`);
+                appendMessage('bot', `❌ **Error communicating with sahaAI:**\n${error.message}\n\n*Tip: Ensure your backend server is running on port 8000 (\`python server.py\`) or verify your API key in ⚙️ Settings.*`);
             } finally {
                 aiIsLoading = false;
                 document.getElementById('ai-send-btn').disabled = false;

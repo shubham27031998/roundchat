@@ -110,7 +110,42 @@
         .chip:hover { background: rgba(50, 108, 229, 0.15); border-color: var(--k8s-light); color: #fff; transform: translateY(-1px); }
         .chip:hover::after { opacity: 1; }
 
-        /* --- ENHANCED ANIMATED MODAL --- */
+        /* --- INTERACTIVE MINI-GAME STYLES --- */
+        .game-container {
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 30px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; overflow: hidden;
+        }
+        .game-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; border-bottom: 1px solid var(--border); padding-bottom: 15px; }
+        .game-stats { display: flex; gap: 20px; font-size: 0.9rem; font-family: 'Fira Code', monospace; }
+        .game-stat-badge { background: #000; border: 1px solid var(--border); padding: 6px 12px; border-radius: 8px; color: var(--k8s-light); }
+        
+        .scenario-box { background: #0f0f13; border: 1px solid var(--border); border-radius: 12px; padding: 20px; margin-bottom: 20px; font-size: 0.95rem; line-height: 1.6; border-left: 4px solid var(--accent-orange); }
+        .scenario-title { font-weight: 700; color: #fff; margin-bottom: 6px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        @media(max-width: 800px) { .options-grid { grid-template-columns: 1fr; } }
+        
+        .opt-btn {
+            background: #000; border: 1px solid var(--border); padding: 14px 18px; border-radius: 10px;
+            color: var(--text-main); text-align: left; cursor: pointer; font-family: 'Fira Code', monospace; font-size: 0.82rem;
+            transition: all 0.2s; display: flex; align-items: center; justify-content: space-between;
+        }
+        .opt-btn:hover:not(:disabled) { border-color: var(--k8s-light); background: rgba(50, 108, 229, 0.1); transform: translateY(-2px); }
+        .opt-btn.correct { background: rgba(34, 197, 94, 0.2) !important; border-color: var(--accent-green) !important; color: #86efac; }
+        .opt-btn.wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--accent-red) !important; color: #fca5a5; }
+        
+        .game-feedback { margin-top: 15px; padding: 12px; border-radius: 8px; font-size: 0.88rem; display: none; }
+        .game-feedback.show { display: block; animation: fadeUp 0.3s forwards; }
+        .game-feedback.success { background: rgba(34, 197, 94, 0.15); border: 1px solid var(--accent-green); color: #86efac; }
+        .game-feedback.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: #fca5a5; }
+
+        .game-start-screen { text-align: center; padding: 40px 20px; }
+        .game-start-screen h3 { font-size: 1.8rem; margin-bottom: 10px; color: #fff; }
+        .game-start-screen p { color: var(--text-muted); margin-bottom: 25px; max-width: 600px; margin-left: auto; margin-right: auto; }
+        .btn-primary-game { background: var(--k8s-blue); color: #fff; border: none; padding: 12px 28px; border-radius: 8px; font-weight: 700; cursor: pointer; font-size: 1rem; transition: 0.2s; box-shadow: 0 4px 15px var(--glow); }
+        .btn-primary-game:hover { background: #2563eb; transform: scale(1.05); }
+
+        /* --- ENHANCED ANIMATED STACKED MODAL --- */
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: opacity 0.25s ease-in-out; }
         #modal.show { display: flex; opacity: 1; }
         .modal-content { 
@@ -120,27 +155,19 @@
         }
         #modal.show .modal-content { transform: scale(1) translateY(0); }
         
-        .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); }
+        .modal-header { padding: 20px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); position: sticky; top: 0; z-index: 10; }
         .modal-header h2 { font-size: 1.4rem; color: var(--k8s-light); display: flex; align-items: center; gap: 10px; font-weight: 700; }
         .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.6rem; cursor: pointer; transition: 0.2s; }
         .close-btn:hover { color: #ef4444; transform: scale(1.1); }
 
-        /* Modal Tabs */
-        .modal-tabs { display: flex; background: #121215; border-bottom: 1px solid var(--border); padding: 0 20px; gap: 10px; }
-        .modal-tab { padding: 12px 18px; font-size: 0.85rem; font-weight: 600; color: var(--text-muted); background: transparent; border: none; border-bottom: 2px solid transparent; cursor: pointer; transition: 0.2s; }
-        .modal-tab:hover { color: #fff; }
-        .modal-tab.active { color: var(--k8s-light); border-bottom-color: var(--k8s-blue); }
-
-        .modal-body { padding: 25px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 20px; }
+        .modal-body { padding: 25px; overflow-y: auto; flex: 1; display: flex; flex-direction: column; gap: 24px; }
         
-        .tab-pane { display: none; animation: fadeInPane 0.3s ease-out forwards; }
-        .tab-pane.active { display: flex; flex-direction: column; gap: 16px; }
-
-        .pane-heading { font-size: 1.1rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; }
+        .modal-section { display: flex; flex-direction: column; gap: 10px; background: rgba(24, 24, 27, 0.5); border: 1px solid var(--border); padding: 18px; border-radius: 12px; }
+        .pane-heading { font-size: 1.05rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 8px; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
         .pane-heading::before { content: '■'; color: var(--k8s-blue); font-size: 0.7rem; }
-        .pane-text { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+        .pane-text { font-size: 0.92rem; color: var(--text-muted); line-height: 1.7; }
         
-        .bullet-box { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; display: flex; flex-direction: column; gap: 10px; }
+        .bullet-box { display: flex; flex-direction: column; gap: 8px; }
         .bullet-item { display: flex; align-items: flex-start; gap: 10px; font-size: 0.9rem; color: var(--text-main); }
         .bullet-item span { color: var(--k8s-light); font-weight: bold; }
 
@@ -149,7 +176,6 @@
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
         @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-        @keyframes fadeInPane { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -161,7 +187,7 @@
             </svg>
             Kubernetes & CKA Masterclass Hub
         </h1>
-        <p>Comprehensive, deep-dive architectural study guides with clear explanations, step-by-step logic, and production-ready YAML manifests.</p>
+        <p>Comprehensive, deep-dive architectural study guides with clear explanations, underlying logic, and production-ready YAML manifests & CLI commands.</p>
     </header>
 
     <div class="container">
@@ -230,30 +256,59 @@
         <!-- SECTION 2: EXHAUSTIVE CKA SYLLABUS -->
         <div class="section-title">
             <span>2. Complete CKA Syllabus Masterclass (Exam Ready)</span>
-            <span class="helper-text">👆 Click any detailed subtopic chip below for step-by-step masterclass, deep explanations & YAML</span>
+            <span class="helper-text">👆 Click any detailed subtopic chip below for step-by-step masterclass, underlying logic & YAML / CLI commands</span>
         </div>
         <div class="syllabus-grid" id="syllabus-grid"></div>
 
+        <br><br><br>
+
+        <!-- SECTION 3: INTERACTIVE MINI-GAME -->
+        <div class="section-title">
+            <span>3. CKA Chaos Rescue: Quick-Fire Exam Challenge</span>
+            <span class="helper-text">🎮 Solve real-time cluster failures under pressure to test your knowledge</span>
+        </div>
+
+        <div class="game-container" id="game-container">
+            <div class="game-start-screen" id="game-start-screen">
+                <h3>⚡ Ready to Test Your CKA Skills?</h3>
+                <p>You will face randomized cluster emergency scenarios. Select the correct CLI command or YAML solution before time runs out to score points and maintain your streak!</p>
+                <button class="btn-primary-game" onclick="startGame()">Start Chaos Rescue Game</button>
+            </div>
+
+            <div id="game-play-area" style="display: none;">
+                <div class="game-top-bar">
+                    <div class="game-stats">
+                        <div class="game-stat-badge">Question: <span id="q-num">1</span>/5</div>
+                        <div class="game-stat-badge">Score: <span id="score-val">0</span></div>
+                        <div class="game-stat-badge">Streak: 🔥 <span id="streak-val">0</span></div>
+                    </div>
+                    <div class="game-stat-badge" style="border-color: var(--accent-orange); color: var(--accent-orange);">⏱️ Time: <span id="timer-val">20</span>s</div>
+                </div>
+
+                <div class="scenario-box">
+                    <div class="scenario-title" id="sc-title">Scenario Title</div>
+                    <div id="sc-desc" style="color: var(--text-muted);">Scenario description goes here...</div>
+                </div>
+
+                <div class="options-grid" id="options-grid">
+                    <!-- Populated dynamically -->
+                </div>
+
+                <div class="game-feedback" id="game-feedback"></div>
+            </div>
+        </div>
+
     </div>
 
-    <!-- ENHANCED ANIMATED MODAL -->
+    <!-- ENHANCED ANIMATED STACKED MODAL -->
     <div id="modal" onclick="if(event.target===this) closeModal()">
         <div class="modal-content">
             <div class="modal-header">
                 <h2 id="m-title">Title</h2>
                 <button class="close-btn" onclick="closeModal()">✕</button>
             </div>
-            <div class="modal-tabs">
-                <button class="modal-tab active" onclick="switchTab('overview', this)">📖 Core Overview</button>
-                <button class="modal-tab" onclick="switchTab('workflow', this)">⚙️ Under the Hood</button>
-                <button class="modal-tab" onclick="switchTab('tips', this)">🎯 Exam Pro-Tips</button>
-                <button class="modal-tab" onclick="switchTab('syntax', this)">💻 Syntax & YAML</button>
-            </div>
-            <div class="modal-body">
-                <div id="tab-overview" class="tab-pane active"></div>
-                <div id="tab-workflow" class="tab-pane"></div>
-                <div id="tab-tips" class="tab-pane"></div>
-                <div id="tab-syntax" class="tab-pane"></div>
+            <div class="modal-body" id="modal-body-content">
+                <!-- Stacked content populated dynamically -->
             </div>
         </div>
     </div>
@@ -488,13 +543,13 @@
         }
 
         const inspectors = {
-            api: { title: "kube-apiserver", desc: "The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-apiserver.yaml\n\n# Check logs:\nkubectl logs -n kube-system kube-apiserver-controlplane" },
-            etcd: { title: "etcd", desc: "Consistent and highly-available key-value store holding all cluster state data. Vital for disaster recovery and CKA backup exam tasks.", code: "# ETCD Snapshot Backup Command:\nETCDCTL_API=3 etcdctl snapshot save /backup/snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
+            api: { title: "kube-apiserver", desc: "The central management gateway of Kubernetes. Exposes the REST API and is the only control plane component that talks directly to etcd.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-apiserver.yaml\n\n# Check logs via CLI:\nkubectl logs -n kube-system kube-apiserver-controlplane" },
+            etcd: { title: "etcd", desc: "Consistent and highly-available key-value store holding all cluster state data. Vital for disaster recovery and CKA backup exam tasks.", code: "# ETCD Snapshot Backup Command (CLI):\nETCDCTL_API=3 etcdctl snapshot save /backup/snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
             sched: { title: "kube-scheduler", desc: "Watches for newly created pods without a node assigned, evaluates hardware specs, taints, tolerations, and affinity rules to bind the best node.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-scheduler.yaml" },
             ctrl: { title: "kube-controller-manager", desc: "Runs background reconciliation control loops (Node Controller, ReplicaSet Controller, Endpoint Controller) to match actual state with desired state.", code: "# Static Manifest Path:\n/etc/kubernetes/manifests/kube-controller-manager.yaml" },
-            kubelet: { title: "kubelet", desc: "The primary node agent running on every worker node. Ensures containers specified in pod specs are running and healthy.", code: "# Check kubelet status:\nsystemctl status kubelet\njournalctl -u kubelet -e" },
-            proxy: { title: "kube-proxy", desc: "Maintains network rules on worker nodes. Implements Kubernetes Service abstraction by managing iptables or IPVS rules for packet forwarding.", code: "# Check daemonset logs:\nkubectl logs -n kube-system -l k8s-app=kube-proxy" },
-            cri: { title: "Container Runtime (CRI)", desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.", code: "# Inspect containers with crictl (on worker nodes):\ncrictl ps\ncrictl pods" }
+            kubelet: { title: "kubelet", desc: "The primary node agent running on every worker node. Ensures containers specified in pod specs are running and healthy.", code: "# Check kubelet status (CLI):\nsystemctl status kubelet\njournalctl -u kubelet -e" },
+            proxy: { title: "kube-proxy", desc: "Maintains network rules on worker nodes. Implements Kubernetes Service abstraction by managing iptables or IPVS rules for packet forwarding.", code: "# Check daemonset logs via CLI:\nkubectl logs -n kube-system -l k8s-app=kube-proxy" },
+            cri: { title: "Container Runtime (CRI)", desc: "Software responsible for pulling images and running containers. Common implementations in CKA include containerd and CRI-O.", code: "# Inspect containers with crictl CLI (on worker nodes):\ncrictl ps\ncrictl pods" }
         };
 
         function inspectComp(key) {
@@ -502,15 +557,24 @@
             const data = inspectors[key];
             if(data) {
                 document.getElementById('m-title').innerText = data.title;
-                // Reuse modal with custom content for component inspector
-                document.getElementById('tab-overview').innerHTML = `
-                    <div class="pane-heading">Architecture Role & Responsibilities</div>
-                    <div class="pane-text">${data.desc}</div>
+                document.getElementById('modal-body-content').innerHTML = `
+                    <div class="modal-section">
+                        <div class="pane-heading">Architecture Role & Responsibilities</div>
+                        <div class="pane-text">${data.desc}</div>
+                    </div>
+                    <div class="modal-section">
+                        <div class="pane-heading">Underlying Logic</div>
+                        <div class="pane-text">Component managed directly via systemd or static pod manifests on control-plane nodes.</div>
+                    </div>
+                    <div class="modal-section">
+                        <div class="pane-heading">Exam Pro-Tips</div>
+                        <div class="pane-text">Always check log files under <code>/var/log/</code> or via journalctl if this control plane component fails.</div>
+                    </div>
+                    <div class="modal-section">
+                        <div class="pane-heading">YAML & CLI Commands</div>
+                        <div class="code-box"><span class="code-label">Commands</span>${data.code}</div>
+                    </div>
                 `;
-                document.getElementById('tab-workflow').innerHTML = `<div class="pane-text">Component managed directly via systemd or static pod manifests on control-plane nodes.</div>`;
-                document.getElementById('tab-tips').innerHTML = `<div class="pane-text">Always check log files under <code>/var/log/</code> or via journalctl if this control plane component fails.</div>`;
-                document.getElementById('tab-syntax').innerHTML = `<div class="code-box"><span class="code-label">Commands</span>${data.code}</div>`;
-                switchTab('overview', document.querySelector('.modal-tab'));
                 modal.style.display = 'flex';
                 setTimeout(() => modal.classList.add('show'), 10);
                 document.body.style.overflow = 'hidden';
@@ -529,42 +593,42 @@
                         overview: "Bootstrapping a Kubernetes cluster requires initializing the control plane node with appropriate pod network cidrs and generating secure authentication tokens for worker node onboarding.",
                         workflow: ["kubeadm init parses preflight checks and downloads static manifests.", "Generates TLS certificates under /etc/kubernetes/pki.", "Outputs exact 'kubeadm join' token commands for worker nodes."],
                         tips: ["Always record the generated join command token and CA cert hash securely during practice setups.", "Ensure swap is disabled on all nodes prior to running kubeadm init."],
-                        code: "# Initialize Control Plane:\nkubeadm init --pod-network-cidr=10.244.0.0/16\n\n# Join Worker Node:\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" 
+                        code: "# Initialize Control Plane (CLI):\nkubeadm init --pod-network-cidr=10.244.0.0/16\n\n# Join Worker Node (CLI):\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" 
                     },
                     { 
                         t: "Cluster Upgrades (Kubeadm)", 
                         overview: "Upgrading a Kubernetes cluster involves updating the control plane components first, followed by upgrading worker node packages and restarting local kubelet services version-by-version.",
                         workflow: ["Drain the target node to safely evict running pods.", "Upgrade kubeadm package to target minor version.", "Apply upgrade plan and refresh kubelet configuration."],
                         tips: ["Never skip minor versions when upgrading (e.g., upgrade 1.27 to 1.28, not directly to 1.29).", "Always verify node status using kubectl get nodes after uncordoning."],
-                        code: "kubectl drain controlplane --ignore-daemonsets\napt-get update && apt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" 
+                        code: "# CLI Commands:\nkubectl drain controlplane --ignore-daemonsets\napt-get update && apt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" 
                     },
                     { 
                         t: "ETCD Backup & Restore", 
                         overview: "etcd stores the complete state of your Kubernetes cluster. Taking point-in-time snapshots and knowing how to restore them is critical for disaster recovery tasks in production and exams.",
                         workflow: ["Connect to etcd container/endpoint using client certificates.", "Trigger snapshot save to target backup directory.", "Restore snapshot into a new data directory during recovery."],
                         tips: ["Always pass the endpoint, cacert, cert, and key parameters correctly to etcdctl.", "Remember to prefix commands with ETCDCTL_API=3."],
-                        code: "# Backup:\nETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snap.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# Restore:\nETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db \\\n  --data-dir=/var/lib/etcd-restored" 
+                        code: "# ETCD Backup CLI:\nETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snap.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key\n\n# ETCD Restore CLI:\nETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db \\\n  --data-dir=/var/lib/etcd-restored" 
                     },
                     { 
                         t: "Static Pods", 
                         overview: "Static pods are managed directly by the kubelet daemon on a specific node, without the API server observing or scheduling them. They are defined by YAML files placed in the manifest directory.",
                         workflow: ["Kubelet watches /etc/kubernetes/manifests folder.", "Detects YAML changes and creates/deletes mirror pods in the API server.", "Runs independently of cluster scheduler."],
                         tips: ["Static pod names automatically append the node hostname as a suffix.", "To edit a static pod, modify the source YAML file on disk rather than kubectl edit."],
-                        code: "# Static pod path specified in kubelet config file:\nstaticPodPath: /etc/kubernetes/manifests\n\n# View static pods:\nkubectl get pods -n kube-system" 
+                        code: "# Static pod path specified in kubelet config file:\nstaticPodPath: /etc/kubernetes/manifests\n\n# View static pods via CLI:\nkubectl get pods -n kube-system" 
                     },
                     { 
                         t: "RBAC (Roles & RoleBindings)", 
                         overview: "Role-Based Access Control regulates access to cluster resources based on the roles of individual users or service accounts within namespaces or cluster-wide.",
                         workflow: ["Create a Role defining verbs (get, list, create) and apiGroups/resources.", "Bind the Role to a user or service account using a RoleBinding.", "API server authorizes requests based on matched bindings."],
                         tips: ["Use 'kubectl create role --help' and 'kubectl create rolebinding --help' to generate imperative exam commands quickly."],
-                        code: "# Create Role:\nkubectl create role pod-reader --verb=get,list,watch --resource=pods\n\n# Create RoleBinding:\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" 
+                        code: "# CLI Commands:\nkubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" 
                     },
                     { 
                         t: "Service Accounts", 
                         overview: "Service accounts provide an identity for processes running in a Pod, allowing them to authenticate securely against the Kubernetes API server without using user credentials.",
                         workflow: ["Create a dedicated service account object in the namespace.", "Reference the service account name inside your Pod or Deployment specification.", "API server automatically injects token secrets into the container."],
                         tips: ["Set automountServiceAccountToken: false in pod specs if the application does not require API access."],
-                        code: "kubectl create serviceaccount custom-sa\n\n# Inside Pod Spec:\nspec:\n  serviceAccountName: custom-sa" 
+                        code: "# CLI & YAML Spec:\nkubectl create serviceaccount custom-sa\n\n# Inside Pod Spec:\nspec:\n  serviceAccountName: custom-sa" 
                     }
                 ]
             },
@@ -576,7 +640,7 @@
                         overview: "Deployments provide declarative updates for Pods and ReplicaSets, enabling zero-downtime rolling updates, scaling, and instant rollbacks to previous stable versions.",
                         workflow: ["ReplicaSet controller maintains desired pod count.", "Rolling update strategy terminates old pods gradually while spinning up new ones.", "Rollout history tracks previous revisions."],
                         tips: ["Always use --record or check rollout history when updating deployment images during exam tasks."],
-                        code: "kubectl create deploy web --image=nginx --replicas=3\nkubectl set image deployment/web nginx=nginx:1.25\nkubectl rollout history deployment/web\nkubectl rollout undo deployment/web" 
+                        code: "# CLI Commands:\nkubectl create deploy web --image=nginx --replicas=3\nkubectl set image deployment/web nginx=nginx:1.25\nkubectl rollout history deployment/web\nkubectl rollout undo deployment/web" 
                     },
                     { 
                         t: "StatefulSets", 
@@ -590,42 +654,42 @@
                         overview: "A DaemonSet ensures that all (or some) Node instances run a copy of a Pod, making them ideal for running cluster storage daemons, log collectors, or node monitoring agents.",
                         workflow: ["DaemonSet controller inspects cluster node list.", "Automatically schedules a pod onto newly added worker nodes.", "Bypasses standard scheduler logic."],
                         tips: ["To quickly create a DaemonSet from scratch, generate a deployment YAML and change kind to DaemonSet."],
-                        code: "kubectl create deployment --dry-run=client -o yaml > ds.yaml\n# Change kind: Deployment to DaemonSet and remove 'replicas'." 
+                        code: "# YAML Generation via CLI:\nkubectl create deployment ds-test --image=nginx --dry-run=client -o yaml > ds.yaml\n# Change kind: Deployment to DaemonSet and remove 'replicas'." 
                     },
                     { 
                         t: "Jobs & CronJobs", 
                         overview: "Jobs create one or more pods and ensure that a specified number of them successfully terminate, while CronJobs schedule batch jobs on a recurring time-based cron schedule.",
                         workflow: ["CronJob controller spawns Job objects at specified timestamps.", "Job controller creates pod and monitors exit codes.", "Job completes successfully upon process exit code 0."],
                         tips: ["Always test your cron schedule expression carefully (minute hour day month day-of-week)."],
-                        code: "kubectl create cronjob my-job --image=busybox --schedule=\"*/1 * * * *\" -- /bin/sh -c \"echo Hello CKA\"" 
+                        code: "# CLI Command:\nkubectl create cronjob my-job --image=busybox --schedule=\"*/1 * * * *\" -- /bin/sh -c \"echo Hello CKA\"" 
                     },
                     { 
                         t: "Taints & Tolerations", 
                         overview: "Taints allow a node to repel a set of pods unless those pods have matching tolerations, enabling dedicated node allocation for specific workloads.",
                         workflow: ["Apply taint with effect (NoSchedule, PreferNoSchedule, NoExecute) on node.", "Add matching toleration key/value pair in Pod spec.", "Scheduler allows pod placement."],
                         tips: ["Control plane nodes come tainted with node-role.kubernetes.io/control-plane:NoSchedule by default."],
-                        code: "kubectl taint node worker-1 app=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" 
+                        code: "# CLI & YAML Spec:\nkubectl taint node worker-1 app=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"app\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" 
                     },
                     { 
                         t: "Node Affinity & Anti-Affinity", 
                         overview: "Node affinity constrains which nodes your pod can be scheduled on based on node labels, offering powerful rule expressions (required vs preferred).",
                         workflow: ["Label nodes with custom key-value metadata.", "Configure nodeAffinity expressions inside Pod spec template.", "Scheduler evaluates match expressions during pod placement."],
                         tips: ["Use requiredDuringSchedulingIgnoredDuringExecution for strict mandatory placement rules."],
-                        code: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" 
+                        code: "# YAML Spec:\naffinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: disktype\n          operator: In\n          values: [ssd]" 
                     },
                     { 
                         t: "Resource Quotas & Limits", 
                         overview: "Resource Quotas restrict aggregate resource consumption (CPU, memory, storage) per namespace, preventing single teams from starving cluster hardware capacity.",
                         workflow: ["Define ResourceQuota object in target namespace.", "API server validates incoming pod resource requests against namespace quotas.", "Rejects creation if limits are exceeded."],
                         tips: ["Combine with LimitRanges to automatically inject default container memory and CPU limits."],
-                        code: "apiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: ns-quota\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" 
+                        code: "# YAML Manifest:\napiVersion: v1\nkind: ResourceQuota\nmetadata:\n  name: ns-quota\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" 
                     },
                     { 
                         t: "Manual Scheduling", 
                         overview: "Bypass the kube-scheduler entirely by assigning a pod directly to a specific worker node name during creation.",
                         workflow: ["Set nodeName field directly inside pod spec template.", "Kubelet on specified node detects pod and runs containers immediately."],
                         tips: ["Useful for quick debugging or isolated container testing during troubleshooting tasks."],
-                        code: "apiVersion: v1\nkind: Pod\nmetadata:\n  name: manual-pod\nspec:\n  nodeName: worker-01\n  containers:\n  - name: nginx\n    image: nginx" 
+                        code: "# YAML Spec:\napiVersion: v1\nkind: Pod\nmetadata:\n  name: manual-pod\nspec:\n  nodeName: worker-01\n  containers:\n  - name: nginx\n    image: nginx" 
                     }
                 ]
             },
@@ -637,35 +701,35 @@
                         overview: "Services provide stable networking abstractions for backend pods. ClusterIP exposes pods internally, while NodePort opens a static port across all worker nodes for external access.",
                         workflow: ["kube-proxy programs iptables or IPVS routing rules.", "Traffic hitting Service IP or NodePort is load-balanced across matching pod endpoints."],
                         tips: ["Use kubectl expose to quickly generate service objects without writing YAML from scratch."],
-                        code: "kubectl expose pod web --port=80 --target-port=8080 --type=NodePort --name=web-np" 
+                        code: "# CLI Commands:\nkubectl expose pod web --port=80 --target-port=8080 --type=NodePort --name=web-np" 
                     },
                     { 
                         t: "Ingress Controllers & Rules", 
                         overview: "Ingress manages external HTTP/S access to cluster services, providing load balancing, SSL termination, and name-based virtual hosting.",
                         workflow: ["Ingress Controller (e.g., NGINX Ingress) watches Ingress resource rules.", "Routes inbound HTTP requests directly to backend services based on URL paths or hostnames."],
                         tips: ["Ensure you create the appropriate IngressClass resource if required by your cluster setup."],
-                        code: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: main-ingress\nspec:\n  rules:\n  - host: app.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" 
+                        code: "# YAML Manifest:\napiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: main-ingress\nspec:\n  rules:\n  - host: app.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" 
                     },
                     { 
                         t: "Network Policies", 
                         overview: "NetworkPolicies act as firewalls at the IP/port level, isolating pod traffic and controlling inbound (ingress) and outbound (egress) communication.",
                         workflow: ["CNI plugins (like Calico) enforce network policy rules.", "Evaluates pod label selectors to permit or drop packet streams."],
                         tips: ["Remember that by default, pods are non-isolated (all traffic allowed). Applying a network policy makes them isolated."],
-                        code: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-isolation\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" 
+                        code: "# YAML Manifest:\napiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-isolation\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" 
                     },
                     { 
                         t: "CoreDNS Troubleshooting", 
                         overview: "CoreDNS is the standard cluster DNS server. Troubleshooting DNS issues involves checking CoreDNS pods, service endpoints, and kube-dns configurations.",
                         workflow: ["CoreDNS resolves service names to internal cluster IPs.", "Pods query CoreDNS via cluster IP specified in resolv.conf."],
                         tips: ["Test DNS resolution quickly inside the cluster using an ephemeral busybox pod with nslookup."],
-                        code: "kubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod> -- nslookup kubernetes.default" 
+                        code: "# CLI Commands:\nkubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod> -- nslookup kubernetes.default" 
                     },
                     { 
                         t: "CNI Plugins", 
                         overview: "Container Network Interface (CNI) plugins provide networking connectivity between pods across different worker nodes.",
                         workflow: ["Kubelet reads CNI configuration from /etc/cni/net.d/ upon startup.", "Allocates IP addresses to pods and configures routing tables."],
                         tips: ["Check CNI binary and configuration file paths if newly created pods remain in ContainerCreating state."],
-                        code: "# Check CNI configuration path:\nls -l /etc/cni/net.d/" 
+                        code: "# Check CNI configuration path (CLI):\nls -l /etc/cni/net.d/" 
                     }
                 ]
             },
@@ -677,28 +741,28 @@
                         overview: "Ephemeral volumes provide temporary storage scoped to the pod lifecycle (emptyDir) or mount host filesystem directories directly into containers (hostPath).",
                         workflow: ["emptyDir creates temporary scratch space on node disk during pod lifetime.", "hostPath mounts existing node files directly into container mount paths."],
                         tips: ["emptyDir data is deleted permanently when the pod is removed from the node."],
-                        code: "volumes:\n- name: cache\n  emptyDir: {}\n- name: host-logs\n  hostPath:\n    path: /var/log" 
+                        code: "# YAML Spec:\nvolumes:\n- name: cache\n  emptyDir: {}\n- name: host-logs\n  hostPath:\n    path: /var/log" 
                     },
                     { 
                         t: "PersistentVolumes (PV)", 
                         overview: "A PersistentVolume is a cluster-wide piece of storage provisioned by an administrator that exists independently of any individual pod lifecycle.",
                         workflow: ["Administrator provisions PV backed by NFS, AWS EBS, or local disk.", "Registers PV object into API server."],
                         tips: ["Pay close attention to access modes (ReadWriteOnce, ReadWriteMany) when matching storage claims."],
-                        code: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 2Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" 
+                        code: "# YAML Manifest:\napiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 2Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /mnt/data" 
                     },
                     { 
                         t: "PersistentVolumeClaims (PVC)", 
                         overview: "A PersistentVolumeClaim is a user's request for storage resources matching specific capacity and access mode requirements.",
                         workflow: ["User creates PVC object.", "Cluster controller matches PVC with an available PV fulfilling capacity and access mode requirements."],
                         tips: ["Pods consume PersistentVolumes by referencing the PVC name inside their volume specifications."],
-                        code: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 2Gi" 
+                        code: "# YAML Manifest:\napiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 2Gi" 
                     },
                     { 
                         t: "StorageClasses", 
                         overview: "StorageClasses enable dynamic provisioning of PersistentVolumes on-demand, eliminating the need for administrators to pre-provision storage manually.",
                         workflow: ["User requests storage via PVC specifying a StorageClass name.", "Provisioner plugin automatically creates backing storage volume and corresponding PV."],
                         tips: ["Check available storage provisioners in your cluster using kubectl get sc."],
-                        code: "apiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-storage\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" 
+                        code: "# YAML Manifest:\napiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-storage\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" 
                     }
                 ]
             },
@@ -710,35 +774,35 @@
                         overview: "Safely isolate worker nodes for maintenance or upgrades by marking them unschedulable (cordon) and gracefully evicting running workloads (drain).",
                         workflow: ["Cordon prevents new pod scheduling on node.", "Drain evicts existing pods and respects pod disruption budgets."],
                         tips: ["Always add --ignore-daemonsets when draining nodes in practice exams, otherwise daemonset pods will block the command."],
-                        code: "kubectl cordon worker-1\nkubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data\nkubectl uncordon worker-1" 
+                        code: "# CLI Commands:\nkubectl cordon worker-1\nkubectl drain worker-1 --ignore-daemonsets --delete-emptydir-data\nkubectl uncordon worker-1" 
                     },
                     { 
                         t: "Pod Troubleshooting (CrashLoopBackOff)", 
                         overview: "Diagnose application startup failures, incorrect command arguments, missing configuration maps, and OOMKilled container states.",
                         workflow: ["Inspect pod description for exit codes and error reasons.", "Review previous container logs for application exceptions."],
                         tips: ["Use --previous flag with kubectl logs to inspect logs of crashed container instances."],
-                        code: "kubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous\nkubectl get events --sort-by='.metadata.creationTimestamp'" 
+                        code: "# CLI Diagnostic Commands:\nkubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous\nkubectl get events --sort-by='.metadata.creationTimestamp'" 
                     },
                     { 
                         t: "Control Plane Troubleshooting", 
                         overview: "Diagnose and repair failed control plane components (API server, etcd, scheduler) running as static pods or systemd services.",
                         workflow: ["Inspect static manifests under /etc/kubernetes/manifests/.", "Check container runtime logs using crictl."],
                         tips: ["If kubelet is stopped or failed, check its status using systemctl status kubelet."],
-                        code: "cd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>\njournalctl -u kubelet -e" 
+                        code: "# CLI & File Diagnostic Commands:\ncd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>\njournalctl -u kubelet -e" 
                     },
                     { 
                         t: "Network & DNS Debugging", 
                         overview: "Test inter-pod connectivity, service routing, and DNS lookups using temporary debug containers or network diagnostic tools.",
                         workflow: ["Deploy ephemeral debug containers into target pods to inspect network interfaces and routing tables."],
                         tips: ["kubectl debug is a powerful built-in tool for troubleshooting running pods without restarting them."],
-                        code: "kubectl debug pod/web -it --image=busybox -- sh\nnslookup kubernetes.default" 
+                        code: "# CLI Commands:\nkubectl debug pod/web -it --image=busybox -- sh\nnslookup kubernetes.default" 
                     },
                     { 
                         t: "Certificate Expiration Checks", 
                         overview: "Verify TLS certificate expiration dates for clusters managed by kubeadm to prevent sudden control plane outages.",
                         workflow: ["Kubeadm inspects PKI certificate files located under /etc/kubernetes/pki/ and reports remaining validity duration."],
                         tips: ["Renew certificates manually using 'kubeadm certs renew all' if needed."],
-                        code: "kubeadm certs check-expiration" 
+                        code: "# CLI Command:\nkubeadm certs check-expiration" 
                     }
                 ]
             }
@@ -758,53 +822,237 @@
             `;
         });
 
+        // ==========================================
+        // MINI-GAME LOGIC
+        // ==========================================
+        const gameQuestions = [
+            {
+                title: "Node Maintenance Emergency",
+                desc: "You need to perform kernel upgrades on worker-01. What is the correct command to safely isolate the node and evict workloads without blocking on daemonsets?",
+                options: [
+                    "kubectl drain worker-01 --ignore-daemonsets",
+                    "kubectl cordon worker-01 --force",
+                    "kubectl delete node worker-01",
+                    "kubectl stop kubelet worker-01"
+                ],
+                correct: 0,
+                explanation: "kubectl drain marks the node unschedulable and safely evicts pods. --ignore-daemonsets is required so daemonset-managed pods don't block the evacuation."
+            },
+            {
+                title: "ETCD Disaster Recovery",
+                desc: "An outage requires restoring the etcd database snapshot from `/backup/etcd-snap.db`. Which command is accurate for performing this restore task?",
+                options: [
+                    "etcdctl restore /backup/etcd-snap.db",
+                    "ETCDCTL_API=3 etcdctl snapshot restore /backup/etcd-snap.db --data-dir=/var/lib/etcd-restored",
+                    "kubectl restore etcd --from=/backup/etcd-snap.db",
+                    "kubeadm restore etcd --snapshot=/backup/etcd-snap.db"
+                ],
+                correct: 1,
+                explanation: "etcdv3 requires setting the API environment variable (ETCDCTL_API=3) and specifying the target restored data-dir."
+            },
+            {
+                title: "Pod Crash Debugging",
+                desc: "A critical backend pod is repeatedly failing in CrashLoopBackOff. How can you inspect the console logs from its *previous* crashed instance?",
+                options: [
+                    "kubectl describe pod backend-pod",
+                    "kubectl logs backend-pod --previous",
+                    "kubectl get pod backend-pod -o yaml",
+                    "crictl logs backend-pod"
+                ],
+                correct: 1,
+                explanation: "The --previous flag instructs kubectl to fetch logs from the container instance that terminated prior to the current restart."
+            },
+            {
+                title: "Imperative YAML Generation",
+                desc: "During the CKA exam, time is critical. How can you quickly generate a deployment YAML skeleton for NGINX without writing it line-by-line?",
+                options: [
+                    "kubectl run nginx --image=nginx --write-yaml",
+                    "kubectl create deployment web --image=nginx --dry-run=client -o yaml > web.yaml",
+                    "kubectl generate deployment --image=nginx",
+                    "kubeadm create deployment nginx"
+                ],
+                correct: 1,
+                explanation: "Using --dry-run=client and -o yaml outputs the valid deployment manifest directly to standard output or a file without creating it on the cluster."
+            },
+            {
+                title: "Static Pod Manifest Path",
+                desc: "Where does the kubelet look by default on a control plane node to discover and run static pods?",
+                options: [
+                    "/etc/kubernetes/manifests/",
+                    "/var/lib/kubelet/pods/",
+                    "/etc/systemd/system/kubelet.service.d/",
+                    "/opt/k8s/static-pods/"
+                ],
+                correct: 0,
+                explanation: "The kubelet configuration file points to staticPodPath: /etc/kubernetes/manifests where static YAML files are monitored."
+            }
+        ];
+
+        let currentGameIdx = 0;
+        let score = 0;
+        let streak = 0;
+        let timer = 20;
+        let timerInterval = null;
+        let gameActive = false;
+
+        function startGame() {
+            document.getElementById('game-start-screen').style.display = 'none';
+            document.getElementById('game-play-area').style.display = 'block';
+            currentGameIdx = 0;
+            score = 0;
+            streak = 0;
+            loadQuestion();
+        }
+
+        function loadQuestion() {
+            if(currentGameIdx >= gameQuestions.length) {
+                endGame();
+                return;
+            }
+            gameActive = true;
+            timer = 20;
+            document.getElementById('timer-val').innerText = timer;
+            document.getElementById('q-num').innerText = currentGameIdx + 1;
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('streak-val').innerText = streak;
+            
+            const q = gameQuestions[currentGameIdx];
+            document.getElementById('sc-title').innerHTML = `<span>🚨</span> Incident #${currentGameIdx + 1}: ${q.title}`;
+            document.getElementById('sc-desc').innerText = q.desc;
+
+            const feedbackEl = document.getElementById('game-feedback');
+            feedbackEl.className = 'game-feedback';
+            feedbackEl.style.display = 'none';
+
+            const optsGrid = document.getElementById('options-grid');
+            optsGrid.innerHTML = '';
+
+            q.options.forEach((opt, idx) => {
+                const btn = document.createElement('button');
+                btn.className = 'opt-btn';
+                btn.innerHTML = `<span>${opt}</span>`;
+                btn.onclick = () => checkAnswer(idx);
+                optsGrid.appendChild(btn);
+            });
+
+            clearInterval(timerInterval);
+            timerInterval = setInterval(() => {
+                timer--;
+                document.getElementById('timer-val').innerText = timer;
+                if(timer <= 0) {
+                    clearInterval(timerInterval);
+                    handleTimeout();
+                }
+            }, 1000);
+        }
+
+        function checkAnswer(selectedIdx) {
+            if(!gameActive) return;
+            gameActive = false;
+            clearInterval(timerInterval);
+
+            const q = gameQuestions[currentGameIdx];
+            const buttons = document.querySelectorAll('.opt-btn');
+            const feedbackEl = document.getElementById('game-feedback');
+
+            buttons.forEach((b, idx) => {
+                b.disabled = true;
+                if(idx === q.correct) b.classList.add('correct');
+                else if(idx === selectedIdx) b.classList.add('wrong');
+            });
+
+            if(selectedIdx === q.correct) {
+                score += 100 + (timer * 5);
+                streak++;
+                feedbackEl.className = 'game-feedback show success';
+                feedbackEl.innerHTML = `<strong>✔ Correct Rescue!</strong> ${q.explanation}`;
+            } else {
+                streak = 0;
+                feedbackEl.className = 'game-feedback show error';
+                feedbackEl.innerHTML = `<strong>✖ Failed Rescue!</strong> ${q.explanation}`;
+            }
+
+            document.getElementById('score-val').innerText = score;
+            document.getElementById('streak-val').innerText = streak;
+
+            setTimeout(() => {
+                currentGameIdx++;
+                loadQuestion();
+            }, 3500);
+        }
+
+        function handleTimeout() {
+            if(!gameActive) return;
+            gameActive = false;
+            streak = 0;
+            document.getElementById('streak-val').innerText = streak;
+
+            const q = gameQuestions[currentGameIdx];
+            const buttons = document.querySelectorAll('.opt-btn');
+            const feedbackEl = document.getElementById('game-feedback');
+
+            buttons.forEach((b, idx) => {
+                b.disabled = true;
+                if(idx === q.correct) b.classList.add('correct');
+            });
+
+            feedbackEl.className = 'game-feedback show error';
+            feedbackEl.innerHTML = `<strong>⏱️ Time Expired!</strong> ${q.explanation}`;
+
+            setTimeout(() => {
+                currentGameIdx++;
+                loadQuestion();
+            }, 3500);
+        }
+
+        function endGame() {
+            clearInterval(timerInterval);
+            document.getElementById('game-play-area').innerHTML = `
+                <div class="game-start-screen" style="display:block;">
+                    <h3>🎉 Mission Complete! Chaos Resolved!</h3>
+                    <p>Final Score: <strong>${score}</strong> | Max Streak: 🔥 <strong>${streak}</strong></p>
+                    <p style="color: var(--text-muted); margin-bottom: 20px;">You are well on your way to mastering Kubernetes and acing your CKA certification exam!</p>
+                    <button class="btn-primary-game" onclick="location.reload()">Play Again</button>
+                </div>
+            `;
+        }
+
         const modal = document.getElementById('modal');
 
         function openTopicModal(modIdx, topicIdx) {
             const item = syllabus[modIdx].data[topicIdx];
             document.getElementById('m-title').innerHTML = `<span>⚡</span> ${item.t}`;
 
-            // Populate Tab 1: Overview
-            document.getElementById('tab-overview').innerHTML = `
-                <div class="pane-heading">Comprehensive Concept Overview</div>
-                <div class="pane-text">${item.overview}</div>
-            `;
-
-            // Populate Tab 2: Workflow / Under the Hood
             const workflowHtml = item.workflow.map(step => `
                 <div class="bullet-item"><span>→</span> ${step}</div>
             `).join('');
-            document.getElementById('tab-workflow').innerHTML = `
-                <div class="pane-heading">Step-by-Step Execution Logic</div>
-                <div class="bullet-box">${workflowHtml}</div>
-            `;
 
-            // Populate Tab 3: Exam Pro-Tips
             const tipsHtml = item.tips.map(tip => `
                 <div class="bullet-item"><span>💡</span> ${tip}</div>
             `).join('');
-            document.getElementById('tab-tips').innerHTML = `
-                <div class="pane-heading">Exam Strategy & Pro-Tips</div>
-                <div class="bullet-box">${tipsHtml}</div>
+
+            document.getElementById('modal-body-content').innerHTML = `
+                <div class="modal-section">
+                    <div class="pane-heading">Core Overview</div>
+                    <div class="pane-text">${item.overview}</div>
+                </div>
+                <div class="modal-section">
+                    <div class="pane-heading">Underlying Logic</div>
+                    <div class="bullet-box">${workflowHtml}</div>
+                </div>
+                <div class="modal-section">
+                    <div class="pane-heading">Exam Pro-Tips</div>
+                    <div class="bullet-box">${tipsHtml}</div>
+                </div>
+                <div class="modal-section">
+                    <div class="pane-heading">YAML & CLI Commands</div>
+                    <div class="code-box"><span class="code-label">YAML / CLI</span>${item.code}</div>
+                </div>
             `;
 
-            // Populate Tab 4: Syntax & YAML
-            document.getElementById('tab-syntax').innerHTML = `
-                <div class="pane-heading">Production Syntax & Commands</div>
-                <div class="code-box"><span class="code-label">YAML / CLI</span>${item.code}</div>
-            `;
-
-            switchTab('overview', document.querySelector('.modal-tab'));
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
             document.body.style.overflow = 'hidden'; 
-        }
-
-        function switchTab(tabName, btn) {
-            document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
-            document.querySelectorAll('.modal-tab').forEach(t => t.classList.remove('active'));
-            document.getElementById(`tab-${tabName}`).classList.add('active');
-            btn.classList.add('active');
         }
 
         function closeModal() {

@@ -86,12 +86,18 @@
         }
         @media(max-width: 1120px) { .arch-simulator { grid-template-columns: 1fr; } }
 
+        .arch-canvas-container { 
+            width: 100%; position: relative; overflow: hidden; 
+            border-radius: 14px; background: #080b14; border: 1px solid var(--border);
+            display: flex; justify-content: flex-start;
+        }
+
         .arch-canvas { 
-            position: relative; height: 590px; 
-            background: #080b14; border: 1px solid var(--border); border-radius: 14px; 
-            overflow: hidden;
+            position: relative; width: 760px; height: 570px; min-width: 760px;
+            background: #080b14; overflow: hidden; flex-shrink: 0;
             background-image: radial-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px);
             background-size: 24px 24px;
+            transform-origin: top left;
         }
         
         .k8s-node { 
@@ -99,8 +105,8 @@
             border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 14px; padding: 18px; 
             backdrop-filter: blur(8px);
         }
-        .control-plane { top: 20px; left: 85px; width: 375px; height: 550px; border-top: 3px solid var(--accent-purple); box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.05); }
-        .worker-node { top: 20px; right: 20px; width: 310px; height: 550px; border-top: 3px solid var(--k8s-blue); box-shadow: inset 0 0 30px rgba(50, 108, 229, 0.05); }
+        .control-plane { top: 15px; left: 80px; width: 360px; height: 540px; border-top: 3px solid var(--accent-purple); box-shadow: inset 0 0 30px rgba(168, 85, 247, 0.05); }
+        .worker-node { top: 15px; right: 15px; width: 290px; height: 540px; border-top: 3px solid var(--k8s-blue); box-shadow: inset 0 0 30px rgba(50, 108, 229, 0.05); }
         .node-title { font-size: 0.8rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: var(--text-muted); margin-bottom: 20px; text-align: center; display: flex; align-items: center; justify-content: center; gap: 8px; }
 
         .comp { 
@@ -114,16 +120,16 @@
         .comp.active { border-color: var(--k8s-light); box-shadow: 0 0 30px var(--glow); background: rgba(50, 108, 229, 0.35); transform: scale(1.04); }
         .comp.error { border-color: var(--accent-red); box-shadow: 0 0 30px rgba(239, 68, 68, 0.45); background: rgba(239, 68, 68, 0.25); }
         
-        #c-api { top: 255px; left: 272px; transform: translateX(-50%); width: 175px; border-color: var(--k8s-blue); z-index: 15; }
-        #c-etcd { top: 80px; left: 272px; transform: translateX(-50%); }
-        #c-sched { top: 425px; left: 180px; transform: translateX(-50%); width: 140px; }
-        #c-ctrl { top: 425px; left: 370px; transform: translateX(-50%); width: 150px; }
+        #c-api { top: 250px; left: 260px; transform: translateX(-50%); width: 170px; border-color: var(--k8s-blue); z-index: 15; }
+        #c-etcd { top: 75px; left: 260px; transform: translateX(-50%); }
+        #c-sched { top: 420px; left: 170px; transform: translateX(-50%); width: 140px; }
+        #c-ctrl { top: 420px; left: 350px; transform: translateX(-50%); width: 150px; }
         
-        #c-kubelet { top: 80px; left: calc(100% - 175px); transform: translateX(-50%); width: 150px; border-color: var(--k8s-blue); }
-        #c-proxy { top: 255px; left: calc(100% - 175px); transform: translateX(-50%); width: 150px; }
-        #c-cri { top: 425px; left: calc(100% - 175px); transform: translateX(-50%); width: 150px; border-style: dashed; }
+        #c-kubelet { top: 75px; left: calc(100% - 160px); transform: translateX(-50%); width: 150px; border-color: var(--k8s-blue); }
+        #c-proxy { top: 250px; left: calc(100% - 160px); transform: translateX(-50%); width: 150px; }
+        #c-cri { top: 420px; left: calc(100% - 160px); transform: translateX(-50%); width: 150px; border-style: dashed; }
         
-        #user-icon { position: absolute; top: 255px; left: 15px; width: 56px; height: 56px; background: #13192b; border: 1px solid var(--border-hover); border-radius: 50%; display: flex; flex-direction:column; justify-content: center; align-items: center; font-weight: 700; font-size: 0.72rem; z-index: 15; box-shadow: 0 0 20px rgba(50, 108, 229, 0.3); color: #fff; }
+        #user-icon { position: absolute; top: 250px; left: 12px; width: 56px; height: 56px; background: #13192b; border: 1px solid var(--border-hover); border-radius: 50%; display: flex; flex-direction:column; justify-content: center; align-items: center; font-weight: 700; font-size: 0.72rem; z-index: 15; box-shadow: 0 0 20px rgba(50, 108, 229, 0.3); color: #fff; }
 
         #svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
         .net-line { stroke: rgba(255, 255, 255, 0.12); stroke-width: 2; stroke-dasharray: 4, 4; fill: none; transition: stroke 0.3s; }
@@ -224,58 +230,58 @@
         .chip::after { content: '›'; font-weight: bold; color: var(--k8s-light); opacity: 0; transition: 0.2s; }
         .chip:hover { background: rgba(50, 108, 229, 0.18); border-color: var(--k8s-light); color: #fff; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(50, 108, 229, 0.25); }
         .chip:hover::after { opacity: 1; }
-
         /* --- 3. INTERACTIVE MINI-GAME --- */
         .game-container {
-            background: var(--surface); border: 1px solid var(--border); border-radius: 18px;
-            padding: 32px; box-shadow: 0 20px 45px rgba(0,0,0,0.6); position: relative; overflow: hidden;
+            background: var(--surface); border: 1px solid var(--border); border-radius: 16px;
+            padding: 24px; box-shadow: 0 20px 45px rgba(0,0,0,0.6); position: relative; overflow: hidden;
         }
-        .game-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; border-bottom: 1px solid var(--border); padding-bottom: 18px; flex-wrap: wrap; gap: 12px; }
-        .game-stats { display: flex; gap: 16px; font-size: 0.9rem; font-family: 'Fira Code', monospace; flex-wrap: wrap; }
-        .game-stat-badge { background: #07090f; border: 1px solid var(--border); padding: 7px 14px; border-radius: 10px; color: var(--k8s-light); font-weight: 600; }
+        .game-top-bar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; border-bottom: 1px solid var(--border); padding-bottom: 14px; flex-wrap: wrap; gap: 8px; }
+        .game-stats { display: flex; gap: 8px; font-size: 0.82rem; font-family: 'Fira Code', monospace; align-items: center; flex-wrap: wrap; }
+        .game-stat-badge { background: #07090f; border: 1px solid var(--border); padding: 5px 10px; border-radius: 8px; color: var(--k8s-light); font-weight: 600; font-size: 0.76rem; }
         
         .scenario-box { 
-            background: #090c16; border: 1px solid var(--border); border-radius: 14px; 
-            padding: 22px; margin-bottom: 22px; font-size: 0.95rem; line-height: 1.65; 
+            background: #090c16; border: 1px solid var(--border); border-radius: 12px; 
+            padding: 14px 16px; margin-bottom: 14px; font-size: 0.88rem; line-height: 1.55; 
             border-left: 4px solid var(--accent-orange); 
-            box-shadow: inset 0 0 25px rgba(0,0,0,0.4);
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
         }
-        .scenario-title { font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 1.1rem; display: flex; align-items: center; gap: 10px; }
+        .scenario-title { font-weight: 700; color: #fff; margin-bottom: 6px; font-size: 0.98rem; display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
         
-        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+        .options-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
         @media(max-width: 840px) { .options-grid { grid-template-columns: 1fr; } }
         
         .opt-btn {
-            background: #07090f; border: 1px solid var(--border); padding: 15px 20px; border-radius: 12px;
-            color: var(--text-main); text-align: left; cursor: pointer; font-family: 'Fira Code', monospace; font-size: 0.84rem;
-            transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; justify-content: space-between;
+            background: #07090f; border: 1px solid var(--border); padding: 11px 14px; border-radius: 10px;
+            color: var(--text-main); text-align: left; cursor: pointer; font-family: 'Fira Code', monospace; font-size: 0.78rem;
+            line-height: 1.45; transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1); display: flex; align-items: center; justify-content: space-between;
         }
-        .opt-btn:hover:not(:disabled) { border-color: var(--k8s-light); background: rgba(50, 108, 229, 0.12); transform: translateY(-2px); box-shadow: 0 6px 18px rgba(50, 108, 229, 0.2); }
+        .opt-btn:hover:not(:disabled) { border-color: var(--k8s-light); background: rgba(50, 108, 229, 0.12); transform: translateY(-2px); }
         .opt-btn.correct { background: rgba(16, 185, 129, 0.2) !important; border-color: var(--accent-green) !important; color: #86efac; font-weight: 600; }
         .opt-btn.wrong { background: rgba(239, 68, 68, 0.2) !important; border-color: var(--accent-red) !important; color: #fca5a5; font-weight: 600; }
         
-        .game-feedback { margin-top: 18px; padding: 14px; border-radius: 10px; font-size: 0.9rem; display: none; }
-        .game-feedback.show { display: block; animation: fadeUp 0.3s forwards; }
+        .game-feedback { margin-top: 12px; padding: 10px 14px; border-radius: 8px; font-size: 0.82rem; display: none; line-height: 1.45; }
+        .game-feedback.show { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; animation: fadeUp 0.3s forwards; }
         .game-feedback.success { background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-green); color: #86efac; }
         .game-feedback.error { background: rgba(239, 68, 68, 0.15); border: 1px solid var(--accent-red); color: #fca5a5; }
 
-        .game-hint-box { margin-top: 14px; padding: 12px 16px; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--accent-orange); border-radius: 10px; color: #fde68a; font-size: 0.85rem; display: none; animation: fadeUp 0.25s forwards; }
-        .game-hint-box.show { display: flex; align-items: center; gap: 10px; }
+        .game-hint-box { margin-top: 10px; padding: 10px 14px; background: rgba(245, 158, 11, 0.12); border: 1px solid var(--accent-orange); border-radius: 8px; color: #fde68a; font-size: 0.8rem; display: none; animation: fadeUp 0.25s forwards; }
+        .game-hint-box.show { display: flex; align-items: center; gap: 8px; }
 
-        .game-start-screen { text-align: center; padding: 45px 20px; }
-        .game-start-screen h3 { font-size: 2rem; margin-bottom: 12px; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
-        .game-start-screen p { color: var(--text-muted); margin-bottom: 28px; max-width: 680px; margin-left: auto; margin-right: auto; line-height: 1.7; font-size: 1.02rem; }
+        .game-start-screen { text-align: center; padding: 35px 16px; }
+        .game-start-screen h3 { font-size: 1.7rem; margin-bottom: 10px; color: #fff; font-weight: 800; letter-spacing: -0.5px; }
+        .game-start-screen p { color: var(--text-muted); margin-bottom: 22px; max-width: 620px; margin-left: auto; margin-right: auto; line-height: 1.6; font-size: 0.94rem; }
         .btn-primary-game { 
             background: linear-gradient(135deg, #2563eb, #7c3aed); 
-            color: #fff; border: none; padding: 13px 28px; border-radius: 10px; 
-            font-weight: 700; cursor: pointer; font-size: 0.98rem; transition: 0.25s cubic-bezier(0.16, 1, 0.3, 1); 
-            box-shadow: 0 6px 20px var(--glow); display: inline-flex; align-items: center; gap: 10px; 
+            color: #fff; border: 1px solid rgba(255,255,255,0.25);
+            padding: 12px 28px; border-radius: 10px; font-weight: 700; font-size: 0.94rem;
+            cursor: pointer; transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.4);
         }
-        .btn-primary-game:hover { transform: translateY(-2px) scale(1.03); box-shadow: 0 10px 30px rgba(124, 58, 237, 0.5); }
+        .btn-primary-game:hover { transform: translateY(-2px); box-shadow: 0 14px 35px rgba(37, 99, 235, 0.6); }
 
-        .btn-game-hint { background: rgba(245, 158, 11, 0.15); border: 1px solid var(--accent-orange); color: #fde68a; padding: 6px 12px; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 5px; }
-        .btn-game-hint:hover:not(:disabled) { background: var(--accent-orange); color: #000; }
-        .btn-game-hint:disabled { opacity: 0.4; cursor: not-allowed; }
+        .btn-game-hint { background: rgba(245, 158, 11, 0.15); border: 1px solid rgba(245, 158, 11, 0.4); color: #fde68a; padding: 5px 12px; border-radius: 6px; font-size: 0.76rem; font-weight: 700; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; gap: 4px; }
+        .btn-game-hint:hover:not(:disabled) { background: rgba(245, 158, 11, 0.25); color: #fff; }
+        .btn-game-hint:disabled { opacity: 0.5; cursor: not-allowed; }
 
         .game-report-box { background: #07090f; border: 1px solid var(--border); border-radius: 14px; padding: 22px; margin-top: 22px; text-align: left; line-height: 1.75; font-size: 0.92rem; display: none; animation: fadeUp 0.3s forwards; }
 
@@ -461,65 +467,53 @@
         .ai-settings-btn.secondary { background: rgba(255,255,255,0.06); color: var(--text-muted); border: 1px solid var(--border); }
 
         /* --- MOBILE & RESPONSIVE DESIGN SYSTEM --- */
-        .canvas-mobile-hint {
-            display: none;
-            padding: 8px 14px;
-            background: rgba(50, 108, 229, 0.14);
-            border: 1px solid rgba(96, 165, 250, 0.3);
-            border-radius: 8px;
-            font-size: 0.76rem;
-            color: #93c5fd;
-            font-weight: 600;
-            text-align: center;
-            margin-bottom: 12px;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.3);
-        }
-        .arch-canvas-wrapper {
+        .arch-canvas-container {
             width: 100%;
-            overflow-x: auto;
-            -webkit-overflow-scrolling: touch;
-            border-radius: 14px;
             position: relative;
+            overflow: hidden;
+            border-radius: 14px;
+            background: #080b14;
+            border: 1px solid var(--border);
+            box-shadow: inset 0 0 25px rgba(0,0,0,0.6);
         }
 
         @media (max-width: 1080px) {
             .arch-simulator { grid-template-columns: 1fr; }
-            .canvas-mobile-hint { display: block; }
-            .arch-canvas { min-width: 760px; height: 570px; }
         }
 
         @media (max-width: 768px) {
             body { padding-bottom: 90px; }
-            header { padding: 32px 16px 24px; }
-            header h1 { font-size: 1.65rem; gap: 10px; flex-direction: column; }
-            .k8s-logo { width: 38px; height: 38px; }
-            header p { font-size: 0.88rem; line-height: 1.55; }
+            header { padding: 24px 14px 20px; }
+            header h1 { font-size: 1.5rem; gap: 8px; flex-direction: column; }
+            .k8s-logo { width: 34px; height: 34px; }
+            header p { font-size: 0.84rem; line-height: 1.5; }
 
-            .container { padding: 18px 12px; }
-            .section-title { font-size: 1.15rem; flex-direction: column; align-items: flex-start; gap: 6px; padding-left: 12px; margin-bottom: 16px; }
-            .helper-text { font-size: 0.76rem; }
+            .container { padding: 14px 10px; }
+            .section-title { font-size: 1.1rem; flex-direction: column; align-items: flex-start; gap: 4px; padding-left: 10px; margin-bottom: 14px; }
+            .helper-text { font-size: 0.74rem; }
 
-            .arch-simulator { padding: 14px; border-radius: 14px; gap: 16px; }
+            .arch-simulator { padding: 12px; border-radius: 14px; gap: 14px; }
             .console-panel { border-radius: 12px; }
-            .console-header { padding: 12px 14px; font-size: 0.86rem; }
-            .sim-controls { padding: 10px; gap: 6px; }
-            .btn-sim { padding: 10px 12px; min-height: 44px; font-size: 0.78rem; }
-            .console-logs { padding: 12px; height: 260px; font-size: 0.74rem; }
+            .console-header { padding: 10px 12px; font-size: 0.82rem; }
+            .sim-controls { padding: 8px; gap: 6px; }
+            .btn-sim { padding: 9px 12px; min-height: 40px; font-size: 0.76rem; }
+            .console-logs { padding: 10px; height: 220px; font-size: 0.72rem; }
 
-            .syllabus-grid { grid-template-columns: 1fr; gap: 14px; }
-            .module-card { padding: 16px; border-radius: 14px; }
-            .module-title { font-size: 1.02rem; margin-bottom: 12px; }
+            .syllabus-grid { grid-template-columns: 1fr; gap: 12px; }
+            .module-card { padding: 14px; border-radius: 12px; }
+            .module-title { font-size: 0.98rem; margin-bottom: 10px; }
             .topic-list { gap: 6px; }
-            .chip { padding: 8px 12px; font-size: 0.76rem; min-height: 38px; }
+            .chip { padding: 7px 10px; font-size: 0.74rem; min-height: 36px; }
 
-            .game-container { padding: 16px 12px; border-radius: 14px; }
-            .game-top-bar { flex-direction: column; align-items: stretch; gap: 10px; padding-bottom: 12px; margin-bottom: 16px; }
-            .game-stats { width: 100%; justify-content: space-between; gap: 6px; }
-            .game-stat-badge { padding: 6px 8px; font-size: 0.74rem; text-align: center; flex: 1; }
-            .scenario-box { padding: 14px 12px; margin-bottom: 14px; font-size: 0.86rem; }
-            .scenario-title { font-size: 0.98rem; }
-            .options-grid { grid-template-columns: 1fr; gap: 8px; }
-            .opt-btn { padding: 12px 14px; font-size: 0.78rem; min-height: 48px; }
+            /* Zero-scroll single screen Quiz HUD on Phone */
+            .game-container { padding: 14px 12px; border-radius: 14px; }
+            .game-top-bar { flex-direction: column; align-items: stretch; gap: 8px; padding-bottom: 10px; margin-bottom: 12px; }
+            .game-stats { width: 100%; justify-content: space-between; gap: 4px; }
+            .game-stat-badge { padding: 4px 6px; font-size: 0.72rem; text-align: center; flex: 1; border-radius: 6px; }
+            .scenario-box { padding: 12px 10px; margin-bottom: 10px; font-size: 0.82rem; }
+            .scenario-title { font-size: 0.92rem; gap: 6px; }
+            .options-grid { grid-template-columns: 1fr; gap: 6px; }
+            .opt-btn { padding: 10px 12px; font-size: 0.75rem; min-height: 42px; line-height: 1.35; border-radius: 8px; }
 
             /* Modal Bottom Sheet on Mobile */
             #modal { padding: 0; align-items: flex-end; }
@@ -550,10 +544,13 @@
         }
 
         @media (max-width: 480px) {
-            header h1 { font-size: 1.45rem; }
-            .k8s-logo { width: 32px; height: 32px; }
-            .btn-ask-ai { font-size: 0.74rem; padding: 6px 10px; }
-            .btn-primary-game { width: 100%; justify-content: center; }
+            header h1 { font-size: 1.35rem; }
+            .k8s-logo { width: 30px; height: 30px; }
+            .btn-ask-ai { font-size: 0.72rem; padding: 5px 10px; }
+            .btn-primary-game { width: 100%; justify-content: center; font-size: 0.88rem; padding: 11px 20px; }
+            .game-start-screen { padding: 24px 10px; }
+            .game-start-screen h3 { font-size: 1.4rem; }
+            .game-start-screen p { font-size: 0.85rem; margin-bottom: 16px; }
         }
     </style>
 </head>
@@ -578,35 +575,30 @@
         </div>
 
         <div class="arch-simulator">
-            <div style="display: flex; flex-direction: column; width: 100%; min-width: 0;">
-                <div class="canvas-mobile-hint">
-                    <span>↔️ Swipe / scroll horizontally to explore cluster topology</span>
-                </div>
-                <div class="arch-canvas-wrapper" id="canvas-wrapper">
-                    <div class="arch-canvas" id="canvas">
-                        <svg id="svg-lines">
-                            <line id="line-user-api" class="net-line" />
-                            <line id="line-api-etcd" class="net-line" />
-                            <line id="line-api-sched" class="net-line" />
-                            <line id="line-api-ctrl" class="net-line" />
-                            <line id="line-api-kubelet" class="net-line" />
-                            <line id="line-kubelet-cri" class="net-line" />
-                            <line id="line-proxy-app" class="net-line" />
-                        </svg>
+            <div class="arch-canvas-container" id="canvas-container">
+                <div class="arch-canvas" id="canvas">
+                    <svg id="svg-lines">
+                        <line id="line-user-api" class="net-line" />
+                        <line id="line-api-etcd" class="net-line" />
+                        <line id="line-api-sched" class="net-line" />
+                        <line id="line-api-ctrl" class="net-line" />
+                        <line id="line-api-kubelet" class="net-line" />
+                        <line id="line-kubelet-cri" class="net-line" />
+                        <line id="line-proxy-app" class="net-line" />
+                    </svg>
 
-                        <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
-                        <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
-                        
-                        <div id="user-icon">Kube<br>Ctl</div>
-                        
-                        <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
-                        <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
-                        <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
-                        <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
-                        <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
-                        <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
-                        <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
-                    </div>
+                    <div class="k8s-node control-plane"><div class="node-title">Control Plane</div></div>
+                    <div class="k8s-node worker-node"><div class="node-title">Worker Node</div></div>
+                    
+                    <div id="user-icon">Kube<br>Ctl</div>
+                    
+                    <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
+                    <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
+                    <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
+                    <div class="comp" id="c-ctrl" onclick="inspectComp('ctrl')">controller-manager<span>Reconciliation</span></div>
+                    <div class="comp" id="c-kubelet" onclick="inspectComp('kubelet')">kubelet<span>Node Agent</span></div>
+                    <div class="comp" id="c-proxy" onclick="inspectComp('proxy')">kube-proxy<span>Network Rules</span></div>
+                    <div class="comp" id="c-cri" onclick="inspectComp('cri')">Container Runtime<span>Container Engine</span></div>
                 </div>
             </div>
 
@@ -811,14 +803,48 @@
             finally { if (currentToken === activeSimToken) lockUI(false); }
         }
 
-        function drawLines() {
-            const getCenter = (id) => {
-                const el = document.getElementById(id);
-                if(!el) return {x:0, y:0};
-                const p = canvas.getBoundingClientRect();
-                const r = el.getBoundingClientRect();
-                return { x: r.left - p.left + r.width/2, y: r.top - p.top + r.height/2 };
+        function getCanvasScale() {
+            const canvas = document.getElementById('canvas');
+            if (!canvas) return 1;
+            const transform = window.getComputedStyle(canvas).transform;
+            if (transform && transform !== 'none') {
+                const matrix = transform.match(/^matrix\(([^\)]+)\)$/);
+                if (matrix) {
+                    const values = matrix[1].split(',');
+                    return parseFloat(values[0]) || 1;
+                }
+            }
+            return 1;
+        }
+
+        function updateCanvasScale() {
+            const container = document.getElementById('canvas-container');
+            const canvas = document.getElementById('canvas');
+            if (!container || !canvas) return;
+            const containerWidth = container.clientWidth;
+            const baseWidth = 760;
+            const baseHeight = 570;
+            const scale = Math.min(1, containerWidth / baseWidth);
+            canvas.style.transform = `scale(${scale})`;
+            canvas.style.transformOrigin = 'top left';
+            container.style.height = `${baseHeight * scale}px`;
+            drawLines();
+        }
+
+        function getCenter(id) {
+            const el = document.getElementById(id);
+            const canvas = document.getElementById('canvas');
+            if (!el || !canvas) return { x: 0, y: 0 };
+            const scale = getCanvasScale();
+            const p = canvas.getBoundingClientRect();
+            const r = el.getBoundingClientRect();
+            return {
+                x: (r.left - p.left + r.width / 2) / scale,
+                y: (r.top - p.top + r.height / 2) / scale
             };
+        }
+
+        function drawLines() {
             const pairs = [
                 ['user-icon', 'c-api', 'line-user-api'], ['c-api', 'c-etcd', 'line-api-etcd'],
                 ['c-api', 'c-sched', 'line-api-sched'], ['c-api', 'c-ctrl', 'line-api-ctrl'],
@@ -831,8 +857,9 @@
                 if(line) { line.setAttribute('x1', p1.x); line.setAttribute('y1', p1.y); line.setAttribute('x2', p2.x); line.setAttribute('y2', p2.y); }
             });
         }
-        window.addEventListener('resize', drawLines);
-        drawLines();
+        window.addEventListener('resize', updateCanvasScale);
+        window.addEventListener('DOMContentLoaded', updateCanvasScale);
+        setTimeout(updateCanvasScale, 100);
 
         function log(msg, type='', stepNum = null) {
             const div = document.createElement('div');
@@ -859,18 +886,11 @@
 
         async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1200, token, stepNum = null) {
             if (token !== activeSimToken) throw 'Cancelled';
-            const getC = (id) => {
-                const el = document.getElementById(id);
-                if(!el) return { x: 0, y: 0 };
-                const p = canvas.getBoundingClientRect();
-                const r = el.getBoundingClientRect();
-                return { x: r.left - p.left + r.width / 2, y: r.top - p.top + r.height / 2 };
-            };
-            const start = getC(fromId);
-            const end = getC(toId);
+            const start = getCenter(fromId);
+            const end = getCenter(toId);
             const actualDuration = duration * currentSpeed;
 
-            // Create smooth traveling message pill
+            // Create smooth traveling message pill inside canvas space
             const pill = document.createElement('div');
             pill.className = 'msg-pill';
             pill.style.background = color;

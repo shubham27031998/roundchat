@@ -126,16 +126,48 @@
         #user-icon { position: absolute; top: 255px; left: 15px; width: 56px; height: 56px; background: #13192b; border: 1px solid var(--border-hover); border-radius: 50%; display: flex; flex-direction:column; justify-content: center; align-items: center; font-weight: 700; font-size: 0.72rem; z-index: 15; box-shadow: 0 0 20px rgba(50, 108, 229, 0.3); color: #fff; }
 
         #svg-lines { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: 1; pointer-events: none; }
-        .net-line { stroke: rgba(255, 255, 255, 0.15); stroke-width: 2; stroke-dasharray: 4, 4; fill: none; transition: 0.3s; }
-        .net-line.active { stroke: var(--k8s-light); filter: drop-shadow(0 0 8px var(--k8s-blue)); stroke-dasharray: none; stroke-width: 2.5; }
+        .net-line { stroke: rgba(255, 255, 255, 0.12); stroke-width: 2; stroke-dasharray: 4, 4; fill: none; transition: stroke 0.3s; }
+        .net-line.active { stroke: var(--k8s-light); filter: drop-shadow(0 0 10px var(--k8s-blue)); stroke-dasharray: none; stroke-width: 2.5; }
+        .laser-particle { fill: #fff; filter: drop-shadow(0 0 10px #60a5fa); }
 
+        /* Sleek Step Numbered Packet Pill */
         .msg-pill {
-            position: absolute; background: linear-gradient(135deg, #1d4ed8, #2563eb); color: #fff; padding: 6px 14px;
-            border-radius: 20px; font-size: 0.78rem; font-weight: 700; font-family: 'Fira Code', monospace;
-            box-shadow: 0 6px 25px var(--glow); z-index: 50; white-space: nowrap; pointer-events: none;
-            opacity: 0; transition: transform ease-in-out, opacity 0.3s;
-            display: flex; align-items: center; gap: 6px; border: 1px solid rgba(255,255,255,0.25);
+            position: absolute;
+            transform: translate(-50%, -50%) scale(0.95);
+            color: #fff; padding: 6px 14px 6px 8px;
+            border-radius: 50px; font-size: 0.78rem; font-weight: 700; font-family: 'Fira Code', monospace;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.8), 0 0 25px var(--glow);
+            z-index: 50; white-space: nowrap; pointer-events: none;
+            opacity: 0;
+            display: inline-flex; align-items: center; gap: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(8px);
+            will-change: left, top, opacity;
+            transition: opacity 0.25s ease;
         }
+        .pill-step-num {
+            background: rgba(0, 0, 0, 0.55);
+            color: #fff; border: 1px solid rgba(255, 255, 255, 0.35);
+            width: 22px; height: 22px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-size: 0.72rem; font-weight: 800; font-family: 'Fira Code', monospace;
+            box-shadow: 0 0 8px rgba(255,255,255,0.25);
+            flex-shrink: 0;
+        }
+        .pill-text { letter-spacing: 0.2px; text-shadow: 0 1px 3px rgba(0,0,0,0.6); }
+
+        /* Step Tag on active node component */
+        .comp-step-tag {
+            position: absolute; top: -11px; right: 10px;
+            background: var(--k8s-blue); color: #fff;
+            border: 1px solid rgba(255,255,255,0.4);
+            font-size: 0.65rem; font-weight: 800; font-family: 'Fira Code', monospace;
+            padding: 2px 8px; border-radius: 10px;
+            box-shadow: 0 0 12px rgba(50, 108, 229, 0.8);
+            animation: popBadge 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 20;
+        }
+        @keyframes popBadge { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: scale(1); } }
 
         /* Console Panels */
         .console-panel { display: flex; flex-direction: column; background: #07090f; border-radius: 14px; border: 1px solid var(--border); overflow: hidden; }
@@ -153,10 +185,19 @@
         .btn-sim.red:hover { border-color: var(--accent-red); }
 
         .console-logs { padding: 16px; font-family: 'Fira Code', monospace; font-size: 0.78rem; height: 360px; overflow-y: auto; display: flex; flex-direction: column; gap: 8px; background: #05070d; }
-        .log-entry { opacity: 0; transform: translateY(5px); animation: fadeUp 0.3s forwards; color: var(--text-muted); line-height: 1.5; }
-        .log-entry span { color: var(--k8s-light); }
-        .log-entry.success { color: #86efac; font-weight: bold; }
-        .log-entry.danger { color: #fca5a5; font-weight: bold; }
+        .log-entry { opacity: 0; transform: translateY(5px); animation: fadeUp 0.3s forwards; color: var(--text-muted); line-height: 1.5; display: flex; align-items: baseline; gap: 8px; }
+        .log-step-badge {
+            background: rgba(50, 108, 229, 0.22); border: 1px solid rgba(96, 165, 250, 0.4);
+            color: var(--k8s-light); font-size: 0.68rem; font-weight: 800; padding: 2px 7px;
+            border-radius: 6px; letter-spacing: 0.5px; font-family: 'Fira Code', monospace;
+            flex-shrink: 0;
+        }
+        .log-step-arrow { color: var(--k8s-light); font-weight: bold; flex-shrink: 0; }
+        .log-entry span.cmd { color: #86efac; font-weight: 600; }
+        .log-entry.success { color: #86efac; font-weight: 600; }
+        .log-entry.success .log-step-badge { background: rgba(16, 185, 129, 0.2); border-color: rgba(16, 185, 129, 0.5); color: #86efac; }
+        .log-entry.danger { color: #fca5a5; font-weight: 600; }
+        .log-entry.danger .log-step-badge { background: rgba(239, 68, 68, 0.2); border-color: rgba(239, 68, 68, 0.5); color: #fca5a5; }
 
         /* --- 2. SYLLABUS MATRIX --- */
         .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 24px; }
@@ -652,6 +693,8 @@
             lockUI(false);
             setActive(null);
             document.querySelectorAll('.msg-pill').forEach(p => p.remove());
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
+            document.querySelectorAll('.laser-particle').forEach(l => l.remove());
             log("Simulation stopped and reset by user.", "danger");
         }
 
@@ -688,10 +731,11 @@
         window.addEventListener('resize', drawLines);
         drawLines();
 
-        function log(msg, type='') {
+        function log(msg, type='', stepNum = null) {
             const div = document.createElement('div');
             div.className = `log-entry ${type}`;
-            div.innerHTML = `> ${msg}`;
+            const stepHtml = stepNum ? `<span class="log-step-badge">Step ${stepNum}</span>` : `<span class="log-step-arrow">›</span>`;
+            div.innerHTML = `${stepHtml} <span>${msg}</span>`;
             logs.appendChild(div);
             logs.scrollTop = logs.scrollHeight;
         }
@@ -710,30 +754,96 @@
             }, ms * currentSpeed);
         });
 
-        async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1400, token) {
+        async function sendData(fromId, toId, text, color = 'var(--k8s-blue)', duration = 1200, token, stepNum = null) {
             if (token !== activeSimToken) throw 'Cancelled';
             const getC = (id) => {
+                const el = document.getElementById(id);
+                if(!el) return { x: 0, y: 0 };
                 const p = canvas.getBoundingClientRect();
-                const r = document.getElementById(id).getBoundingClientRect();
-                return { x: r.left - p.left + r.width/2, y: r.top - p.top + r.height/2 };
+                const r = el.getBoundingClientRect();
+                return { x: r.left - p.left + r.width / 2, y: r.top - p.top + r.height / 2 };
             };
-            const start = getC(fromId); const end = getC(toId);
+            const start = getC(fromId);
+            const end = getC(toId);
             const actualDuration = duration * currentSpeed;
 
+            // Create smooth traveling message pill
             const pill = document.createElement('div');
             pill.className = 'msg-pill';
             pill.style.background = color;
-            pill.innerHTML = `<span>⚡</span> ${text}`;
-            pill.style.transform = `translate(${start.x - 70}px, ${start.y - 15}px)`;
+            pill.style.left = `${start.x}px`;
+            pill.style.top = `${start.y}px`;
+            
+            const stepDisplay = stepNum ? `<span class="pill-step-num">${stepNum}</span>` : `<span class="pill-step-num">⚡</span>`;
+            pill.innerHTML = `${stepDisplay}<span class="pill-text">${escapeHtml(text)}</span>`;
             canvas.appendChild(pill);
-            pill.getBoundingClientRect();
-            pill.style.opacity = '1';
-            pill.style.transition = `transform ${actualDuration}ms ease-in-out, opacity 0.3s`;
-            pill.style.transform = `translate(${end.x - 70}px, ${end.y - 15}px)`;
 
-            await sleep(actualDuration, token);
+            // Create laser SVG particle on the network wire
+            const svg = document.getElementById('svg-lines');
+            let laser = null;
+            if (svg) {
+                laser = document.createElementNS("http://www.w3.org/2000/svg", "circle");
+                laser.setAttribute("cx", start.x);
+                laser.setAttribute("cy", start.y);
+                laser.setAttribute("r", "5");
+                laser.setAttribute("class", "laser-particle");
+                svg.appendChild(laser);
+            }
+
+            // Animate using high-framerate requestAnimationFrame with smooth cubic-bezier easing
+            const startTime = performance.now();
+            await new Promise((resolve, reject) => {
+                requestAnimationFrame(() => { pill.style.opacity = '1'; });
+
+                function frame(now) {
+                    if (token !== activeSimToken) {
+                        pill.remove();
+                        if (laser) laser.remove();
+                        reject('Cancelled');
+                        return;
+                    }
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / actualDuration, 1);
+                    // Smooth EaseInOutCubic curve
+                    const ease = progress < 0.5
+                        ? 4 * progress * progress * progress
+                        : 1 - Math.pow(-2 * progress + 2, 3) / 2;
+
+                    const curX = start.x + (end.x - start.x) * ease;
+                    const curY = start.y + (end.y - start.y) * ease;
+
+                    pill.style.left = `${curX}px`;
+                    pill.style.top = `${curY}px`;
+
+                    if (laser) {
+                        laser.setAttribute("cx", curX);
+                        laser.setAttribute("cy", curY);
+                    }
+
+                    if (progress < 1) {
+                        requestAnimationFrame(frame);
+                    } else {
+                        resolve();
+                    }
+                }
+                requestAnimationFrame(frame);
+            });
+
+            if (laser) laser.remove();
+
+            // Destination impact badge & highlight
+            const toEl = document.getElementById(toId);
+            if (toEl && stepNum) {
+                document.querySelectorAll('.comp-step-tag').forEach(tag => tag.remove());
+                const tag = document.createElement('div');
+                tag.className = 'comp-step-tag';
+                tag.innerText = `Step ${stepNum}`;
+                toEl.appendChild(tag);
+            }
+
+            // Fade out packet
             pill.style.opacity = '0';
-            setTimeout(() => pill.remove(), 400);
+            setTimeout(() => pill.remove(), 250);
         }
 
         function lockUI(lock) {
@@ -742,127 +852,145 @@
 
         // --- SIMULATIONS ---
         async function runCreate(token) {
-            log("1. User runs: <span>kubectl run web --image=nginx</span>");
-            await sendData('user-icon', 'c-api', "POST /api/v1/pods", 'var(--k8s-blue)', 1200, token);
+            log("User runs: <span class='cmd'>kubectl run web --image=nginx</span>", "", 1);
+            await sendData('user-icon', 'c-api', "POST /api/v1/pods", 'var(--k8s-blue)', 1100, token, 1);
             setActive('c-api', 'line-user-api');
-            log("-> API Server authenticates user & validates YAML/JSON syntax.");
-            await sleep(1000, token);
+            log("API Server authenticates user & validates manifest schema.");
+            await sleep(900, token);
 
-            log("2. API Server records initial Pod spec as 'Pending' in etcd database.");
-            await sendData('c-api', 'c-etcd', "Save State: Pending", 'var(--accent-purple)', 1000, token);
+            log("API Server records new Pod spec as 'Pending' in etcd.", "", 2);
+            await sendData('c-api', 'c-etcd', "Save State: Pending", 'var(--accent-purple)', 900, token, 2);
             setActive('c-etcd', 'line-api-etcd');
             await sleep(800, token);
 
-            log("3. Scheduler watches API. Discovers unassigned Pod with no node name.");
-            await sendData('c-api', 'c-sched', "Watch Event Trigger", 'var(--k8s-blue)', 1000, token);
+            log("Scheduler watches API. Discovers unassigned Pod with no node assigned.", "", 3);
+            await sendData('c-api', 'c-sched', "Watch: Unassigned Pod", 'var(--k8s-blue)', 900, token, 3);
             setActive('c-sched', 'line-api-sched');
-            log("-> Scheduler checks node resource capacity, taints, and affinities.");
-            await sleep(1400, token);
+            log("Scheduler filters & scores worker nodes (affinity, taints, capacity).");
+            await sleep(1200, token);
 
-            log("4. Scheduler selects Worker Node and posts binding decision.");
-            await sendData('c-sched', 'c-api', "Bind Pod -> Worker01", 'var(--k8s-blue)', 1000, token);
-            await sendData('c-api', 'c-etcd', "Update: Node Assigned", 'var(--accent-purple)', 1000, token);
+            log("Scheduler selects worker node and posts binding decision back to API.", "", 4);
+            await sendData('c-sched', 'c-api', "Bind Pod -> Worker01", 'var(--k8s-blue)', 900, token, 4);
+            await sendData('c-api', 'c-etcd', "Update: Node Assigned", 'var(--accent-purple)', 900, token, 4);
             setActive('c-etcd', 'line-api-etcd');
             await sleep(800, token);
 
-            log("5. Kubelet on Worker Node detects new Pod scheduled to it.");
-            await sendData('c-api', 'c-kubelet', "Watch: Assigned Pod", 'var(--accent-green)', 1200, token);
+            log("Kubelet on Worker Node detects new Pod scheduled to its node.", "", 5);
+            await sendData('c-api', 'c-kubelet', "Watch: Assigned Pod", 'var(--accent-green)', 1100, token, 5);
             setActive('c-kubelet', 'line-api-kubelet');
-            await sleep(1000, token);
+            await sleep(900, token);
 
-            log("6. Kubelet commands Container Runtime (CRI) to pull image & spin container.");
-            await sendData('c-kubelet', 'c-cri', "CRI: Start Container", 'var(--accent-green)', 1000, token);
+            log("Kubelet commands Container Runtime (CRI) to pull image & start container.", "", 6);
+            await sendData('c-kubelet', 'c-cri', "CRI: Start Container", 'var(--accent-green)', 900, token, 6);
             setActive('c-cri', 'line-kubelet-cri', 'active');
-            log("SUCCESS: Pod status updated to Running in etcd.", 'success');
+            log("SUCCESS: Container initialized & Pod status updated to 'Running' in etcd.", 'success');
             await sleep(1500, token);
             setActive(null);
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
         }
 
         async function runDelete(token) {
-            log("1. User runs: <span>kubectl delete pod web</span>");
-            await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 1200, token);
+            log("User runs: <span class='cmd'>kubectl delete pod web</span>", "", 1);
+            await sendData('user-icon', 'c-api', "DELETE /pods/web", 'var(--accent-red)', 1100, token, 1);
             setActive('c-api', 'line-user-api');
             await sleep(800, token);
-            log("2. API Server updates state in etcd to 'Terminating'.");
-            await sendData('c-api', 'c-etcd', "State: Terminating", 'var(--accent-purple)', 1000, token);
+
+            log("API Server updates Pod state in etcd to 'Terminating'.", "", 2);
+            await sendData('c-api', 'c-etcd', "State: Terminating", 'var(--accent-purple)', 900, token, 2);
             setActive('c-etcd', 'line-api-etcd');
             await sleep(800, token);
-            log("3. Kubelet receives termination signal for the local pod.");
-            await sendData('c-api', 'c-kubelet', "Watch: Terminate", 'var(--accent-red)', 1200, token);
+
+            log("Kubelet receives termination watch event for the local pod.", "", 3);
+            await sendData('c-api', 'c-kubelet', "Watch: Terminate", 'var(--accent-red)', 1100, token, 3);
             setActive('c-kubelet', 'line-api-kubelet');
-            await sleep(1000, token);
-            log("4. Kubelet invokes Container Runtime to stop container (Grace period).");
-            await sendData('c-kubelet', 'c-cri', "CRI: Stop Container", 'var(--accent-red)', 1000, token);
+            await sleep(900, token);
+
+            log("Kubelet instructs Container Runtime (CRI) to send SIGTERM/SIGKILL (Grace period).", "", 4);
+            await sendData('c-kubelet', 'c-cri', "CRI: Stop Container", 'var(--accent-red)', 900, token, 4);
             setActive('c-cri', 'line-kubelet-cri');
-            await sleep(1400, token);
-            log("5. Container terminated. Kubelet sends final removal notice to API.");
-            await sendData('c-kubelet', 'c-api', "Confirm Deletion", 'var(--text-muted)', 1200, token);
-            await sendData('c-api', 'c-etcd', "Purge from etcd", 'var(--accent-purple)', 1000, token);
-            log("SUCCESS: Pod deleted completely.", 'success');
+            await sleep(1200, token);
+
+            log("Container terminated. Kubelet sends final removal notice to API Server.", "", 5);
+            await sendData('c-kubelet', 'c-api', "Confirm Deletion", 'var(--text-muted)', 1100, token, 5);
+            await sendData('c-api', 'c-etcd', "Purge from etcd", 'var(--accent-purple)', 900, token, 5);
+            log("SUCCESS: Pod deleted completely from cluster state.", 'success');
             await sleep(1500, token);
             setActive(null);
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
         }
 
         async function runCrash(token) {
             setActive('c-cri', 'line-kubelet-cri', 'error');
-            log("ALERT: Container process crashed unexpectedly (Exit Code 1).", 'danger');
-            await sendData('c-cri', 'c-kubelet', "Container Crash", 'var(--accent-red)', 1000, token);
+            log("ALERT: Container process crashed unexpectedly (Exit Code 1).", 'danger', 1);
+            await sendData('c-cri', 'c-kubelet', "Container Crash", 'var(--accent-red)', 900, token, 1);
             setActive('c-kubelet', 'line-kubelet-cri');
-            await sleep(1000, token);
-            log("Kubelet updates Pod status in API server to Failed/CrashLoopBackOff.");
-            await sendData('c-kubelet', 'c-api', "Status: Failed", 'var(--accent-red)', 1200, token);
-            await sendData('c-api', 'c-etcd', "Save Failed State", 'var(--accent-purple)', 800, token);
-            await sleep(1000, token);
-            log("Controller Manager (ReplicaSet Controller) notes state mismatch: Desired 3, Active 2.");
-            await sendData('c-api', 'c-ctrl', "Reconciliation Loop", 'var(--accent-orange)', 1000, token);
+            await sleep(900, token);
+
+            log("Kubelet updates Pod status in API Server to Failed / CrashLoopBackOff.", "", 2);
+            await sendData('c-kubelet', 'c-api', "Status: Failed", 'var(--accent-red)', 1100, token, 2);
+            await sendData('c-api', 'c-etcd', "Save Failed State", 'var(--accent-purple)', 800, token, 2);
+            await sleep(900, token);
+
+            log("Controller Manager (ReplicaSet Controller) notes state mismatch: Desired 3, Active 2.", "", 3);
+            await sendData('c-api', 'c-ctrl', "Reconciliation Loop", 'var(--accent-orange)', 900, token, 3);
             setActive('c-ctrl', 'line-api-ctrl');
-            await sleep(1200, token);
-            log("Controller Manager requests API Server to create a new replacement replica.");
-            await sendData('c-ctrl', 'c-api', "POST /pods (Replacement)", 'var(--k8s-blue)', 1000, token);
+            await sleep(1100, token);
+
+            log("Controller Manager requests API Server to create a new replacement replica.", "", 4);
+            await sendData('c-ctrl', 'c-api', "POST /pods (Replacement)", 'var(--k8s-blue)', 900, token, 4);
             setActive('c-api', 'line-api-ctrl');
             log("SUCCESS: Self-healing triggered. New pod scheduled automatically.", 'success');
             await sleep(1500, token);
             setActive(null);
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
         }
 
         async function runDrain(token) {
-            log("1. Admin runs: <span>kubectl drain worker-01 --ignore-daemonsets</span>");
-            await sendData('user-icon', 'c-api', "POST /cordon & Evict", 'var(--accent-orange)', 1200, token);
+            log("Admin runs: <span class='cmd'>kubectl drain worker-01 --ignore-daemonsets</span>", "", 1);
+            await sendData('user-icon', 'c-api', "POST /cordon & Evict", 'var(--accent-orange)', 1100, token, 1);
             setActive('c-api', 'line-user-api');
-            await sleep(1000, token);
-            log("2. API Server marks Worker Node as Cordoned (Unschedulable).");
-            await sendData('c-api', 'c-etcd', "State: Unschedulable", 'var(--accent-purple)', 1000, token);
+            await sleep(900, token);
+
+            log("API Server marks Worker Node as Cordoned (Unschedulable) in etcd.", "", 2);
+            await sendData('c-api', 'c-etcd', "State: Unschedulable", 'var(--accent-purple)', 900, token, 2);
             setActive('c-etcd', 'line-api-etcd');
-            await sleep(1000, token);
-            log("3. Controller Manager triggers graceful eviction of pods running on node.");
-            await sendData('c-api', 'c-ctrl', "Eviction Controller", 'var(--accent-orange)', 1000, token);
+            await sleep(900, token);
+
+            log("Controller Manager triggers graceful eviction of pods running on node.", "", 3);
+            await sendData('c-api', 'c-ctrl', "Eviction Controller", 'var(--accent-orange)', 900, token, 3);
             setActive('c-ctrl', 'line-api-ctrl');
-            await sleep(1200, token);
-            log("4. Kubelet receives eviction notice and terminates local pods safely.");
-            await sendData('c-ctrl', 'c-kubelet', "Evict Pods", 'var(--accent-red)', 1200, token);
+            await sleep(1100, token);
+
+            log("Kubelet receives eviction notice and terminates local pods safely.", "", 4);
+            await sendData('c-ctrl', 'c-kubelet', "Evict Pods", 'var(--accent-red)', 1100, token, 4);
             setActive('c-kubelet', 'line-api-kubelet');
-            await sleep(1000, token);
-            log("5. Scheduler picks up evicted pods and reschedules them onto healthy nodes.");
-            await sendData('c-kubelet', 'c-sched', "Reschedule Pods", 'var(--k8s-blue)', 1200, token);
+            await sleep(900, token);
+
+            log("Scheduler picks up evicted pods and reschedules them onto healthy nodes.", "", 5);
+            await sendData('c-kubelet', 'c-sched', "Reschedule Pods", 'var(--k8s-blue)', 1100, token, 5);
             setActive('c-sched', 'line-api-sched');
             log("SUCCESS: Node successfully drained and safely isolated for maintenance.", 'success');
             await sleep(1500, token);
             setActive(null);
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
         }
 
         async function runProxy(token) {
-            log("1. External traffic hits ClusterIP Service IP (e.g., 10.96.0.10:80).");
-            await sendData('user-icon', 'c-proxy', "GET /service-ip", 'var(--k8s-blue)', 1200, token);
+            log("External client traffic hits ClusterIP Service IP (10.96.0.10:80).", "", 1);
+            await sendData('user-icon', 'c-proxy', "GET /service-ip", 'var(--k8s-blue)', 1100, token, 1);
             setActive('c-proxy', 'line-user-api');
-            await sleep(1000, token);
-            log("2. kube-proxy (running on node via iptables/IPVS rules) intercepts packet.");
-            await sendData('c-proxy', 'c-cri', "DNAT & Load Balance", 'var(--accent-green)', 1200, token);
+            await sleep(900, token);
+
+            log("kube-proxy intercepts packet and executes DNAT / IPVS load balancing.", "", 2);
+            await sendData('c-proxy', 'c-cri', "DNAT & Load Balance", 'var(--accent-green)', 1100, token, 2);
             setActive('c-cri', 'line-proxy-app', 'active');
-            await sleep(1200, token);
-            log("3. Packet is forwarded directly to the backend Container Pod IP & Port.");
-            log("SUCCESS: Traffic successfully routed to container endpoint.", 'success');
+            await sleep(1100, token);
+
+            log("Packet is forwarded directly to the backend Pod Container IP & Port.", "", 3);
+            log("SUCCESS: Traffic successfully routed to live container endpoint.", 'success');
             await sleep(1500, token);
             setActive(null);
+            document.querySelectorAll('.comp-step-tag').forEach(t => t.remove());
         }
 
         const inspectors = {

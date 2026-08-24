@@ -96,32 +96,40 @@
 
         /* --- SYLLABUS GRID --- */
         .syllabus-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 15px; }
-        .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; cursor: pointer; transition: all 0.3s; }
+        .module-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; padding: 20px; transition: all 0.3s; }
         .module-card:hover { border-color: var(--k8s-blue); transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
         .module-title { font-size: 1.1rem; font-weight: 700; color: #fff; margin-bottom: 12px; }
         .topic-list { display: flex; flex-wrap: wrap; gap: 6px; }
-        .chip { background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 4px 10px; border-radius: 4px; font-size: 0.75rem; color: var(--text-muted); transition: 0.2s; }
-        .module-card:hover .chip { background: rgba(50, 108, 229, 0.1); border-color: rgba(50, 108, 229, 0.3); color: var(--k8s-light); }
+        
+        /* Clickable Chips */
+        .chip { 
+            background: rgba(255,255,255,0.03); border: 1px solid var(--border); padding: 5px 12px; 
+            border-radius: 6px; font-size: 0.78rem; color: var(--text-muted); transition: all 0.2s; cursor: pointer;
+            display: inline-flex; align-items: center; gap: 5px;
+        }
+        .chip::after { content: '›'; font-weight: bold; color: var(--k8s-light); opacity: 0; transition: 0.2s; }
+        .chip:hover { background: rgba(50, 108, 229, 0.15); border-color: var(--k8s-light); color: #fff; transform: translateY(-1px); }
+        .chip:hover::after { opacity: 1; }
 
         /* Modal */
         #modal { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); z-index: 1000; display: none; justify-content: center; align-items: center; padding: 20px; opacity: 0; transition: 0.2s; }
         #modal.show { display: flex; opacity: 1; }
-        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 850px; max-height: 85vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.2s; }
+        .modal-content { background: var(--bg); border: 1px solid var(--border); border-radius: 12px; width: 100%; max-width: 850px; max-height: 85vh; display: flex; flex-direction: column; transform: scale(0.95); transition: 0.2s; box-shadow: 0 20px 50px rgba(0,0,0,0.8); }
         #modal.show .modal-content { transform: scale(1); }
         .modal-header { padding: 15px 25px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; background: var(--surface); border-radius: 12px 12px 0 0; }
-        .modal-header h2 { font-size: 1.3rem; color: var(--k8s-light); }
+        .modal-header h2 { font-size: 1.3rem; color: var(--k8s-light); display: flex; align-items: center; gap: 10px; }
         .close-btn { background: transparent; border: none; color: var(--text-muted); font-size: 1.5rem; cursor: pointer; transition: 0.2s; }
         .close-btn:hover { color: #ef4444; }
         .modal-body { padding: 25px; overflow-y: auto; display: grid; gap: 20px; }
         
-        .concept { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; }
-        .concept-title { font-weight: 700; color: #fff; margin-bottom: 8px; font-size: 1.05rem; display: flex; align-items: center; gap: 8px; }
+        .concept { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 20px; animation: fadeUp 0.3s ease; }
+        .concept-title { font-weight: 700; color: #fff; margin-bottom: 10px; font-size: 1.15rem; display: flex; align-items: center; gap: 8px; }
         .concept-title::before { content: '■'; color: var(--k8s-blue); font-size: 0.7rem; }
-        .concept-desc { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 12px; }
-        .code { background: #000; padding: 12px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.8rem; color: var(--accent-green); white-space: pre-wrap; border: 1px solid #27272a; }
+        .concept-desc { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 15px; line-height: 1.6; }
+        .code { background: #000; padding: 15px; border-radius: 6px; font-family: 'Fira Code', monospace; font-size: 0.82rem; color: var(--accent-green); white-space: pre-wrap; border: 1px solid #27272a; line-height: 1.5; }
 
         @keyframes spin { 100% { transform: rotate(360deg); } }
-        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
@@ -133,7 +141,7 @@
             </svg>
             CKA Visual Learning Hub
         </h1>
-        <p>Master Kubernetes Architecture and CKA concepts with readable, slow-motion simulations and interactive component inspectors.</p>
+        <p>Master Kubernetes Architecture and CKA concepts with readable, slow-motion simulations and interactive subtopic study guides.</p>
     </header>
 
     <div class="container">
@@ -161,7 +169,6 @@
                 
                 <div id="user-icon">Kube<br>Ctl</div>
                 
-                <!-- Components with Click Inspection -->
                 <div class="comp" id="c-api" onclick="inspectComp('api')">kube-apiserver<span>Front Door & REST</span></div>
                 <div class="comp" id="c-etcd" onclick="inspectComp('etcd')">etcd<span>Cluster DB State</span></div>
                 <div class="comp" id="c-sched" onclick="inspectComp('sched')">kube-scheduler<span>Placement Engine</span></div>
@@ -201,7 +208,10 @@
         <br><br><br>
 
         <!-- SECTION 2: ULTIMATE CKA SYLLABUS -->
-        <div class="section-title">2. Complete CKA Syllabus Masterclass (Exam Ready)</div>
+        <div class="section-title">
+            <span>2. Complete CKA Syllabus Masterclass (Exam Ready)</span>
+            <span class="helper-text">👆 Click any subtopic chip below for deep dive & exam commands</span>
+        </div>
         <div class="syllabus-grid" id="syllabus-grid"></div>
 
     </div>
@@ -557,87 +567,87 @@
 
 
         // ==========================================
-        // 3. ULTIMATE CKA SYLLABUS DATA
+        // 3. ULTIMATE CKA SYLLABUS DATA (INDIVIDUAL TOPICS)
         // ==========================================
         const syllabus = [
             {
                 mod: "Cluster Architecture, Installation & Upgrades",
-                topics: ["Kubeadm", "Upgrades", "ETCD Backup", "Static Pods", "RBAC"],
                 data: [
-                    { t: "Kubeadm Cluster Lifecycle", d: "Provisioning clusters, bootstrapping nodes with token generation, and cluster configuration.", c: "kubeadm init --pod-network-cidr=10.244.0.0/16\nkubeadm join <control-plane-ip>:6443 --token <token>" },
-                    { t: "Kubeadm Cluster Upgrades", d: "Step-by-step upgrade procedure for control plane nodes first, followed by worker nodes.", c: "kubectl drain controlplane --ignore-daemonsets\napt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
-                    { t: "ETCD Backup & Restore", d: "Taking point-in-time snapshots and restoring state during cluster emergencies.", c: "ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
-                    { t: "Role-Based Access Control (RBAC)", d: "Managing fine-grained permissions using Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" }
+                    { t: "Kubeadm", d: "Provisioning clusters, bootstrapping nodes with token generation, and cluster configuration using kubeadm.", c: "kubeadm init --pod-network-cidr=10.244.0.0/16\nkubeadm join <control-plane-ip>:6443 --token <token> --discovery-token-ca-cert-hash <hash>" },
+                    { t: "Upgrades", d: "Step-by-step upgrade procedure for control plane nodes first, followed by worker node upgrades.", c: "kubectl drain controlplane --ignore-daemonsets\napt-get install -y kubeadm=1.28.0-00\nkubeadm upgrade apply v1.28.0\napt-get install -y kubelet=1.28.0-00\nsystemctl restart kubelet\nkubectl uncordon controlplane" },
+                    { t: "ETCD Backup", d: "Taking point-in-time snapshots and restoring state during cluster emergencies using etcdctl.", c: "ETCDCTL_API=3 etcdctl snapshot save /backup/etcd-snapshot.db \\\n  --endpoints=https://127.0.0.1:2379 \\\n  --cacert=/etc/kubernetes/pki/etcd/ca.crt \\\n  --cert=/etc/kubernetes/pki/etcd/server.crt \\\n  --key=/etc/kubernetes/pki/etcd/server.key" },
+                    { t: "Static Pods", d: "Pods managed directly by the kubelet daemon on a specific node, without the API server observing them directly.", c: "# Configured via staticPodPath in kubelet service config:\nstaticPodPath: /etc/kubernetes/manifests" },
+                    { t: "RBAC", d: "Managing fine-grained permissions using Roles, ClusterRoles, RoleBindings, and ClusterRoleBindings.", c: "kubectl create role pod-reader --verb=get,list,watch --resource=pods\nkubectl create rolebinding read-pods --role=pod-reader --user=developer" }
                 ]
             },
             {
                 mod: "Workloads & Scheduling",
-                topics: ["Deployments", "DaemonSets", "Taints/Tolerations", "Affinity", "Resource Quotas"],
                 data: [
-                    { t: "Deployments & Rollouts", d: "Declarative application deployments supporting zero-downtime rolling updates and instant rollbacks.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
-                    { t: "Taints & Tolerations", d: "Node taints repel unauthorized pods unless matching tolerations are defined in pod specs.", c: "kubectl taint node worker-1 workload=gpu:NoSchedule\n# In Pod Spec:\ntolerations:\n- key: \"workload\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" },
-                    { t: "Node Affinity & Anti-Affinity", d: "Advanced scheduling constraints based on node labels to attract or repel pod placement.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: topology.kubernetes.io/zone\n          operator: In\n          values: [zone-a]" },
-                    { t: "Resource Requests & Limits", d: "CPU and memory guarantees (requests) and hard ceilings (limits) to prevent resource starvation.", c: "resources:\n  requests:\n    memory: \"128Mi\"\n    cpu: \"500m\"\n  limits:\n    memory: \"256Mi\"\n    cpu: \"1\"" }
+                    { t: "Deployments", d: "Declarative application deployments supporting zero-downtime rolling updates and instant rollbacks.", c: "kubectl create deploy web --image=nginx --replicas=3\nkubectl rollout status deploy/web\nkubectl rollout undo deploy/web" },
+                    { t: "DaemonSets", d: "Ensures all (or some) Nodes run a copy of a Pod, perfect for log collectors or node monitoring agents.", c: "kubectl create deployment --dry-run=client -o yaml > daemonset.yaml\n# Change kind from Deployment to DaemonSet and remove replicas." },
+                    { t: "Taints/Tolerations", d: "Node taints repel unauthorized pods unless matching tolerations are defined in the pod specifications.", c: "kubectl taint node worker-1 workload=gpu:NoSchedule\n\n# Pod Toleration Spec:\ntolerations:\n- key: \"workload\"\n  operator: \"Equal\"\n  value: \"gpu\"\n  effect: \"NoSchedule\"" },
+                    { t: "Affinity", d: "Advanced scheduling constraints using node or pod labels to attract or repel pod placement.", c: "affinity:\n  nodeAffinity:\n    requiredDuringSchedulingIgnoredDuringExecution:\n      nodeSelectorTerms:\n      - matchExpressions:\n        - key: topology.kubernetes.io/zone\n          operator: In\n          values: [zone-a]" },
+                    { t: "Resource Quotas", d: "Limits aggregate resource consumption (CPU, memory, storage) per namespace.", c: "apiVersion: v1\nkind: ResourceQuota\nmetadata: \n  name: mem-cpu-quota\nspec:\n  hard:\n    requests.cpu: \"1\"\n    requests.memory: 1Gi\n    limits.cpu: \"2\"\n    limits.memory: 2Gi" }
                 ]
             },
             {
                 mod: "Services & Networking",
-                topics: ["ClusterIP", "NodePort", "Ingress", "Network Policies", "CoreDNS"],
                 data: [
-                    { t: "Kubernetes Services", d: "ClusterIP (internal), NodePort (external port on all nodes), and LoadBalancer abstraction.", c: "kubectl expose pod web --port=80 --type=NodePort --name=web-service" },
-                    { t: "Ingress Controllers & Rules", d: "Layer 7 HTTP/S routing directing traffic to internal services based on hostname or URL path.", c: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: app-ingress\nspec:\n  rules:\n  - host: myapp.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" },
-                    { t: "Network Policies", d: "Pod-level firewalls isolating inbound and outbound traffic using label selectors.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: backend" },
-                    { t: "CoreDNS Resolution", d: "Internal cluster DNS providing name resolution for services and pods.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns" }
+                    { t: "ClusterIP", d: "Exposes the Service on an internal cluster IP. Accessible only from within the cluster network.", c: "kubectl expose pod web --port=80 --target-port=8080 --name=my-svc" },
+                    { t: "NodePort", d: "Exposes the Service on each Node’s IP at a static port (30000-32767).", c: "kubectl expose deployment web --type=NodePort --port=80 --name=nodeport-svc" },
+                    { t: "Ingress", d: "Layer 7 HTTP/S routing directing traffic to internal services based on hostname or URL path.", c: "apiVersion: networking.k8s.io/v1\nkind: Ingress\nmetadata:\n  name: app-ingress\nspec:\n  rules:\n  - host: myapp.local\n    http:\n      paths:\n      - path: /\n        pathType: Prefix\n        backend:\n          service:\n            name: web-service\n            port:\n              number: 80" },
+                    { t: "Network Policies", d: "Pod-level firewalls isolating inbound and outbound traffic using label selectors.", c: "apiVersion: networking.k8s.io/v1\nkind: NetworkPolicy\nmetadata:\n  name: db-policy\nspec:\n  podSelector:\n    matchLabels:\n      tier: db\n  ingress:\n  - from:\n    - podSelector:\n        matchLabels:\n          tier: frontend" },
+                    { t: "CoreDNS", d: "Internal cluster DNS providing name resolution for services and pods across the cluster.", c: "kubectl get pods -n kube-system -l k8s-app=kube-dns\nkubectl exec -it <pod-name> -- nslookup kubernetes.default" }
                 ]
             },
             {
                 mod: "Storage Configuration",
-                topics: ["Volumes", "PV", "PVC", "StorageClasses"],
                 data: [
-                    { t: "Ephemeral vs Persistent Storage", d: "emptyDir and hostPath for temporary storage; PersistentVolumes (PV) and PVCs for decoupled storage management.", c: "kubectl get pv,pvc\nkubectl describe pvc my-claim" },
-                    { t: "PersistentVolumeClaims", d: "User requests for storage. Automatically binds to matching PVs or dynamically provisions via StorageClasses.", c: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 1Gi" }
+                    { t: "Volumes", d: "Ephemeral storage mechanisms like emptyDir and hostPath for container file sharing or temporary caching.", c: "volumes:\n- name: cache-volume\n  emptyDir: {}" },
+                    { t: "PV", d: "PersistentVolume (PV) is a piece of storage in the cluster provisioned by an administrator or dynamically via StorageClasses.", c: "apiVersion: v1\nkind: PersistentVolume\nspec:\n  capacity:\n    storage: 1Gi\n  accessModes:\n    - ReadWriteOnce\n  hostPath:\n    path: /tmp/data" },
+                    { t: "PVC", d: "PersistentVolumeClaim is a request for storage by a user, matching access modes and resource sizing.", c: "apiVersion: v1\nkind: PersistentVolumeClaim\nspec:\n  accessModes:\n    - ReadWriteOnce\n  resources:\n    requests:\n      storage: 1Gi" },
+                    { t: "StorageClasses", d: "Defines parameters and provisioners used to dynamically provision PersistentVolumes upon user requests.", c: "apiVersion: storage.k8s.io/v1\nkind: StorageClass\nmetadata:\n  name: fast-disk\nprovisioner: kubernetes.io/aws-ebs\nparameters:\n  type: gp2" }
                 ]
             },
             {
                 mod: "Troubleshooting & Debugging",
-                topics: ["Pod Logs", "Node Failures", "Network Debugging", "Control Plane"],
                 data: [
-                    { t: "Pod & Container Troubleshooting", d: "Diagnosing CrashLoopBackOff, ImagePullBackOff, and OOMKilled failures.", c: "kubectl describe pod <pod-name>\nkubectl logs <pod-name> --previous" },
-                    { t: "Worker Node NotReady", d: "Checking kubelet service status, disk pressure, memory pressure, and disabled swap configuration.", c: "systemctl status kubelet\njournalctl -u kubelet -e\nfree -m" },
-                    { t: "Control Plane Component Diagnostics", d: "Inspecting static pod manifests and container runtimes when API server goes down.", c: "cd /etc/kubernetes/manifests\ncrictl ps\ncrictl logs <container-id>" }
+                    { t: "Pod Logs", d: "Diagnosing application-level errors, crashes, and startup exceptions inside running containers.", c: "kubectl logs <pod-name> -n <namespace>\nkubectl logs <pod-name> --previous" },
+                    { t: "Node Failures", d: "Troubleshooting worker nodes stuck in NotReady state due to Kubelet crashes or network plugin issues.", c: "systemctl status kubelet\njournalctl -u kubelet -e\nkubectl describe node <node-name>" },
+                    { t: "Network Debugging", d: "Debugging container connectivity, DNS resolution, and faulty network policies.", c: "kubectl run tmp-shell --rm -i --tty --image=busybox -- sh\nnslookup kubernetes.default.svc.cluster.local" },
+                    { t: "Control Plane", d: "Troubleshooting API server, scheduler, or controller manager static pods failing to start.", c: "cd /etc/kubernetes/manifests/\ncrictl ps\ncrictl logs <container-id>" }
                 ]
             }
         ];
 
-        // Render Syllabus
+        // Render Syllabus with Clickable Chips
         const grid = document.getElementById('syllabus-grid');
-        syllabus.forEach((s, idx) => {
-            const chips = s.topics.map(t => `<span class="chip">${t}</span>`).join('');
+        syllabus.forEach((s, modIdx) => {
+            const chips = s.data.map((item, topicIdx) => `
+                <span class="chip" onclick="openTopicModal(${modIdx}, ${topicIdx})">${item.t}</span>
+            `).join('');
+            
             grid.innerHTML += `
-                <div class="module-card" onclick="openModal(${idx})">
+                <div class="module-card">
                     <div class="module-title">${s.mod}</div>
                     <div class="topic-list">${chips}</div>
                 </div>
             `;
         });
 
-        // Modal Logic
+        // Modal Logic for Specific Topics
         const modal = document.getElementById('modal');
-        function openModal(idx) {
-            const data = syllabus[idx];
-            document.getElementById('m-title').innerText = data.mod;
+        function openTopicModal(modIdx, topicIdx) {
+            const topicData = syllabus[modIdx].data[topicIdx];
+            document.getElementById('m-title').innerHTML = `<span>⚡</span> ${topicData.t}`;
             
-            let body = '';
-            data.data.forEach(item => {
-                body += `
-                    <div class="concept">
-                        <div class="concept-title">${item.t}</div>
-                        <div class="concept-desc">${item.d}</div>
-                        <div class="code">${item.c}</div>
-                    </div>
-                `;
-            });
-            document.getElementById('m-body').innerHTML = body;
+            document.getElementById('m-body').innerHTML = `
+                <div class="concept">
+                    <div class="concept-title">Concept Overview & Exam Guide</div>
+                    <div class="concept-desc">${topicData.d}</div>
+                    <div class="code">${topicData.c}</div>
+                </div>
+            `;
             
             modal.style.display = 'flex';
             setTimeout(() => modal.classList.add('show'), 10);
